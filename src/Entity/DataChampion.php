@@ -34,4 +34,10 @@ class DataChampion
     {
         return $this->guides;
     }
+
+    // Fonction qui retourne l'id de l'objet
+    function __toString()
+    {
+        return $this->getId();
+    }
 }
