@@ -22,7 +22,7 @@ class Guide
     #[ORM\Column(length: 10)]
     private ?string $voie = null;
 
-    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
@@ -38,6 +38,7 @@ class Guide
     public function __construct()
     {
         $this->GroupeSortInvocateur = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
     }
 
     public function getId(): ?int
