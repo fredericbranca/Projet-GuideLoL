@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230912075232 extends AbstractMigration
+final class Version20230912080757 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,12 @@ final class Version20230912075232 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE guide ADD champion_id INT NOT NULL');
-        $this->addSql('ALTER TABLE guide ADD CONSTRAINT FK_CA9EC735FA7FD7EB FOREIGN KEY (champion_id) REFERENCES data_champion (id)');
-        $this->addSql('CREATE INDEX IDX_CA9EC735FA7FD7EB ON guide (champion_id)');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, is_verified TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE guide DROP FOREIGN KEY FK_CA9EC735FA7FD7EB');
-        $this->addSql('DROP INDEX IDX_CA9EC735FA7FD7EB ON guide');
-        $this->addSql('ALTER TABLE guide DROP champion_id');
+        $this->addSql('DROP TABLE user');
     }
 }
