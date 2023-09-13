@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class DataChampion
 {
     #[ORM\Id]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(length: 20)]
+    private ?string $id = null;
 
     #[ORM\OneToMany(mappedBy: 'champion', targetEntity: Guide::class)]
     private Collection $guides;
@@ -22,9 +22,16 @@ class DataChampion
         $this->guides = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
