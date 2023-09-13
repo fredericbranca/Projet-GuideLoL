@@ -10,7 +10,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $champions = json_decode(file_get_contents(__DIR__ . "/../DataFixtures/Champion/champions.json"), true);
+        $champions = json_decode(file_get_contents(__DIR__ . "/../DataFixtures/Champion/championFull.json"), true);
 
         foreach ($champions as $champion) {
 
