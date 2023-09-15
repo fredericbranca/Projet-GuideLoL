@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\GuideRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +14,9 @@ class Guide
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $champion = null;
 
     #[ORM\Column(length: 100)]
     private ?string $titre = null;
@@ -31,10 +33,6 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true)]
     private Collection $GroupeSortInvocateur;
 
-    #[ORM\ManyToOne(inversedBy: 'guides')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?DataChampion $champion = null;
-
     public function __construct()
     {
         $this->GroupeSortInvocateur = new ArrayCollection();
@@ -44,6 +42,18 @@ class Guide
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getChampion(): ?string
+    {
+        return $this->champion;
+    }
+
+    public function setChampion(?string $champion): static
+    {
+        $this->champion = $champion;
+
+        return $this;
     }
 
     public function getTitre(): ?string
@@ -120,18 +130,6 @@ class Guide
                 $groupeSortInvocateur->setGuide(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getChampion(): ?DataChampion
-    {
-        return $this->champion;
-    }
-
-    public function setChampion(?DataChampion $champion): static
-    {
-        $this->champion = $champion;
 
         return $this;
     }
