@@ -18,6 +18,11 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            lol:
+                base_uri: http://127.0.0.1:8000/api/
+
 when@test:
     framework:
         test: true
