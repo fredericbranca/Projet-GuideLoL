@@ -2,12 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Guide;
 use App\Entity\DataChampion;
-use Symfony\Component\Form\AbstractType;
-use App\Validator\Constraints\AllowedVoies;
-use Symfony\Component\Form\FormBuilderInterface;
+use App\Entity\Guide;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,12 +41,7 @@ class GuideType extends AbstractType
                     'autocomplete' => 'off'
                 ],
             ])
-            ->add('champion', EntityType::class, [
-                'required' => true,
-                'class' => DataChampion::class,
-                'choices' => $champions
-                ]
-            )
+            // ->add('champion', TextType::class)
             ->add('Valider', SubmitType::class, [
                 'label' => 'Publier le guide'
             ])

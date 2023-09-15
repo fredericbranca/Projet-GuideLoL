@@ -1,10 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un guide{% endblock %}
+{% block title %}Créer un guide
+{% endblock %}
 
 {% block body %}
 
-    {{ form_start(form) }}
-    {{ form_end(form) }}
+	{{ form_start(form) }}
+	<div>
+		{{ form_label(form.titre)}}
+		{{ form_widget(form.titre)}}
+		{{ form_errors(form.titre)}}
+	</div>
+
+	<div>
+		{{ form_label(form.voie)}}
+		{{ form_widget(form.voie)}}
+		{{ form_errors(form.voie)}}
+	</div>
+    {# {{ form_row(form.champion) }} #}
+
+	<div>
+		<fieldset>
+			<legend>Champion</legend>
+			{% for champion in champions %}
+				<input type="radio" id="{{ champion.id }}" name="champion" value="{{ champion.id }}"/>
+				<label for="{{ champion.id }}"><img src="http://127.0.0.1:8000/api/" alt="">{{ champion.name }}</label>
+			{% endfor %}
+		</fieldset>
+	</div>
+	{{ form_end(form) }}
 
 {% endblock %}
