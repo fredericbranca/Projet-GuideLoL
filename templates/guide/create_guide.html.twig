@@ -23,8 +23,8 @@
 		<fieldset>
 			<legend>Champion</legend>
 			{% for champion in champions %}
-				<input type="radio" id="{{ champion.id }}" name="champion" value="{{ champion.id }}"/>
-				<label for="{{ champion.id }}"><img src="http://127.0.0.1:8000/api/" alt="">{{ champion.name }}</label>
+				<input type="radio" id="{{ champion.idChamp }}" name="champion" value="{{ champion.idChamp }}"/>
+				<label for="{{ champion.idChamp }}"><img style="width: 40px; height: auto;" src="{{ img }}/champion/{{ champion.image.full }}" alt="{{ champion.name }}">{{ champion.name }}</label>
 			{% endfor %}
 		</fieldset>
 	</div>
