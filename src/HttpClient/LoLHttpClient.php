@@ -30,18 +30,35 @@ class LoLHttpClient extends AbstractController
         $this->httpClient = $lol;
     }
 
+    // Requête api pour récupérer la liste des champions 
     public function getChampions()
     {
-        $response = $this->httpClient->request('GET', "/api/champions", [
-            'verify_peer' => false,
-        ]);
+        $query = '
+        {
+            champions {
+                idChamp
+                name
+                image
+                skins
+            }
+        }';
 
+        $response = $this->httpClient->request('POST', $this->getParameter('graphql_url'), [
+            'verify_peer' => false,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'query' => $query,
+                ])
+            ]);
+            
         return $response->getContent();
     }
 
     public function getGame($champion)
     {
-        $response = $this->httpClient->request('GET', "/api/champions/$champion", [
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/champions/" . $champion, [
             'verify_peer' => false,
         ]);
 
