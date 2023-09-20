@@ -16,9 +16,6 @@ class GuideType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Récupère de la liste des champions passée en option lors de la création du formulaire
-        $champions = $options['champions'];
-
         $builder
             ->add('titre', TextType::class, [
                 'required' => true,
@@ -52,7 +49,6 @@ class GuideType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Guide::class,
-            'champions' => [] // initialisation de la liste dans un tableau vide pour éviter les erreurs
         ]);
     }
 }
