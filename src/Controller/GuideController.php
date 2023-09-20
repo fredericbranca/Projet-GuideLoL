@@ -22,19 +22,13 @@ class GuideController extends AbstractController
         // Récupère la liste d'id des champions
         $championsData = $lol->getChampions();
         $championsData = json_decode($championsData, true);
-
-        // dd($championsData["hydra:member"]);
-
-        foreach ($championsData["hydra:member"] as $champion) {
-            $name[$champion['name']] = $champion['id'];
-            $image[$champion['image']["full"]] = $champion['id'];
-        }
-        // dd($image);
+        // dd($championsData);
+        
+        // URL pour récupérer les images
+        $img_url = $this->getParameter('img_url');
 
         //Création du formulaire avec le GuideType
-        $form = $this->createForm(GuideType::class, null, [
-            'champions' => $name
-        ]);
+        $form = $this->createForm(GuideType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,10 +51,11 @@ class GuideController extends AbstractController
 
             return $this->redirectToRoute('new_guide');
         }
-
+        
         return $this->render('guide/create_guide.html.twig', [
             'form' => $form,
-            'champions' => $championsData['hydra:member']
+            'champions' => $championsData['data']['champions'],
+            'img' => $img_url
         ]);
     }
 
