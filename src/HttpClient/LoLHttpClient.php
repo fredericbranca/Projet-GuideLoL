@@ -56,7 +56,8 @@ class LoLHttpClient extends AbstractController
         return $response->getContent();
     }
 
-    public function getGame($champion)
+    // Récupère les infos d'un champion spécifique
+    public function getChampion($champion)
     {
         $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/champions/" . $champion, [
             'verify_peer' => false,
