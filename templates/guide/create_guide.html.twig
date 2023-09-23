@@ -17,17 +17,25 @@
 		{{ form_widget(form.voie)}}
 		{{ form_errors(form.voie)}}
 	</div>
-    {# {{ form_row(form.champion) }} #}
 
-	<div>
-		<fieldset>
-			<legend>Champion</legend>
-			{% for champion in champions %}
-				<input type="radio" id="{{ champion.idChamp }}" name="champion" value="{{ champion.idChamp }}"/>
-				<label for="{{ champion.idChamp }}"><img style="width: 40px; height: auto;" src="{{ img }}/champion/{{ champion.image.full }}" alt="{{ champion.name }}">{{ champion.name }}</label>
-			{% endfor %}
-		</fieldset>
+	<div style="display:flex; flex-wrap: wrap">
+		{{ form_label(form.champion) }}
+		
+		{% for choice in form.champion %}
+			<div>
+				{{ form_widget(choice, {'id': champions[choice.vars.value].idChamp }) }}
+				{# génère le bouton radio #}
+				<label for="{{ champions[choice.vars.value].idChamp }}">
+					<img src="{{ img_url }}/champion/{{ champions[choice.vars.value].image.full }}" alt="{{ champions[choice.vars.value].name }}">
+				</label>
+			</div>
+		{% endfor %}
+
+		{{ form_errors(form.champion) }}
+		{# affiche les erreurs #}
 	</div>
+
 	{{ form_end(form) }}
+
 
 {% endblock %}
