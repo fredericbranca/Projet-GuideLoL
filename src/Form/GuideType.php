@@ -38,17 +38,23 @@ class GuideType extends AbstractType
                     'autocomplete' => 'off'
                 ],
             ])
+            ->add('champion', ChoiceType::class, [
+                'choices' => $options['champions'],
+                'expanded' => true,
+                'multiple' => false,
+            ])
+
             // ->add('champion', TextType::class)
             ->add('Valider', SubmitType::class, [
                 'label' => 'Publier le guide'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Guide::class,
+            'champions' => []
         ]);
     }
 }
