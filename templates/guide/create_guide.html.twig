@@ -6,18 +6,21 @@
 {% block body %}
 
 	{{ form_start(form) }}
+	{# Ajout d'un titre #}
 	<div>
 		{{ form_label(form.titre)}}
 		{{ form_widget(form.titre)}}
 		{{ form_errors(form.titre)}}
 	</div>
 
+	{# Choix du rôle #}
 	<div>
 		{{ form_label(form.voie)}}
 		{{ form_widget(form.voie)}}
 		{{ form_errors(form.voie)}}
 	</div>
 
+	{# Choix du Champion #}
 	<div style="display:flex; flex-wrap: wrap">
 		{{ form_label(form.champion) }}
 		
@@ -26,13 +29,18 @@
 				{{ form_widget(choice, {'id': champions[choice.vars.value].idChamp }) }}
 				{# génère le bouton radio #}
 				<label for="{{ champions[choice.vars.value].idChamp }}">
-					<img src="{{ img_url }}/champion/{{ champions[choice.vars.value].image.full }}" alt="{{ champions[choice.vars.value].name }}">
+					<img src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
 				</label>
 			</div>
 		{% endfor %}
 
 		{{ form_errors(form.champion) }}
 		{# affiche les erreurs #}
+	</div>
+
+	{# Choix des summoner spells #}
+	<div>
+	
 	</div>
 
 	{{ form_end(form) }}
