@@ -16,7 +16,7 @@ class ChampionService {
     public function getChampions() {
         $championsData = $this->lol->getChampions();
         $championsData = json_decode($championsData, true)['data']['champions'];
-        $champions = [];
+
         foreach ($championsData as $champion) {
             $key = $champion['idChamp'];
             $champions[$key] = $champion;
@@ -24,10 +24,20 @@ class ChampionService {
         return $champions;
     }
 
+    public function getChampionsName() {
+        $championsData = $this->lol->getChampions();
+        $championsData = json_decode($championsData, true)['data']['champions'];
+
+        foreach ($championsData as $champion) {
+            $champions[] = $champion['idChamp'];
+        }
+        return $champions;
+    }
+
     public function getChampionsIdName() {
         $championsData = $this->lol->getChampions();
         $champions = json_decode($championsData, true)['data']['champions'];
-        $championsName = [];
+
         foreach ($champions as $key => $champion) {
             $championsIdName[$champion['name']] = $champion['idChamp'];
         }
