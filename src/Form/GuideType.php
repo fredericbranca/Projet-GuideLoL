@@ -2,15 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\DataChampion;
 use App\Entity\Guide;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\SortInvocateurType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class GuideType extends AbstractType
 {
@@ -44,7 +44,13 @@ class GuideType extends AbstractType
                 'multiple' => false,
             ])
 
-            // ->add('champion', TextType::class)
+            ->add('groupeSortsInvocateur', CollectionType::class, [
+                'entry_type' => SortInvocateurType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+
             ->add('Valider', SubmitType::class, [
                 'label' => 'Publier le guide'
             ]);
