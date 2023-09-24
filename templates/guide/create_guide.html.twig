@@ -23,7 +23,7 @@
 	{# Choix du Champion #}
 	<div style="display:flex; flex-wrap: wrap">
 		{{ form_label(form.champion) }}
-		
+
 		{% for choice in form.champion %}
 			<div>
 				{{ form_widget(choice, {'id': champions[choice.vars.value].idChamp }) }}
@@ -40,7 +40,39 @@
 
 	{# Choix des summoner spells #}
 	<div>
-	
+		{{ form_label(form.groupeSortsInvocateur) }}
+		{% for sortInvocateurForm in form.groupeSortsInvocateur %}
+			<div>
+				{{ form_label(sortInvocateurForm.titre) }}
+				{{ form_widget(sortInvocateurForm.titre) }}
+				{{ form_errors(sortInvocateurForm.titre) }}
+			</div>
+
+			<div>
+				{{ form_label(sortInvocateurForm.commentaire) }}
+				{{ form_widget(sortInvocateurForm.commentaire) }}
+				{{ form_errors(sortInvocateurForm.commentaire) }}
+			</div>
+
+			<div>
+				{{ form_label(sortInvocateurForm.ordre) }}
+				{{ form_widget(sortInvocateurForm.ordre) }}
+				{{ form_errors(sortInvocateurForm.ordre) }}
+			</div>
+
+			<div style="display:flex; flex-wrap: wrap">
+				{% for choice in sortInvocateurForm.choixSortInvocateur %}
+					<div>
+						{{ form_widget(choice, {'id': choice.vars.value }) }}
+						{# génère le bouton radio #}
+						<label for="{{ choice.vars.value }}">
+							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+						</label>
+					</div>
+				{% endfor %}
+			</div>
+
+		{% endfor %}
 	</div>
 
 	{{ form_end(form) }}
