@@ -16,7 +16,7 @@ class SortInvocateur
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -26,9 +26,10 @@ class SortInvocateur
     private ?int $ordre = null;
 
     #[ORM\ManyToMany(targetEntity: DataSortInvocateur::class)]
+    #[ORM\JoinTable(name: "ChoixSortInvocateur")]
     private Collection $ChoixSortInvocateur;
 
-    #[ORM\ManyToOne(inversedBy: 'GroupeSortInvocateur')]
+    #[ORM\ManyToOne(inversedBy: 'GroupeSortsInvocateur')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Guide $guide = null;
 

@@ -31,11 +31,11 @@ class Guide
     private ?\DateTimeImmutable $modified_at = null;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true)]
-    private Collection $GroupeSortInvocateur;
+    private Collection $groupeSortsInvocateur;
 
     public function __construct()
     {
-        $this->GroupeSortInvocateur = new ArrayCollection();
+        $this->groupeSortsInvocateur = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
     }
 
@@ -107,27 +107,27 @@ class Guide
     /**
      * @return Collection<int, SortInvocateur>
      */
-    public function getGroupeSortInvocateur(): Collection
+    public function getGroupeSortsInvocateur(): Collection
     {
-        return $this->GroupeSortInvocateur;
+        return $this->groupeSortsInvocateur;
     }
 
-    public function addGroupeSortInvocateur(SortInvocateur $groupeSortInvocateur): static
+    public function addGroupeSortsInvocateur(SortInvocateur $groupeSortsInvocateur): static
     {
-        if (!$this->GroupeSortInvocateur->contains($groupeSortInvocateur)) {
-            $this->GroupeSortInvocateur->add($groupeSortInvocateur);
-            $groupeSortInvocateur->setGuide($this);
+        if (!$this->groupeSortsInvocateur->contains($groupeSortsInvocateur)) {
+            $this->groupeSortsInvocateur->add($groupeSortsInvocateur);
+            $groupeSortsInvocateur->setGuide($this);
         }
 
         return $this;
     }
 
-    public function removeGroupeSortInvocateur(SortInvocateur $groupeSortInvocateur): static
+    public function removeGroupeSortsInvocateur(SortInvocateur $groupeSortsInvocateur): static
     {
-        if ($this->GroupeSortInvocateur->removeElement($groupeSortInvocateur)) {
+        if ($this->groupeSortsInvocateur->removeElement($groupeSortsInvocateur)) {
             // set the owning side to null (unless already changed)
-            if ($groupeSortInvocateur->getGuide() === $this) {
-                $groupeSortInvocateur->setGuide(null);
+            if ($groupeSortsInvocateur->getGuide() === $this) {
+                $groupeSortsInvocateur->setGuide(null);
             }
         }
 
