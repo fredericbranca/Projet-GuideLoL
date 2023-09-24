@@ -65,4 +65,14 @@ class LoLHttpClient extends AbstractController
 
         return $response->getContent();
     }
+
+    // Récupère les infos des sorts d'invocateur
+    public function getSortsInvocateur()
+    {
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/sort_invocateurs/", [
+            'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
 }
