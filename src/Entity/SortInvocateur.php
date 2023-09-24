@@ -27,7 +27,7 @@ class SortInvocateur
 
     #[ORM\ManyToMany(targetEntity: DataSortInvocateur::class)]
     #[ORM\JoinTable(name: "ChoixSortInvocateur")]
-    private Collection $ChoixSortInvocateur;
+    private Collection $choixSortInvocateur;
 
     #[ORM\ManyToOne(inversedBy: 'GroupeSortsInvocateur')]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,7 +35,7 @@ class SortInvocateur
 
     public function __construct()
     {
-        $this->ChoixSortInvocateur = new ArrayCollection();
+        $this->choixSortInvocateur = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,13 +84,13 @@ class SortInvocateur
      */
     public function getChoixSortInvocateur(): Collection
     {
-        return $this->ChoixSortInvocateur;
+        return $this->choixSortInvocateur;
     }
 
     public function addChoixSortInvocateur(DataSortInvocateur $choixSortInvocateur): static
     {
-        if (!$this->ChoixSortInvocateur->contains($choixSortInvocateur)) {
-            $this->ChoixSortInvocateur->add($choixSortInvocateur);
+        if (!$this->choixSortInvocateur->contains($choixSortInvocateur)) {
+            $this->choixSortInvocateur->add($choixSortInvocateur);
         }
 
         return $this;
@@ -98,7 +98,7 @@ class SortInvocateur
 
     public function removeChoixSortInvocateur(DataSortInvocateur $choixSortInvocateur): static
     {
-        $this->ChoixSortInvocateur->removeElement($choixSortInvocateur);
+        $this->choixSortInvocateur->removeElement($choixSortInvocateur);
 
         return $this;
     }
