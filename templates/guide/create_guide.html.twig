@@ -21,7 +21,7 @@
 	</div>
 
 	{# Choix du Champion #}
-	<div style="display:flex; flex-wrap: wrap">
+	<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
 		{{ form_label(form.champion) }}
 
 		{% for choice in form.champion %}
@@ -29,7 +29,7 @@
 				{{ form_widget(choice, {'id': champions[choice.vars.value].idChamp }) }}
 				{# génère le bouton radio #}
 				<label for="{{ champions[choice.vars.value].idChamp }}">
-					<img src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
+					<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
 				</label>
 			</div>
 		{% endfor %}
@@ -72,6 +72,25 @@
 				{% endfor %}
 			</div>
 
+		{% endfor %}
+	</div>
+
+	{# Choix des runes #}
+
+	<div style="display:flex; flex-wrap: wrap; gap: 50px">
+		{% for arbre in runes %}
+			<div style="display:flex; flex-direction: column">
+				<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ arbre.icon }}" alt="{{ arbre.name }}">{{ arbre.name }}</div>
+				<div>
+					{% for slot in arbre.slots %}
+						<ul style="display:flex; flex-wrap: wrap; gap: 20px; list-style: none;">
+							{% for rune in slot.runes %}
+								<li><img style="width: 40px; height: auto" src="{{ img_url }}/{{ rune.icon }}" alt="{{ rune.name }}">{{ rune.name }}</li>
+							{% endfor %}
+						</ul>
+					{% endfor %}
+				</div>
+			</div>
 		{% endfor %}
 	</div>
 
