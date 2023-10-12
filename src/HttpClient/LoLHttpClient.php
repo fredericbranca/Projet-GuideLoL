@@ -30,7 +30,7 @@ class LoLHttpClient extends AbstractController
         $this->httpClient = $lol;
     }
 
-    // Requête api pour récupérer la liste des champions 
+    // Champions
     public function getChampions()
     {
         $query = '
@@ -50,13 +50,13 @@ class LoLHttpClient extends AbstractController
             ],
             'body' => json_encode([
                 'query' => $query,
-                ])
-            ]);
-            
+            ])
+        ]);
+
         return $response->getContent();
     }
 
-    // Récupère les infos d'un champion spécifique
+    // Champion spécifique
     public function getChampion($champion)
     {
         $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/champions/" . $champion, [
@@ -66,10 +66,30 @@ class LoLHttpClient extends AbstractController
         return $response->getContent();
     }
 
-    // Récupère les infos des sorts d'invocateur
+    // Sorts d'invocateur
     public function getSortsInvocateur()
     {
         $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/sort_invocateurs/", [
+            'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
+
+    // Runes
+    public function getRunes()
+    {
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/runes", [
+            'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
+
+    // Rune spécifique
+    public function getRune($rune)
+    {
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/runes/" . $rune, [
             'verify_peer' => false,
         ]);
 
