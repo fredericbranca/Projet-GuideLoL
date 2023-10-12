@@ -10,6 +10,7 @@ use App\Service\ChampionService;
 use App\Service\SortInvocateurService;
 use App\Repository\DataChampionRepository;
 use App\Repository\DataSortInvocateurRepository;
+use App\Service\RuneService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,8 @@ class GuideController extends AbstractController
         GuideService $guideService,
         DataChampionRepository $dataChampionRepository,
         SortInvocateurService $sortInvocateurService,
-        DataSortInvocateurRepository $dataSortInvocateurRepository
+        DataSortInvocateurRepository $dataSortInvocateurRepository,
+        RuneService $runeService
     ) {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
@@ -35,6 +37,9 @@ class GuideController extends AbstractController
         $img_url = $championService->getChampionImageURL();
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
+        // Runes
+        $runesData = $runeService->getRunes();
+        // dd($runesData);
 
         // Création d'un Guide
         $guide = new Guide();
@@ -76,7 +81,8 @@ class GuideController extends AbstractController
             'form' => $form,
             'champions' => $championsData,
             'img_url' => $img_url,
-            'list_sorts_invocateur' => $sortsInvocateurList
+            'list_sorts_invocateur' => $sortsInvocateurList,
+            'runes' => $runesData
         ]);
     }
 
