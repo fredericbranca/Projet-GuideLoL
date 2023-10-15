@@ -82,9 +82,9 @@
 			<div style="display:flex; flex-direction: column">
 				<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ arbre.icon }}" alt="{{ arbre.name }}">{{ arbre.name }}</div>
 				<div>
-					{% for slot in arbre.slots %}
+					{% for runes_type in arbre.slots %}
 						<ul style="display:flex; flex-wrap: wrap; gap: 20px; list-style: none;">
-							{% for rune in slot.runes %}
+							{% for rune in runes_type.runes %}
 								<li><img style="width: 40px; height: auto" src="{{ img_url }}/{{ rune.icon }}" alt="{{ rune.name }}">{{ rune.name }}</li>
 							{% endfor %}
 						</ul>
