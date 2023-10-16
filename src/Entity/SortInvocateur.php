@@ -26,7 +26,7 @@ class SortInvocateur
     private ?int $ordre = null;
 
     #[ORM\ManyToMany(targetEntity: DataSortInvocateur::class)]
-    #[ORM\JoinTable(name: "ChoixSortInvocateur")]
+    #[ORM\JoinTable(name: "choix_sort_invocateur")]
     private Collection $choixSortInvocateur;
 
     #[ORM\ManyToOne(inversedBy: 'GroupeSortsInvocateur')]
