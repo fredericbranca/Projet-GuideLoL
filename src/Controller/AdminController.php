@@ -20,19 +20,20 @@ class AdminController extends AbstractController
     #[Route('/admin/data_champion_update', name: 'update_data_champion')]
     public function championUpdate(ChampionService $championService, EntityManagerInterface $em)
     {
-        $champions = $championService->getChampionsName();
-        foreach ($champions as $championName) {
-            // Recherche du champion par son ID
-            $championId = $em->getRepository(DataChampion::class)->findOneBy(['id' => $championName]);
+        // Supprimer toutes les entrées existantes de la table des champions
+        $em->createQuery('DELETE FROM App\Entity\DataChampion')->execute();
 
-            // Création du champion s'il n'existe pas encore
-            if (!$championId) {
-                $championId = new DataChampion;
-                $championId->setId($championName);
-                $em->persist($championId);
-            }
+        // Récupérer les champions depuis le service
+        $champions = $championService->getChampionsName();
+
+        // Ajouter chaque champion à la base de données
+        foreach ($champions as $championName) {
+            $championId = new DataChampion;
+            $championId->setId($championName);
+            $em->persist($championId);
         }
 
+        // Flush les changements à la base de données
         $em->flush();
 
         return new Response('Nom des champions importés ou mis à jour avec succès !');
@@ -42,19 +43,20 @@ class AdminController extends AbstractController
     #[Route('/admin/data_sort_invocateur_update', name: 'update_data_sort_invocateur')]
     public function sortsInvocateurUpdate(SortInvocateurService $sortInvocateurService, EntityManagerInterface $em)
     {
-        $sortsInvocateur = $sortInvocateurService->getSortsInvocateurId();
-        foreach ($sortsInvocateur as $sortInvocateur) {
-            // Recherche d'un sort d'invocateur' par son ID
-            $sortInvocateurId = $em->getRepository(DataSortInvocateur::class)->findOneBy(['id' => $sortInvocateur]);
+        // Supprimer toutes les entrées existantes de la table des sorts d'invocateur
+        $em->createQuery('DELETE FROM App\Entity\DataSortInvocateur')->execute();
 
-            // Création du sort s'il n'existe pas encore
-            if (!$sortInvocateurId) {
-                $sortInvocateurId = new DataSortInvocateur;
-                $sortInvocateurId->setId($sortInvocateur);
-                $em->persist($sortInvocateurId);
-            }
+        // Récupérer les sorts d'invocateur depuis le service
+        $sortsInvocateur = $sortInvocateurService->getSortsInvocateurId();
+
+        // Ajouter chaque sort d'invocateur à la base de données
+        foreach ($sortsInvocateur as $sortInvocateur) {
+            $newSort = new DataSortInvocateur();
+            $newSort->setId($sortInvocateur);
+            $em->persist($newSort);
         }
 
+        // Flush les changements à la base de données
         $em->flush();
 
         return new Response('Sorts d\'invocateur importés ou mis à jour avec succès !');
@@ -64,38 +66,33 @@ class AdminController extends AbstractController
     #[Route('/admin/data_runes_update', name: 'update_data_runes')]
     public function runesUpdate(RuneService $runeService, EntityManagerInterface $em)
     {
-        // Récupération des abres de runes
+        // Supprimer toutes les entrées existantes de la table des runes
+        $em->createQuery('DELETE FROM App\Entity\DataRune')->execute();
+
+        // Supprimer toutes les entrées existantes de la table des bonus
+        $em->createQuery('DELETE FROM App\Entity\DataStatistiqueBonus')->execute();
+
+        // Récupération des arbres de runes
         $arbres = $runeService->getRunes();
 
         foreach ($arbres as $arbreName => $arbre) {
             $rune_arbre = $arbreName;
 
             foreach ($arbre['slots'] as $slotKey => $slot) {
-                if ($slotKey === 'Primary') {
-                    $rune_type = 'Primary';
-                } else {
-                    $rune_type = 'Secondary' . $slotKey;
-                }
+                $rune_type = $slotKey === 'Primary' ? 'Primary' : 'Secondary' . $slotKey;
 
                 foreach ($slot['runes'] as $rune) {
                     $runeId = $rune['id'];
-                    // Vérifier si cette rune existe déjà dans la base de données
-                    $existingRune = $em->getRepository(DataRune::class)->find($runeId);
 
-                    if (!$existingRune) {
-                        $dataRune = new DataRune();
-                        $dataRune->setId($runeId);
-                        $dataRune->setRuneArbre($rune_arbre);
-                        $dataRune->setRuneType($rune_type);
+                    $dataRune = new DataRune();
+                    $dataRune->setId($runeId);
+                    $dataRune->setRuneArbre($rune_arbre);
+                    $dataRune->setRuneType($rune_type);
 
-                        $em->persist($dataRune);
-                    }
+                    $em->persist($dataRune);
                 }
             }
         }
-
-        // Supprimer toutes les entrées existantes de la table des bonus
-        $em->createQuery('DELETE FROM App\Entity\DataStatistiqueBonus')->execute();
 
         // Récupération des statistiques bonus
         $bonusStatistiques = $runeService->getStatistiquesBonus();
@@ -113,7 +110,7 @@ class AdminController extends AbstractController
 
         $em->flush();
 
-        return new Response('Runes importées ou mis à jour avec succès !');
+        return new Response('Runes et bonus importés avec succès !');
     }
 
     #[Route('/admin', name: 'app_admin')]
