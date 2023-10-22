@@ -29,7 +29,7 @@ class SortInvocateur
     #[ORM\JoinTable(name: "choix_sort_invocateur")]
     private Collection $choixSortInvocateur;
 
-    #[ORM\ManyToOne(inversedBy: 'GroupeSortsInvocateur')]
+    #[ORM\ManyToOne(inversedBy: 'groupeSortsInvocateur')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Guide $guide = null;
 
