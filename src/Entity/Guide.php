@@ -33,10 +33,14 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true)]
     private Collection $groupeSortsInvocateur;
 
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true)]
+    private Collection $groupeRunes;
+
     public function __construct()
     {
         $this->groupeSortsInvocateur = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
+        $this->groupeRunes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,6 +132,36 @@ class Guide
             // set the owning side to null (unless already changed)
             if ($groupeSortsInvocateur->getGuide() === $this) {
                 $groupeSortsInvocateur->setGuide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RunesPage>
+     */
+    public function getGroupeRunes(): Collection
+    {
+        return $this->groupeRunes;
+    }
+
+    public function addGroupeRune(RunesPage $groupeRune): static
+    {
+        if (!$this->groupeRunes->contains($groupeRune)) {
+            $this->groupeRunes->add($groupeRune);
+            $groupeRune->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupeRune(RunesPage $groupeRune): static
+    {
+        if ($this->groupeRunes->removeElement($groupeRune)) {
+            // set the owning side to null (unless already changed)
+            if ($groupeRune->getGuide() === $this) {
+                $groupeRune->setGuide(null);
             }
         }
 
