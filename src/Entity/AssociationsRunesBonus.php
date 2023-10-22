@@ -25,10 +25,15 @@ class AssociationsRunesBonus
     #[ORM\JoinTable(name: "choix_statistiques_bonus")]
     private Collection $choixStatistiquesBonus;
 
+    #[ORM\ManyToMany(targetEntity: AssociationsArbresRunes::class)]
+    #[ORM\JoinTable(name: "choix_arbres")]
+    private Collection $choixArbres;
+
     public function __construct()
     {
         $this->runesPages = new ArrayCollection();
         $this->choixStatistiquesBonus = new ArrayCollection();
+        $this->choixArbres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +100,30 @@ class AssociationsRunesBonus
     public function removeChoixStatistiquesBonu(DataStatistiqueBonus $choixStatistiquesBonu): static
     {
         $this->choixStatistiquesBonus->removeElement($choixStatistiquesBonu);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssociationsArbresRunes>
+     */
+    public function getChoixArbres(): Collection
+    {
+        return $this->choixArbres;
+    }
+
+    public function addChoixArbre(AssociationsArbresRunes $choixArbre): static
+    {
+        if (!$this->choixArbres->contains($choixArbre)) {
+            $this->choixArbres->add($choixArbre);
+        }
+
+        return $this;
+    }
+
+    public function removeChoixArbre(AssociationsArbresRunes $choixArbre): static
+    {
+        $this->choixArbres->removeElement($choixArbre);
 
         return $this;
     }
