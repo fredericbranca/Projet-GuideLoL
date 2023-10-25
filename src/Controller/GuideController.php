@@ -8,8 +8,6 @@ use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
 use App\Service\SortInvocateurService;
-use App\Repository\DataChampionRepository;
-use App\Repository\DataSortInvocateurRepository;
 use App\Service\RuneService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,57 +22,44 @@ class GuideController extends AbstractController
         Request $request,
         ChampionService $championService,
         GuideService $guideService,
-        DataChampionRepository $dataChampionRepository,
         SortInvocateurService $sortInvocateurService,
-        DataSortInvocateurRepository $dataSortInvocateurRepository,
         RuneService $runeService
     ) {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
-        // Nom des champions
-        $championsList = $championService->getChampionsIdName();
-        // URL pour récupérer les images
-        $img_url = $championService->getChampionImageURL();
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
         // Runes
         $runesData = $runeService->getRunes();
-        // dd($runesData);
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
 
         // Création d'un Guide
         $guide = new Guide();
         $sortInvocateur = new SortInvocateur();
         $guide->addGroupeSortsInvocateur($sortInvocateur);
         // Création du formulaire
-        $form = $this->createForm(GuideType::class, $guide, [
-            'champions' => $championsList
-        ]);
+        $form = $this->createForm(GuideType::class, $guide);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $champion = $form->get('champion')->getData();
             $groupesSortsInvocateur = $form->get('groupeSortsInvocateur')->getData();
-
-            // Vérifie si la value du champ champion est valide
-            $championExiste = $dataChampionRepository->findOneBy(['id' => $champion]);
-            if (!$championExiste) {
-                return new Response('Champion invalide');
-            }
-            // Vérifie si la value des sorts d'invocateurs est valide
-            foreach ($groupesSortsInvocateur as $sortsInvocateur) {
-                $sortsInvocateurName = $sortInvocateur->getChoixSortInvocateur();
-                foreach ($sortsInvocateurName as $sortInvocateurName) {
-                    $sortExiste = $dataSortInvocateurRepository->findOneBy(['id' => $sortInvocateurName]);
-                    if (!$sortExiste) {
-                        return new Response('Sort d\'invocateur invalide');
-                    }
-                }
-            }
-
             // Création du guide dans la db
             $guideService->createGuideFromForm($form->getData(), $champion, $groupesSortsInvocateur);
 
             return $this->redirectToRoute('new_guide');
+        } else if ($form->isSubmitted() && !$form->isValid()) {
+            // Si le formulaire est invalide
+            $errors = []; // Tableau pour stocker les erreurs
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
+            }
+
+            return $this->json([
+                'success' => false,
+                'errors' => $errors,
+            ]);
         }
 
         return $this->render('guide/create_guide.html.twig', [
@@ -83,6 +68,33 @@ class GuideController extends AbstractController
             'img_url' => $img_url,
             'list_sorts_invocateur' => $sortsInvocateurList,
             'runes' => $runesData
+        ]);
+    }
+
+    #[Route('/load-groupe-sorts-invocateur', name: "load_groupe_sorts_invocateur")]
+    public function loadGroupeSortsInvocateur(
+        SortInvocateurService $sortInvocateurService,
+        ChampionService $championService,
+    ): Response {
+        // Liste des sorts d'invocateur
+        $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
+
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+
+
+        // Création d'un Guide
+        $guide = new Guide();
+        $sortInvocateur = new SortInvocateur();
+        $guide->addGroupeSortsInvocateur($sortInvocateur);
+        // Création du formulaire
+        $form = $this->createForm(GuideType::class, $guide);
+
+
+        return $this->render('guide/groupe-sorts-invocateur.html.twig', [
+            'form' => $form,
+            'list_sorts_invocateur' => $sortsInvocateurList,
+            'img_url' => $img_url,
         ]);
     }
 
