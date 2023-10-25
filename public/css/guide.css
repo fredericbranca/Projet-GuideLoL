@@ -1,0 +1,41 @@
+/* BLOCK CONFIG ET BUILDER */
+.new-guide-config {
+  display: block;
+}
+
+.new-guide-builder {
+  display: none;
+}
+
+/* SIDEBAR */
+.new-guide-sidebar {
+  width: 200px;
+}
+
+.new-guide-sidebar span {
+  display: block;
+  background-color: #0b1727;
+  padding: 15px;
+  padding-left: 32px;
+  border-left: 5px solid transparent;
+  cursor: pointer;
+  position: relative;
+  color: white;
+}
+
+.new-guide-sidebar span.current {
+  background-color: #233148;
+  border-left: 5px solid #275495;
+}
+
+.new-guide-sidebar span:hover {
+    background-color: #233148;
+    border-left: 5px solid #275495;
+}
+
+.new-guide-sidebar span::before {
+  content: "⚙️";
+  padding-right: 10px;
+  font-size: 15px;
+  align-items: center;
+}
