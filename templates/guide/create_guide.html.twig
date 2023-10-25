@@ -3,98 +3,79 @@
 {% block title %}Créer un guide
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/guide.css') }}">
+{% endblock %}
+
 {% block body %}
 
-	{{ form_start(form) }}
-	{# Ajout d'un titre #}
-	<div>
-		{{ form_label(form.titre)}}
-		{{ form_widget(form.titre)}}
-		{{ form_errors(form.titre)}}
+	<div class="new-guide-sidebar">
+		<span id="sidebar-config" class="current">Configuration</span>
+		<span id="sidebar-builder">Construction</span>
 	</div>
 
-	{# Choix du rôle #}
-	<div>
-		{{ form_label(form.voie)}}
-		{{ form_widget(form.voie)}}
-		{{ form_errors(form.voie)}}
-	</div>
+	<div class="new-guide-config">
+		{{ form_start(form) }}
+		{# Ajout d'un titre #}
+		<div class="title-guide">
+			{{ form_label(form.titre)}}
+			{{ form_widget(form.titre)}}
+			{{ form_errors(form.titre)}}
+		</div>
 
-	{# Choix du Champion #}
-	<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-		{{ form_label(form.champion) }}
+		{# Choix du rôle #}
+		<div class="role-guide">
+			{{ form_label(form.voie)}}
+			{{ form_widget(form.voie)}}
+			{{ form_errors(form.voie)}}
+		</div>
 
-		{% for choice in form.champion %}
-			<div>
-				{{ form_widget(choice, {'id': champions[choice.vars.value].idChamp }) }}
-				{# génère le bouton radio #}
-				<label for="{{ champions[choice.vars.value].idChamp }}">
-					<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
-				</label>
-			</div>
-		{% endfor %}
-
-		{{ form_errors(form.champion) }}
-		{# affiche les erreurs #}
-	</div>
-
-	{# Choix des summoner spells #}
-	<div>
-		{{ form_label(form.groupeSortsInvocateur) }}
-		{% for sortInvocateurForm in form.groupeSortsInvocateur %}
-			<div>
-				{{ form_label(sortInvocateurForm.titre) }}
-				{{ form_widget(sortInvocateurForm.titre) }}
-				{{ form_errors(sortInvocateurForm.titre) }}
-			</div>
-
-			<div>
-				{{ form_label(sortInvocateurForm.commentaire) }}
-				{{ form_widget(sortInvocateurForm.commentaire) }}
-				{{ form_errors(sortInvocateurForm.commentaire) }}
-			</div>
-
-			<div>
-				{{ form_label(sortInvocateurForm.ordre) }}
-				{{ form_widget(sortInvocateurForm.ordre) }}
-				{{ form_errors(sortInvocateurForm.ordre) }}
-			</div>
-
-			<div style="display:flex; flex-wrap: wrap">
-				{% for choice in sortInvocateurForm.choixSortInvocateur %}
+		{# Choix du Champion #}
+		<div class="champion-guide">
+			<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+				{% for choice in form.champion %}
 					<div>
 						{{ form_widget(choice, {'id': choice.vars.value }) }}
 						{# génère le bouton radio #}
 						<label for="{{ choice.vars.value }}">
-							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+							<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
 						</label>
 					</div>
 				{% endfor %}
 			</div>
-
-		{% endfor %}
+			{# affiche les erreurs #}
+			{{ form_errors(form.champion) }}
+		</div>
 	</div>
 
-	{# Choix des runes #}
+	<div class="new-guide-builder">
 
-	<div style="display:flex; flex-wrap: wrap; gap: 50px">
-		{% for arbre in runes %}
-			<div style="display:flex; flex-direction: column">
-				<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ arbre.icon }}" alt="{{ arbre.name }}">{{ arbre.name }}</div>
-				<div>
-					{% for runes_type in arbre.slots %}
-						<ul style="display:flex; flex-wrap: wrap; gap: 20px; list-style: none;">
-							{% for rune in runes_type.runes %}
-								<li><img style="width: 40px; height: auto" src="{{ img_url }}/{{ rune.icon }}" alt="{{ rune.name }}">{{ rune.name }}</li>
-							{% endfor %}
-						</ul>
-					{% endfor %}
+		{# Choix des summoner spells #}
+		<div id="groupeSortsInvocateurContainer"></div>
+		<button id="loadGroupeSortsInvocateur">Sorts d'Invocateur</button>
+
+		{# Choix des runes #}
+
+		<div style="display:flex; flex-wrap: wrap; gap: 50px">
+			{% for arbre in runes %}
+				<div style="display:flex; flex-direction: column">
+					<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ arbre.icon }}" alt="{{ arbre.name }}">{{ arbre.name }}</div>
+					<div>
+						{% for runes_type in arbre.slots %}
+							<ul style="display:flex; flex-wrap: wrap; gap: 20px; list-style: none;">
+								{% for rune in runes_type.runes %}
+									<li><img style="width: 40px; height: auto" src="{{ img_url }}/{{ rune.icon }}" alt="{{ rune.name }}">{{ rune.name }}</li>
+								{% endfor %}
+							</ul>
+						{% endfor %}
+					</div>
 				</div>
-			</div>
-		{% endfor %}
-	</div>
+			{% endfor %}
+		</div>
 
-	{{ form_end(form) }}
+		{{ form_widget(form._token) }}
+		<button type="submit" id="guide_Valider" name="guide[Valider]">Publier le guide</button>
+	</form>
+</div>
 
-
-{% endblock %}
+<script src="{{ asset('js/guide.js') }}"></script>{% endblock %}
