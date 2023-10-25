@@ -48,7 +48,7 @@ class SortInvocateur
         return $this->titre;
     }
 
-    public function setTitre(string $titre): static
+    public function setTitre(?string $titre): static
     {
         $this->titre = $titre;
 
