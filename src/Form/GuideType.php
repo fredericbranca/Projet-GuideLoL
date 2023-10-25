@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\DataChampion;
 use App\Entity\Guide;
 use App\Form\SortInvocateurType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,10 +40,12 @@ class GuideType extends AbstractType
                     'autocomplete' => 'off'
                 ],
             ])
-            ->add('champion', ChoiceType::class, [
-                'choices' => $options['champions'],
-                'expanded' => true,
+
+            ->add('champion', EntityType::class, [
+                'class' => DataChampion::class,
                 'multiple' => false,
+                'expanded' => true,
+                'invalid_message' => 'Champion invalide'
             ])
 
             ->add('groupeSortsInvocateur', CollectionType::class, [
@@ -49,6 +53,8 @@ class GuideType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'attr' => ['class' => 'groupe-sorts-invocateur'],
+                'required' => true,
             ])
 
             ->add('Valider', SubmitType::class, [
@@ -60,7 +66,6 @@ class GuideType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Guide::class,
-            'champions' => []
         ]);
     }
 }
