@@ -23,14 +23,11 @@ class GuideController extends AbstractController
         ChampionService $championService,
         GuideService $guideService,
         SortInvocateurService $sortInvocateurService,
-        RuneService $runeService
     ) {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
-        // Runes
-        $runesData = $runeService->getRunes();
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
@@ -66,19 +63,17 @@ class GuideController extends AbstractController
             'form' => $form,
             'champions' => $championsData,
             'img_url' => $img_url,
-            'list_sorts_invocateur' => $sortsInvocateurList,
-            'runes' => $runesData
+            'list_sorts_invocateur' => $sortsInvocateurList
         ]);
     }
 
-    #[Route('/load-groupe-sorts-invocateur', name: "load_groupe_sorts_invocateur")]
-    public function loadGroupeSortsInvocateur(
+    #[Route('/groupe-sorts-invocateur', name: "get_groupe_sorts_invocateur")]
+    public function getGroupeSortsInvocateur(
         SortInvocateurService $sortInvocateurService,
         ChampionService $championService,
     ): Response {
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
-
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
@@ -96,6 +91,47 @@ class GuideController extends AbstractController
             'list_sorts_invocateur' => $sortsInvocateurList,
             'img_url' => $img_url,
         ]);
+    }
+
+    #[Route('/groupe-items', name: "get_groupe_items")]
+    public function getGroupeItems()
+    {
+        return $this->render('guide/groupe-items.html.twig');
+    }
+
+    #[Route('/groupe-competences', name: "get_groupe_competences")]
+    public function getGroupeCompetences()
+    {
+        return $this->render('guide/groupe-competences.html.twig');
+    }
+
+    #[Route('/groupe-runes', name: "get_groupe_runes")]
+    public function getGroupeRunes(
+        ChampionService $championService,
+        RuneService $runeService
+    )
+    {
+        // Runes
+        $runesData = $runeService->getRunes();
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+
+        return $this->render('guide/groupe-runes.html.twig', [
+            'img_url' => $img_url,
+            'runes' => $runesData
+        ]);
+    }
+
+    #[Route('/groupe-counters', name: "get_groupe_counters")]
+    public function getGroupeCounters()
+    {
+        return $this->render('guide/groupe-counters.html.twig');
+    }
+
+    #[Route('/groupe-synergies', name: "get_groupe_synergies")]
+    public function getGroupeSynergies()
+    {
+        return $this->render('guide/groupe-synergies.html.twig');
     }
 
     #[Route('/guide', name: 'app_guide')]
