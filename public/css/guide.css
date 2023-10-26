@@ -1,4 +1,4 @@
-/* BLOCK CONFIG ET BUILDER */
+/* Affichage du config et du builder */
 .new-guide-config {
   display: block;
 }
@@ -7,35 +7,128 @@
   display: none;
 }
 
-/* SIDEBAR */
+/* SIDEBAR : Configuration Guide */
 .new-guide-sidebar {
-  width: 200px;
+  width: 315px;
 }
 
-.new-guide-sidebar span {
+.new-guide-sidebar__header {
+  background: #152034;
+  padding: 15px;
+  text-align: center;
+  color: #8498b8;
+}
+
+.new-guide-sidebar__nav span {
   display: block;
+  text-align: center;
   background-color: #0b1727;
   padding: 15px;
-  padding-left: 32px;
   border-left: 5px solid transparent;
   cursor: pointer;
-  position: relative;
   color: white;
 }
 
-.new-guide-sidebar span.current {
+.new-guide-sidebar__nav span.current {
   background-color: #233148;
   border-left: 5px solid #275495;
 }
 
-.new-guide-sidebar span:hover {
-    background-color: #233148;
-    border-left: 5px solid #275495;
+.new-guide-sidebar__nav span.current:hover {
+  background-color: #233148;
 }
 
-.new-guide-sidebar span::before {
+.new-guide-sidebar__nav span:hover {
+  background-color: #1b2537;
+  border-left: 5px solid #275495;
+}
+
+.new-guide-sidebar__nav span::before {
   content: "⚙️";
   padding-right: 10px;
   font-size: 15px;
   align-items: center;
+}
+
+.new-guide-sidebar_actions {
+  padding: 2%;
+  background: #152034;
+  margin-bottom: 10px;
+}
+
+.flat-btn {
+  box-sizing: border-box;
+  display: inline-block;
+  color: white !important;
+  background: #275495;
+  text-align: center;
+  padding: 11px 20px;
+  font: 14px/14px "Open Sans Mobafire", "Open Sans", sans-serif, sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: 250ms;
+}
+
+.flat-btn:hover {
+  background: #326bbd;
+}
+
+.full {
+  width: 100%;
+}
+
+.split {
+  width: 49%;
+  margin-bottom: 2%;
+  float: left;
+  background: #2c3d5d;
+}
+
+.split:hover {
+  background: #3c5480;
+}
+
+.margin-left-2 {
+  margin-left: 2%;
+}
+
+/* Menu Guide */
+.new-guide-builder__menu {
+  display: flex;
+  flex-direction: wrap;
+}
+
+.new-guide-builder__menu span {
+  display: block;
+  text-align: center;
+  background-color: #0b1727;
+  padding: 15px;
+  border-left: 5px solid transparent;
+  cursor: pointer;
+  color: white;
+}
+
+.new-guide-builder__menu span.current {
+  background-color: #275495;
+}
+
+.new-guide-builder__menu span.current:hover {
+  background-color: #275495;
+}
+
+.new-guide-builder__menu span:hover {
+  background-color: #224981;
+}
+
+/* Affichage des new-guide-builder Container */
+.new-guide-builder__sorts-invocateur-container {
+  display: block;
+}
+
+.new-guide-builder__items-container,
+.new-guide-builder__competences-container,
+.new-guide-builder__runes-container,
+.new-guide-builder__counters-container,
+.new-guide-builder__synergies-container {
+  display: none;
 }
