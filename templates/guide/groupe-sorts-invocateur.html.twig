@@ -1,31 +1,35 @@
-{{ form_label(form.groupeSortsInvocateur) }}
+<div class="new-guide__block">
 
-{% for sortInvocateur in form.groupeSortsInvocateur %}
-	<div>
-		{{ form_label(sortInvocateur.titre) }}
-		{{ form_widget(sortInvocateur.titre) }}
-	</div>
+	{{ form_label(form.groupeSortsInvocateur) }}
 
-	<div>
-		{{ form_label(sortInvocateur.commentaire) }}
-		{{ form_widget(sortInvocateur.commentaire) }}
-	</div>
+	{% for sortInvocateur in form.groupeSortsInvocateur %}
+		<div>
+			{{ form_label(sortInvocateur.titre) }}
+			{{ form_widget(sortInvocateur.titre) }}
+		</div>
 
-	<div>
-		{{ form_label(sortInvocateur.ordre) }}
-		{{ form_widget(sortInvocateur.ordre) }}
-	</div>
+		<div>
+			{{ form_label(sortInvocateur.commentaire) }}
+			{{ form_widget(sortInvocateur.commentaire) }}
+		</div>
 
-	<div style="display:flex; flex-wrap: wrap">
-		{% for choice in sortInvocateur.choixSortInvocateur %}
-			<div>
-				{{ form_widget(choice, {'id': choice.vars.value }) }}
-				{# génère le bouton radio #}
-				<label for="{{ choice.vars.value }}">
-					<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
-				</label>
-			</div>
-		{% endfor %}
-	</div>
+		<div>
+			{{ form_label(sortInvocateur.ordre) }}
+			{{ form_widget(sortInvocateur.ordre) }}
+		</div>
 
-{% endfor %}
+		<div style="display:flex; flex-wrap: wrap">
+			{% for choice in sortInvocateur.choixSortInvocateur %}
+				<div>
+					{{ form_widget(choice, {'id': choice.vars.value }) }}
+					{# génère le bouton radio #}
+					<label for="{{ choice.vars.value }}">
+						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+					</label>
+				</div>
+			{% endfor %}
+		</div>
+
+	{% endfor %}
+
+</div>
