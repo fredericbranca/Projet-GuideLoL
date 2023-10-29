@@ -1,16 +1,48 @@
-<div class="new-guide__block" style="display:flex; flex-wrap: wrap; gap: 50px">
-	{% for arbre in runes %}
-		<div style="display:flex; flex-direction: column">
-			<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ arbre.icon }}" alt="{{ arbre.name }}">{{ arbre.name }}</div>
-			<div>
-				{% for runes_type in arbre.slots %}
-					<ul style="display:flex; flex-wrap: wrap; gap: 20px; list-style: none;">
-						{% for rune in runes_type.runes %}
-							<li><img style="width: 40px; height: auto" src="{{ img_url }}/{{ rune.icon }}" alt="{{ rune.name }}">{{ rune.name }}</li>
-						{% endfor %}
-					</ul>
-				{% endfor %}
-			</div>
+<div class="new-guide__block">
+	{{ form_label(form.groupeRunes) }}
+
+	{% for runes in form.groupeRunes %}
+		<div>
+			{{ form_label(runes.titre) }}
+			{{ form_widget(runes.titre) }}
 		</div>
+
+		<div>
+			{{ form_label(runes.commentaire) }}
+			{{ form_widget(runes.commentaire) }}
+		</div>
+
+		<div>
+			{{ form_label(runes.ordre) }}
+			{{ form_widget(runes.ordre) }}
+		</div>
+
+		{% set arbres_list = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'] %}
+
+		{% for arbre_name in arbres_list %}
+			<div>
+				<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}" alt="{{ runes_data[arbre_name].name }}">{{ runes_data[arbre_name].name }}</div>
+				<div class="runes-options">
+					{% for arbre in attribute(runes, arbre_name) %}
+						{% if "Secondary" in arbre.vars.name %}
+							{% set number = arbre.vars.name|slice(-1) %}
+						{% else %}
+							{% set number = arbre.vars.name %}
+						{% endif %}
+
+						<div>
+							{% for rune in arbre %}
+								{{ form_widget(rune, {'id': rune.vars.id}) }}
+								<label for="{{ rune.vars.id }}">
+									<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].slots[number].runes[loop.index0].icon }}" alt="{{ runes_data[arbre_name].slots[number].runes[loop.index0].name }}">
+								</label>
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		{% endfor %}
+
+
 	{% endfor %}
 </div>
