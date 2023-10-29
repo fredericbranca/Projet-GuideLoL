@@ -57,6 +57,15 @@ class GuideType extends AbstractType
                 'required' => true,
             ])
 
+            ->add('groupeRunes', CollectionType::class, [
+                'entry_type' => RunesPageType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'attr' => ['class' => 'groupe-runes'],
+                'required' => true,
+            ])
+
             ->add('Valider', SubmitType::class, [
                 'label' => 'Publier le guide'
             ]);
