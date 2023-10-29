@@ -39,7 +39,7 @@ class RuneService
             $key = $rune['id'];
             $runes[$key] = $rune;
         }
-
+    
         return $runes;
     }
 
