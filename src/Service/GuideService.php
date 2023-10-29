@@ -3,7 +3,10 @@
 namespace App\Service;
 
 use App\Entity\Guide;
+use App\Entity\RunesPage;
 use App\Entity\SortInvocateur;
+use App\Entity\AssociationsRunesBonus;
+use App\Entity\AssociationsArbresRunes;
 use Doctrine\ORM\EntityManagerInterface;
 
 class GuideService
@@ -15,14 +18,14 @@ class GuideService
         $this->entityManager = $entityManager;
     }
 
-    public function createGuideFromForm($formData, $champion, $groupesSortsInvocateur)
+    public function createGuideFromForm($formData, $champion, $groupesSortsInvocateur, $groupesRunes, $runesData)
     {
         // Première partie du guide
         $guide = new Guide();
         $guide->setTitre($formData->getTitre());
         $guide->setVoie($formData->getVoie());
         $guide->setChampion($champion);
-        // Persister et flusher le guide pour obtenir son ID
+        // Persist et flush le guide pour obtenir son ID
         $this->entityManager->persist($guide);
         $this->entityManager->flush();
 
@@ -39,6 +42,37 @@ class GuideService
             }
             $this->entityManager->persist($sortInvocateur);
         }
+
+        // Runes
+        foreach ($groupesRunes as $groupeRunes) {
+            $runesPage = new RunesPage();
+            $runesPage->setGuide($guide);
+            $runesPage->setTitre($groupeRunes->getTitre());
+            $runesPage->setCommentaire($groupeRunes->getCommentaire());
+            $runesPage->setOrdre($groupeRunes->getOrdre());
+
+            // Persiste et flush le groupe de runes pour obtenir son ID
+            $this->entityManager->persist($runesPage);
+            $this->entityManager->flush();
+
+            foreach ($runesData as $rune) {
+                $associationArbresRunes = new AssociationsArbresRunes();
+                $associationArbresRunes->setType('test');
+                $associationArbresRunes->addChoixRune($rune);
+                $this->entityManager->persist($associationArbresRunes);
+                $this->entityManager->flush();
+
+                $associationRunesBonus = new AssociationsRunesBonus();
+                $associationRunesBonus->setType('Rune');
+                $associationRunesBonus->addChoixArbre($associationArbresRunes);
+                $this->entityManager->persist($associationRunesBonus);
+                $this->entityManager->flush();
+
+                $runesPage->addChoixRunesPages($associationRunesBonus);
+            }
+            $this->entityManager->persist($runesPage);
+        }
+
         $this->entityManager->flush();
     }
 }
