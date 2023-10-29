@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\AssociationsArbresRunes;
 use App\Entity\Guide;
 use App\Form\GuideType;
+use App\Entity\RunesPage;
+use App\Service\RuneService;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
+use App\Entity\AssociationsRunesBonus;
 use App\Service\SortInvocateurService;
-use App\Service\RuneService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,28 +25,45 @@ class GuideController extends AbstractController
         Request $request,
         ChampionService $championService,
         GuideService $guideService,
-        SortInvocateurService $sortInvocateurService,
     ) {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
-        // Liste des sorts d'invocateur
-        $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
         // Création d'un Guide
         $guide = new Guide();
         $sortInvocateur = new SortInvocateur();
+        $runes = new RunesPage();
         $guide->addGroupeSortsInvocateur($sortInvocateur);
+        $guide->addGroupeRune($runes);
+
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $champion = $form->get('champion')->getData();
             $groupesSortsInvocateur = $form->get('groupeSortsInvocateur')->getData();
+            $groupesRunes = $form->get('groupeRunes')->getData();
+
+            // Récupère les objet data runes
+            $arbres = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'];
+            $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
+
+            $runesData = [];
+
+            foreach ($arbres as $arbre) {
+                foreach ($types as $type) {
+                    $dataRune = $form->get('groupeRunes')->get(0)->get($arbre)->get($type)->getData();
+                    if ($dataRune) {
+                        $runesData[] = $dataRune;
+                    }
+                }
+            }
+
             // Création du guide dans la db
-            $guideService->createGuideFromForm($form->getData(), $champion, $groupesSortsInvocateur);
+            $guideService->createGuideFromForm($form->getData(), $champion, $groupesSortsInvocateur, $groupesRunes, $runesData);
 
             return $this->redirectToRoute('new_guide');
         } else if ($form->isSubmitted() && !$form->isValid()) {
@@ -63,7 +83,6 @@ class GuideController extends AbstractController
             'form' => $form,
             'champions' => $championsData,
             'img_url' => $img_url,
-            'list_sorts_invocateur' => $sortsInvocateurList
         ]);
     }
 
@@ -77,14 +96,12 @@ class GuideController extends AbstractController
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
-
         // Création d'un Guide
         $guide = new Guide();
         $sortInvocateur = new SortInvocateur();
         $guide->addGroupeSortsInvocateur($sortInvocateur);
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide);
-
 
         return $this->render('guide/groupe-sorts-invocateur.html.twig', [
             'form' => $form,
@@ -109,16 +126,23 @@ class GuideController extends AbstractController
     public function getGroupeRunes(
         ChampionService $championService,
         RuneService $runeService
-    )
-    {
-        // Runes
+    ) {
+        // Get Runes
         $runesData = $runeService->getRunes();
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
+        // Création d'un guide
+        $guide = new Guide();
+        $runes = new RunesPage();
+        $guide->addGroupeRune($runes);
+        // Création du formulaire
+        $form = $this->createForm(GuideType::class, $guide);
+
         return $this->render('guide/groupe-runes.html.twig', [
+            'form' => $form,
             'img_url' => $img_url,
-            'runes' => $runesData
+            'runes_data' => $runesData
         ]);
     }
 
