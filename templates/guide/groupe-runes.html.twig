@@ -21,8 +21,8 @@
 
 		{% for arbre_name in arbres_list %}
 			<div>
-				<div><img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}" alt="{{ runes_data[arbre_name].name }}">{{ runes_data[arbre_name].name }}</div>
-				<div class="runes-options">
+				<img class="arbre" style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}" alt="{{ runes_data[arbre_name].name }}">{{ runes_data[arbre_name].name }}
+				<div class="runes-options" style="display: none">
 					{% for arbre in attribute(runes, arbre_name) %}
 						{% if "Secondary" in arbre.vars.name %}
 							{% set number = arbre.vars.name|slice(-1) %}
