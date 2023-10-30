@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\DataChampion;
+use App\Entity\DataItem;
 use App\Entity\DataRune;
+use App\Entity\DataChampion;
+use App\Service\ItemService;
+use App\Service\RuneService;
+use App\Service\ChampionService;
 use App\Entity\DataSortInvocateur;
 use App\Entity\DataStatistiqueBonus;
-use App\Service\ChampionService;
-use App\Service\RuneService;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -111,6 +113,29 @@ class AdminController extends AbstractController
         $em->flush();
 
         return new Response('Runes et bonus importés avec succès !');
+    }
+
+    // Ajouter ou mettre à jour l'ID des items de la table data_item dans la DB
+    #[Route('/admin/data_item_update', name: 'update_data_item')]
+    public function itemUpdate(ItemService $itemService, EntityManagerInterface $em)
+    {
+        // Supprimer toutes les entrées existantes de la table des items
+        $em->createQuery('DELETE FROM App\Entity\DataItem')->execute();
+
+        // Récupérer les items depuis le service
+        $items = $itemService->getItems();
+
+        // Ajouter chaque champion à la base de données
+        foreach ($items as $id => $item) {
+            $itemId = new DataItem;
+            $itemId->setId($id);
+            $em->persist($itemId);
+        }
+
+        // Flush les changements à la base de données
+        $em->flush();
+
+        return new Response('Items importés ou mis à jour avec succès !');
     }
 
     #[Route('/admin', name: 'app_admin')]
