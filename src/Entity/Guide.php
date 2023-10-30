@@ -36,11 +36,15 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true)]
     private Collection $groupeRunes;
 
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class)]
+    private Collection $GroupeEnsemblesItems;
+
     public function __construct()
     {
         $this->groupeSortsInvocateur = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
         $this->groupeRunes = new ArrayCollection();
+        $this->GroupeEnsemblesItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +166,36 @@ class Guide
             // set the owning side to null (unless already changed)
             if ($groupeRune->getGuide() === $this) {
                 $groupeRune->setGuide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EnsembleItemsGroups>
+     */
+    public function getGroupeEnsemblesItems(): Collection
+    {
+        return $this->GroupeEnsemblesItems;
+    }
+
+    public function addGroupeEnsemblesItem(EnsembleItemsGroups $groupeEnsemblesItem): static
+    {
+        if (!$this->GroupeEnsemblesItems->contains($groupeEnsemblesItem)) {
+            $this->GroupeEnsemblesItems->add($groupeEnsemblesItem);
+            $groupeEnsemblesItem->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupeEnsemblesItem(EnsembleItemsGroups $groupeEnsemblesItem): static
+    {
+        if ($this->GroupeEnsemblesItems->removeElement($groupeEnsemblesItem)) {
+            // set the owning side to null (unless already changed)
+            if ($groupeEnsemblesItem->getGuide() === $this) {
+                $groupeEnsemblesItem->setGuide(null);
             }
         }
 
