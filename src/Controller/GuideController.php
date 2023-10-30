@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\AssociationsArbresRunes;
 use App\Entity\Guide;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
@@ -10,7 +9,6 @@ use App\Service\RuneService;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
-use App\Entity\AssociationsRunesBonus;
 use App\Service\SortInvocateurService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
