@@ -47,17 +47,19 @@ class GuideController extends AbstractController
             $groupesSortsInvocateur = $form->get('groupeSortsInvocateur')->getData();
             $groupesRunes = $form->get('groupeRunes')->getData();
 
-            // Récupère les objet data runes
-            $arbres = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'];
-            $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
-
             $runesData = [];
+            if (!$groupesRunes->isEmpty()) {
+                // Récupère les objet data runes
+                $arbres = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'];
+                $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
 
-            foreach ($arbres as $arbre) {
-                foreach ($types as $type) {
-                    $dataRune = $form->get('groupeRunes')->get(0)->get($arbre)->get($type)->getData();
-                    if ($dataRune) {
-                        $runesData[] = $dataRune;
+
+                foreach ($arbres as $arbre) {
+                    foreach ($types as $type) {
+                        $dataRune = $form->get('groupeRunes')->get(0)->get($arbre)->get($type)->getData();
+                        if ($dataRune) {
+                            $runesData[] = $dataRune;
+                        }
                     }
                 }
             }
