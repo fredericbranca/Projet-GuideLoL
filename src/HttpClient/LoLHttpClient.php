@@ -95,4 +95,24 @@ class LoLHttpClient extends AbstractController
 
         return $response->getContent();
     }
+
+    // Items
+    public function getItems()
+    {
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/items", [
+            'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
+
+    // Item spécifique
+    public function getItem($item)
+    {
+        $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/items/" . $item, [
+            'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
 }
