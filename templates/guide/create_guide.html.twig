@@ -71,8 +71,6 @@
 				<span id="menu-items">Items</span>
 				<span id="menu-competences">Compétences</span>
 				<span id="menu-runes">Runes</span>
-				<span id="menu-counters">Counters</span>
-				<span id="menu-synergies">Synergies</span>
 			</div>
 
 			{# Choix des summoner spells #}
@@ -87,12 +85,6 @@
 			{# Choix des runes #}
 			<div class="new-guide-builder__runes-container"></div>
 
-			{# Choix des counters #}
-			<div class="new-guide-builder__counters-container"></div>
-
-			{# Choix des synergies #}
-			<div class="new-guide-builder__synergies-container"></div>
-
 		</div>
 
 		{{ form_widget(form._token) }}
@@ -102,5 +94,4 @@
 
 </div>
 
-<script src="{{ asset('js/guide.js') }}"></script>
-{% endblock %}
+<script src="{{ asset('js/guide.js') }}" defer></script>{% endblock %}

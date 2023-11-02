@@ -13,9 +13,7 @@ const mappingBuilderMenu = {
     "menu-sorts-invocateur": ".new-guide-builder__sorts-invocateur-container",
     "menu-items": ".new-guide-builder__items-container",
     "menu-competences": ".new-guide-builder__competences-container",
-    "menu-runes": ".new-guide-builder__runes-container",
-    "menu-counters": ".new-guide-builder__counters-container",
-    "menu-synergies": ".new-guide-builder__synergies-container"
+    "menu-runes": ".new-guide-builder__runes-container"
 };
 
 // Mapping pour les URL à fetch en fonction de l'ID du span cliqué
@@ -23,9 +21,7 @@ const mappingFetchURLs = {
     "menu-sorts-invocateur": "/groupe-sorts-invocateur",
     "menu-items": "/groupe-items",
     "menu-competences": "/groupe-competences",
-    "menu-runes": "/groupe-runes",
-    "menu-counters": "/groupe-counters",
-    "menu-synergies": "/groupe-synergies"
+    "menu-runes": "/groupe-runes"
 };
 
 // -----------------------------

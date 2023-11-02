@@ -21,7 +21,7 @@
 			{% for choice in sortInvocateur.choixSortInvocateur %}
 				<div>
 					{{ form_widget(choice, {'id': choice.vars.value }) }}
-					{# génère le bouton radio #}
+					{# génère les bouton #}
 					<label for="{{ choice.vars.value }}">
 						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
 					</label>
