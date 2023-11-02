@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\DataChampion;
 use App\Entity\Guide;
+use App\Entity\DataChampion;
 use App\Form\SortInvocateurType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -63,6 +63,15 @@ class GuideType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'attr' => ['class' => 'groupe-runes'],
+                'required' => true,
+            ])
+
+            ->add('groupeEnsemblesItems', CollectionType::class, [
+                'entry_type' => EnsembleGroupesItemsType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'attr' => ['class' => 'ensemble-groupes-items'],
                 'required' => true,
             ])
 

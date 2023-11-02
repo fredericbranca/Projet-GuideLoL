@@ -1,3 +1,45 @@
 <div class="new-guide__block">
-    <p>Items test</p>
+
+
+	{% for ensemble in form.groupeEnsemblesItems %}
+
+		<div class="ensemble">
+			<h2>Groupe</h2>
+			Titre du groupe
+			{{ form_widget(ensemble.titre) }}
+
+			{{ form_label(ensemble.ordre) }}
+			{{ form_widget(ensemble.ordre) }}
+
+			<ul class="sortable-list">
+				<li class="item" draggable="true">
+					<h2>Items</h2>
+					{% for groupeItems in ensemble.associationsEnsemblesItemsGroups %}
+						<div class="groupe-item">
+							{{ form_label(groupeItems.titre) }}
+							{{ form_widget(groupeItems.titre) }}
+
+							{{ form_label(groupeItems.commentaire) }}
+							{{ form_widget(groupeItems.commentaire) }}
+
+							{{ form_label(groupeItems.ordre) }}
+							{{ form_widget(groupeItems.ordre) }}
+
+							<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+								{% for item in groupeItems.choixItemsOrdonnees %}
+									<div class="item">
+										{{ form_widget(item, {'id': item.vars.value }) }}
+										<label for="{{ item.vars.value }}">
+											<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
+										</label>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					{% endfor %}
+				</li>
+			</ul>
+
+		</div>
+	{% endfor %}
 </div>

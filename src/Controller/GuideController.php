@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Document\Item;
+use App\Entity\EnsembleItemsGroups;
 use App\Entity\Guide;
+use App\Entity\ItemsGroup;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
 use App\Service\RuneService;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
+use App\Service\ItemService;
 use App\Service\SortInvocateurService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +94,7 @@ class GuideController extends AbstractController
     public function getGroupeSortsInvocateur(
         SortInvocateurService $sortInvocateurService,
         ChampionService $championService,
-    ): Response {
+    ) {
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
         // URL pour récupérer les images
@@ -111,9 +115,30 @@ class GuideController extends AbstractController
     }
 
     #[Route('/groupe-items', name: "get_groupe_items")]
-    public function getGroupeItems()
-    {
-        return $this->render('guide/groupe-items.html.twig');
+    public function getGroupeItems(
+        ItemService $itemService,
+        ChampionService $championService
+    ) {
+        // Liste des items
+        $itemsList = $itemService->getItems();
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+
+        // Création d'un Guide
+        $guide = new Guide();
+        $ensemble = new EnsembleItemsGroups();
+        $item = new ItemsGroup();
+        $ensemble->addAssociationsEnsemblesItemsGroup($item);
+        $guide->addGroupeEnsemblesItem($ensemble);
+
+        // Création du formulaire
+        $form = $this->createForm(GuideType::class, $guide);
+
+        return $this->render('guide/groupe-items.html.twig', [
+            'form' => $form,
+            'list_items' => $itemsList,
+            'img_url' => $img_url
+        ]);
     }
 
     #[Route('/groupe-competences', name: "get_groupe_competences")]
@@ -144,18 +169,6 @@ class GuideController extends AbstractController
             'img_url' => $img_url,
             'runes_data' => $runesData
         ]);
-    }
-
-    #[Route('/groupe-counters', name: "get_groupe_counters")]
-    public function getGroupeCounters()
-    {
-        return $this->render('guide/groupe-counters.html.twig');
-    }
-
-    #[Route('/groupe-synergies', name: "get_groupe_synergies")]
-    public function getGroupeSynergies()
-    {
-        return $this->render('guide/groupe-synergies.html.twig');
     }
 
     #[Route('/guide', name: 'app_guide')]
