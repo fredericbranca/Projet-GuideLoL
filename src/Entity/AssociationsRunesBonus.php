@@ -18,14 +18,14 @@ class AssociationsRunesBonus
     #[ORM\Column(length: 20)]
     private ?string $type = null;
 
-    #[ORM\ManyToMany(targetEntity: RunesPage::class, mappedBy: 'choixRunesPages')]
+    #[ORM\ManyToMany(targetEntity: RunesPage::class, mappedBy: 'choixRunesPages', cascade: ['persist'])]
     private Collection $runesPages;
 
     #[ORM\ManyToMany(targetEntity: DataStatistiqueBonus::class)]
     #[ORM\JoinTable(name: "choix_statistiques_bonus")]
     private Collection $choixStatistiquesBonus;
 
-    #[ORM\ManyToMany(targetEntity: AssociationsArbresRunes::class)]
+    #[ORM\ManyToMany(targetEntity: AssociationsArbresRunes::class, inversedBy: 'associationsRunesBonuses', cascade: ['persist'])]
     #[ORM\JoinTable(name: "choix_arbres")]
     private Collection $choixArbres;
 
