@@ -26,7 +26,7 @@
 							{{ form_widget(groupeItems.ordre) }}
 
 							<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-								{% for item in groupeItems.choixItemsOrdonnees %}
+								{% for item in groupeItems.choixItems %}
 									<div class="item">
 										{{ form_widget(item, {'id': item.vars.value }) }}
 										<label for="{{ item.vars.value }}">
