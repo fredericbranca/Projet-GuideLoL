@@ -25,16 +25,16 @@ class ItemsGroup
     #[ORM\Column]
     private ?int $ordre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'AssociationsEnsemblesItemsGroups')]
+    #[ORM\ManyToOne(inversedBy: 'AssociationsEnsemblesItemsGroups', cascade: ['persist'])]
     private ?EnsembleItemsGroups $ensembleItemsGroups = null;
 
-    #[ORM\ManyToMany(targetEntity: OrdreItems::class, inversedBy: 'itemsGroups')]
-    #[ORM\JoinTable(name: "choix_items_ordonnees")]
-    private Collection $choixItemsOrdonnees;
+    #[ORM\ManyToMany(targetEntity: DataItem::class)]
+    #[ORM\JoinTable(name: "choix_items")]
+    private Collection $choixItems;
 
     public function __construct()
     {
-        $this->choixItemsOrdonnees = new ArrayCollection();
+        $this->choixItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,25 +91,25 @@ class ItemsGroup
     }
 
     /**
-     * @return Collection<int, OrdreItems>
+     * @return Collection<int, DataItem>
      */
-    public function getChoixItemsOrdonnees(): Collection
+    public function getChoixItems(): Collection
     {
-        return $this->choixItemsOrdonnees;
+        return $this->choixItems;
     }
 
-    public function addChoixItemsOrdonnee(OrdreItems $choixItemsOrdonnee): static
+    public function addChoixItem(DataItem $choixItem): static
     {
-        if (!$this->choixItemsOrdonnees->contains($choixItemsOrdonnee)) {
-            $this->choixItemsOrdonnees->add($choixItemsOrdonnee);
+        if (!$this->choixItems->contains($choixItem)) {
+            $this->choixItems->add($choixItem);
         }
 
         return $this;
     }
 
-    public function removeChoixItemsOrdonnee(OrdreItems $choixItemsOrdonnee): static
+    public function removeChoixItem(DataItem $choixItem): static
     {
-        $this->choixItemsOrdonnees->removeElement($choixItemsOrdonnee);
+        $this->choixItems->removeElement($choixItem);
 
         return $this;
     }

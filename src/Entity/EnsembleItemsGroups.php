@@ -21,7 +21,7 @@ class EnsembleItemsGroups
     #[ORM\Column]
     private ?int $ordre = null;
 
-    #[ORM\OneToMany(mappedBy: 'ensembleItemsGroups', targetEntity: ItemsGroup::class)]
+    #[ORM\OneToMany(mappedBy: 'ensembleItemsGroups', targetEntity: ItemsGroup::class, cascade: ['persist'])]
     private Collection $AssociationsEnsemblesItemsGroups;
 
     #[ORM\ManyToOne(inversedBy: 'GroupeEnsemblesItems')]

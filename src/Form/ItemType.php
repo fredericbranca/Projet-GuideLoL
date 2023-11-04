@@ -7,10 +7,10 @@ use App\Entity\ItemsGroup;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ItemType extends AbstractType
 {
@@ -28,7 +28,7 @@ class ItemType extends AbstractType
                 'invalid_message' => 'Une erreur s\'est produite.',
                 'required' => true
             ])
-            ->add('choixItemsOrdonnees', EntityType::class, [
+            ->add('choixItems', EntityType::class, [
                 'class' => DataItem::class,
                 'multiple' => true,
                 'expanded' => true,
