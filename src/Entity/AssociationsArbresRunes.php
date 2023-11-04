@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AssociationsArbresRunesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\AssociationsRunesBonus;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\AssociationsArbresRunesRepository;
 
 #[ORM\Entity(repositoryClass: AssociationsArbresRunesRepository::class)]
 class AssociationsArbresRunes
@@ -22,9 +23,13 @@ class AssociationsArbresRunes
     #[ORM\JoinTable(name: "choix_runes")]
     private Collection $choixRunes;
 
+    #[ORM\ManyToMany(targetEntity: AssociationsRunesBonus::class, mappedBy: 'choixArbres')]
+    private Collection $associationsRunesBonuses;
+
     public function __construct()
     {
         $this->choixRunes = new ArrayCollection();
+        $this->associationsRunesBonuses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,6 +69,25 @@ class AssociationsArbresRunes
     public function removeChoixRune(DataRune $choixRune): static
     {
         $this->choixRunes->removeElement($choixRune);
+
+        return $this;
+    }
+
+    public function addAssociationsRunesBonus(AssociationsRunesBonus $associationsRunesBonus): self
+    {
+        if (!$this->associationsRunesBonuses->contains($associationsRunesBonus)) {
+            $this->associationsRunesBonuses->add($associationsRunesBonus);
+            $associationsRunesBonus->addChoixArbre($this); // Ceci synchronise le côté inverse de la relation
+        }
+
+        return $this;
+    }
+
+    public function removeAssociationsRunesBonus(AssociationsRunesBonus $associationsRunesBonus): self
+    {
+        if ($this->associationsRunesBonuses->removeElement($associationsRunesBonus)) {
+            $associationsRunesBonus->removeChoixArbre($this); // Ceci synchronise le côté inverse de la relation
+        }
 
         return $this;
     }
