@@ -43,6 +43,18 @@
 			</div>
 		{% endfor %}
 
+		{# Options pour les lignes de bonus #}
+		<div class="bonus-lines">
+			{% for line in 1..3 %}
+				<div class="bonus-line">
+					{{ form_label(attribute(runes, 'bonusLine' ~ line)) }}
+					<div>
+						{{ form_widget(attribute(runes, 'bonusLine' ~ line)) }}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
 
 	{% endfor %}
 </div>

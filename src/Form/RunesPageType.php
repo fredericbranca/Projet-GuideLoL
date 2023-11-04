@@ -4,26 +4,30 @@ namespace App\Form;
 
 use App\Entity\DataRune;
 use App\Entity\RunesPage;
+use App\Entity\DataStatistiqueBonus;
 use Symfony\Component\Form\FormEvent;
 use App\Repository\DataRuneRepository;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use App\Repository\DataStatistiqueBonusRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class RunesPageType extends AbstractType
 {
     private $dataRuneRepository;
+    private $dataStatistiqueBonusRepository;
     private $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
 
     // Injection du repository via le constructeur
-    public function __construct(DataRuneRepository $dataRuneRepository)
+    public function __construct(DataRuneRepository $dataRuneRepository, DataStatistiqueBonusRepository $dataStatistiqueBonusRepository)
     {
         $this->dataRuneRepository = $dataRuneRepository;
+        $this->dataStatistiqueBonusRepository = $dataStatistiqueBonusRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -39,11 +43,6 @@ class RunesPageType extends AbstractType
                 ],
                 'invalid_message' => 'Une erreur s\'est produite.',
                 'required' => true
-            ])
-            ->add('choixRunesPages', EntityType::class, [
-                'class' => DataRune::class,
-                'multiple' => true,
-                'expanded' => true,
             ]);
 
         // Sous formulaires pour chaque Arbre de runes
@@ -71,6 +70,21 @@ class RunesPageType extends AbstractType
                 }
             });
         };
+
+        // Ajoute les champs bonus
+        $bonusLines = [1, 2, 3]; // Les lignes de bonus disponibles
+
+        foreach ($bonusLines as $line) {
+            $builder->add('bonusLine' . $line, EntityType::class, [
+                'class' => DataStatistiqueBonus::class,
+                'choices' => $this->dataStatistiqueBonusRepository->findBy(['bonus_line' => $line]),
+                'choice_label' => 'bonus_value',
+                'expanded' => true,
+                'multiple' => false,
+                'mapped' => false,
+                'required' => true
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
