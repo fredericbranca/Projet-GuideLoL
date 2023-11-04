@@ -30,13 +30,13 @@ class Guide
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $modified_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $groupeSortsInvocateur;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true)]
     private Collection $groupeRunes;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class)]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist'])]
     private Collection $GroupeEnsemblesItems;
 
     public function __construct()
