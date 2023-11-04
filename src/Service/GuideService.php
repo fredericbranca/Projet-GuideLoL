@@ -36,6 +36,22 @@ class GuideService
                     }
                 }
             }
+
+            // Récupère les objets de data stat bonus
+            $bonusLines = [1, 2, 3];
+
+            foreach ($bonusLines as $line) {
+                $dataBonus = $form->get('groupeRunes')->get($key)->get('bonusLine'.$line)->getData();
+                if ($dataBonus) {
+                    $associationRunesBonus = new AssociationsRunesBonus();
+                    $associationRunesBonus->setType('Bonus');
+                    $associationRunesBonus->addChoixStatistiquesBonu($dataBonus);
+                    $entityManager->persist($associationRunesBonus);
+
+                    $runesPage->addChoixRunesPages($associationRunesBonus);
+                }
+            }
+
             $entityManager->persist($runesPage);
             $guide->addGroupeRune($runesPage);
         }

@@ -56,7 +56,6 @@ class GuideController extends AbstractController
                 $guideService->runesHelper($form, $guide, $runesPage, $groupesRunes, $entityManager);
             }
 
-
             $entityManager->persist($guide);
             $entityManager->flush();
 
