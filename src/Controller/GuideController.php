@@ -2,18 +2,22 @@
 
 namespace App\Controller;
 
-use App\Document\Item;
-use App\Entity\EnsembleItemsGroups;
 use App\Entity\Guide;
-use App\Entity\ItemsGroup;
+use App\Document\Item;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
+use App\Entity\ItemsGroup;
+use App\Entity\OrdreItems;
+use App\Service\ItemService;
 use App\Service\RuneService;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
-use App\Service\ItemService;
+use App\Entity\EnsembleItemsGroups;
+use App\Entity\AssociationsRunesBonus;
 use App\Service\SortInvocateurService;
+use App\Entity\AssociationsArbresRunes;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,6 +31,7 @@ class GuideController extends AbstractController
         Request $request,
         ChampionService $championService,
         GuideService $guideService,
+        EntityManagerInterface $entityManager
     ) {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
@@ -35,39 +40,55 @@ class GuideController extends AbstractController
 
         // Création d'un Guide
         $guide = new Guide();
-        $sortInvocateur = new SortInvocateur();
-        $runes = new RunesPage();
-        $guide->addGroupeSortsInvocateur($sortInvocateur);
-        $guide->addGroupeRune($runes);
+        $runesPage = new RunesPage();
+        $guide->addGroupeRune($runesPage);
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $champion = $form->get('champion')->getData();
-            $groupesSortsInvocateur = $form->get('groupeSortsInvocateur')->getData();
+
             $groupesRunes = $form->get('groupeRunes')->getData();
 
-            $runesData = [];
             if (!$groupesRunes->isEmpty()) {
-                // Récupère les objet data runes
-                $arbres = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'];
-                $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
+                foreach ($groupesRunes as $key => $groupeRunes) {
+                    $runesPage->setTitre($groupeRunes->getTitre());
+                    $runesPage->setCommentaire($groupeRunes->getCommentaire());
+                    $runesPage->setOrdre($groupeRunes->getOrdre());
 
+                    // Récupère les objet data runes
+                    $arbres = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'];
+                    $types = ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'];
 
-                foreach ($arbres as $arbre) {
-                    foreach ($types as $type) {
-                        $dataRune = $form->get('groupeRunes')->get(0)->get($arbre)->get($type)->getData();
-                        if ($dataRune) {
-                            $runesData[] = $dataRune;
+                    foreach ($arbres as $arbre) {
+                        foreach ($types as $type) {
+                            $dataRune = $form->get('groupeRunes')->get($key)->get($arbre)->get($type)->getData();
+                            if ($dataRune) {
+                                $associationArbresRunes = new AssociationsArbresRunes();
+                                $associationArbresRunes->setType('test');
+                                $associationArbresRunes->addChoixRune($dataRune);
+                                $entityManager->persist($associationArbresRunes);
+
+                                $associationRunesBonus = new AssociationsRunesBonus();
+                                $associationRunesBonus->setType('Rune');
+                                $associationRunesBonus->addChoixArbre($associationArbresRunes);
+                                $entityManager->persist($associationRunesBonus);
+
+                                $runesPage->addChoixRunesPages($associationRunesBonus);
+                            }
                         }
                     }
+                    $entityManager->persist($runesPage);
+                    $guide->addGroupeRune($runesPage);
                 }
             }
 
-            // Création du guide dans la db
-            $guideService->createGuideFromForm($form->getData(), $champion, $groupesSortsInvocateur, $groupesRunes, $runesData);
+            // Ajout des runes dans la DB
+            // $guideService->createGuideFromForm($guide, $groupesRunes, $runesData);
+
+            $entityManager->persist($guide);
+            $entityManager->flush();
 
             return $this->redirectToRoute('new_guide');
         } else if ($form->isSubmitted() && !$form->isValid()) {
@@ -127,8 +148,8 @@ class GuideController extends AbstractController
         // Création d'un Guide
         $guide = new Guide();
         $ensemble = new EnsembleItemsGroups();
-        $item = new ItemsGroup();
-        $ensemble->addAssociationsEnsemblesItemsGroup($item);
+        $itemsGroup = new ItemsGroup();
+        $ensemble->addAssociationsEnsemblesItemsGroup($itemsGroup);
         $guide->addGroupeEnsemblesItem($ensemble);
 
         // Création du formulaire
