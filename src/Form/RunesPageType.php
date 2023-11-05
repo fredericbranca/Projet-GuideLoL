@@ -15,6 +15,7 @@ use App\Repository\DataStatistiqueBonusRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class RunesPageType extends AbstractType
@@ -57,6 +58,17 @@ class RunesPageType extends AbstractType
             // Ajoute un EventListener pour filtrer les runes par type pour chaque arbre
             $builder->get($arbre)->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($arbre) {
                 $form = $event->getForm();
+
+
+                // Ajoute un input hidden pour stocker le type d'arbre (primaire / secondaire), qui sera rempli en JS
+                $form->add('typeArbre', HiddenType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'type-arbre-hidden',
+                        'data-arbre-type' => $arbre
+                    ],
+                ]);
 
                 // Boutons radio pour chaque type de rune pour cet arbre
                 // Filtrer les runes en fonction de l'arbre et du type pour obtenir les bonnes runes
