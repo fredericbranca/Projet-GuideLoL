@@ -39,6 +39,8 @@ class LoLHttpClient extends AbstractController
                 idChamp
                 name
                 image
+                skins
+                spells
             }
         }';
 
@@ -73,8 +75,8 @@ class LoLHttpClient extends AbstractController
                 champion(idChamp: $idChamp) {
                     idChamp
                     name
-                    skins
                     spells
+                    passive
                 }
         }';
 
