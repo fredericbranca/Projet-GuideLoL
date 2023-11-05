@@ -60,9 +60,20 @@ async function fetchContainer(spanId) {
 // Fonction pour reset les boutons radio d'un élément
 function resetRadioButtons(element) {
     let radios = element.querySelectorAll('input[type="radio"]');
-    for (let radio of radios) {
-        radio.checked = false;
+    radios.forEach(radio => radio.checked = false);
+}
+
+// Réinitialisation des arbres sélectionnés si l'utilisateur souhaite recommencer
+function resetAllTrees() {
+    if (clickedTrees.first) {
+        toggleRunesOptions(clickedTrees.first, false);
     }
+    if (clickedTrees.second) {
+        toggleRunesOptions(clickedTrees.second, false);
+    }
+    clickedTrees.first = null;
+    clickedTrees.second = null;
+    document.querySelectorAll('.arbre.disabled').forEach(tree => tree.classList.remove('disabled'));
 }
 
 // -----------------------
@@ -121,76 +132,108 @@ menu.addEventListener("click", function (event) {
 });
 
 
-// Ajout d'un écouteur d'événement click sur les arbres des runes
-let firstClickedTree = null;
-let secondClickedTree = null;
+// Gérer l'état des arbres cliqués
+let clickedTrees = {
+    first: null,
+    second: null
+};
 
+// Fonction pour gérer l'affichage des options des runes
+function toggleRunesOptions(treeName, shouldShow) {
+    let tree = document.querySelector(`.arbre[data-name="${treeName}"]`);
+    let runesOptions = tree.nextElementSibling;
+    runesOptions.style.display = shouldShow ? 'block' : 'none';
+    if (!shouldShow) {
+        resetRadioButtons(runesOptions);
+    }
+    return runesOptions;
+}
+
+// Fonction pour gérer la value de l'input hidden
+function updateHiddenInput(treeName, value) {
+    let hiddenInput = document.querySelector(`#${treeName}_typeArbre`);
+    if (hiddenInput) {
+        hiddenInput.value = value;
+    }
+}
+
+// Gérer le clic sur les arbres
 document.addEventListener('click', function (event) {
+    // Réactive les clics pour tous les arbres si aucun n'est actif
+    if (!clickedTrees.first && !clickedTrees.second) {
+        document.querySelectorAll('.arbre.disabled').forEach(tree => tree.classList.remove('disabled'));
+        clickedTrees.first = null;
+        clickedTrees.second = null;
+    }
+
+    // Vérifier si l'élément cliqué ou un de ses parents à .disabled
+    if (event.target.closest('.disabled')) {
+        // Ignore l'événement de clic si l'élément est désactivé
+        return;
+    }
+
     if (event.target.classList.contains('arbre')) {
-        let runesOptions = event.target.nextElementSibling;
+        const treeName = event.target.dataset.name;
+        const treeType = event.target.parentElement.id;
+        const inputsHidden = this.querySelectorAll('.type-arbre-hidden');
 
-        // Si on click sur le premier arbre alors qu'un 2ème est ouvert
-        if (event.target === firstClickedTree && secondClickedTree) {
-            secondClickedTree.nextElementSibling.style.display = 'none'; // Ferme le deuxième arbre ouvert
-            resetRadioButtons(secondClickedTree.nextElementSibling);
-            let firstDivSecondTree = secondClickedTree.nextElementSibling.querySelector('div');
-            if (firstDivSecondTree) {
-                firstDivSecondTree.style.display = 'block'; // Réinitialise le deuxième arbre
-            }
-            runesOptions.style.display = 'none'; // Ferme le premier arbre
-            resetRadioButtons(runesOptions);
-            let firstDivFirstTree = runesOptions.querySelector('div');
-            if (firstDivFirstTree) {
-                firstDivFirstTree.style.display = 'block'; // Réinitialise le premier arbre
-            }
-            firstClickedTree = null;
-            secondClickedTree = null;
-            return; // Sort de l'écouteur d'événements
+        // Ferme le deuxième arbre si on reclick sur le premier
+        if (treeName === clickedTrees.first && clickedTrees.second) {
+            toggleRunesOptions(clickedTrees.second, false);
+            toggleRunesOptions(clickedTrees.first, false);
+            clickedTrees.first = null;
+            clickedTrees.second = null;
+            inputsHidden.forEach(input => input.value = '');
+            return;
         }
 
-        // Si aucun arbre n'a été cliké ou si on reclick sur le premier arbre
-        if (!firstClickedTree || firstClickedTree === event.target) {
-            if (runesOptions.style.display === 'block') {
-                resetRadioButtons(runesOptions);
-                runesOptions.style.display = 'none';
-                let firstDiv = runesOptions.querySelector('div');
-                if (firstDiv) {
-                    firstDiv.style.display = 'block';
-                }
-                firstClickedTree = null;
-            } else {
-                runesOptions.style.display = 'block';
-                firstClickedTree = event.target;
-            }
-            secondClickedTree = null;
-        }
-        // Si on click sur un deuxième arbre différent du premier et que le premier a déjà été défini
-        else if (firstClickedTree && !secondClickedTree && event.target !== firstClickedTree) {
-            runesOptions.style.display = 'block';
-            let firstDiv = runesOptions.querySelector('div');
-            if (firstDiv) {
-                firstDiv.style.display = 'none';
-            }
-
-            secondClickedTree = event.target;
-
-            // Désactive les événements de clic pour tous les autres arbres
-            let trees = document.querySelectorAll('.arbre');
-            for (let tree of trees) {
-                if (tree !== firstClickedTree && tree !== secondClickedTree) {
-                    tree.removeEventListener('click', arguments.callee);
-                }
-            }
-        }
-        // Si on reclick sur le deuxième arbre 
-        else if (secondClickedTree === event.target) {
-            resetRadioButtons(runesOptions);
-            runesOptions.style.display = 'none';
+        // Gérer le premier arbre
+        if (!clickedTrees.first || treeName === clickedTrees.first) {
+            let runesOptions = toggleRunesOptions(treeName, event.target.nextElementSibling.style.display !== 'block');
+            clickedTrees.first = runesOptions.style.display === 'block' ? treeName : null;
             let firstDiv = runesOptions.querySelector('div');
             if (firstDiv) {
                 firstDiv.style.display = 'block';
             }
-            secondClickedTree = null;
+            // Si l'arbre est ouvert, on met à jour l'input caché en "Primaire", sinon on le réinitialise
+            updateHiddenInput(treeType, clickedTrees.first ? "Primaire" : "");
+            clickedTrees.second = null;
+        }
+        // Gérer le deuxième arbre, différent du premier
+        else if (treeName !== clickedTrees.first) {
+            // Fermer toutes les options précédemment ouvertes
+            if (clickedTrees.second) {
+                const inputHidden = document.querySelector('.type-arbre-hidden[data-arbre-type="' + clickedTrees.second + '"]');
+                inputHidden.value = '';
+                toggleRunesOptions(clickedTrees.second, false);
+            }
+
+            // Ouvrir le deuxième arbre
+            let runesOptions = toggleRunesOptions(treeName, true);
+            if (runesOptions.style.display === 'block') {
+                clickedTrees.second = treeName;
+                let firstDiv = runesOptions.querySelector('div');
+                if (firstDiv) {
+                    firstDiv.style.display = 'none';
+                }
+
+                // Si le deuxième arbre est ouvert, on met à jour l'input caché en "Secondaire", sinon on le réinitialise
+                updateHiddenInput(treeType, clickedTrees.second ? "Secondaire" : "");
+
+                // Désactive les clics sur le deuxième arbre sélectionné
+                document.querySelector('.arbre[data-name="' + clickedTrees.second + '"]').classList.add('disabled');
+
+                // Réactive les clics sur tous les autres arbres
+                document.querySelectorAll('.arbre:not([data-name="' + clickedTrees.second + '"])').forEach(tree => {
+                    tree.classList.remove('disabled');
+                });
+            } else {
+                clickedTrees.second = null;
+                // Réactive les clics sur tous les arbres
+                document.querySelectorAll('.arbre.disabled').forEach(tree => {
+                    tree.classList.remove('disabled');
+                });
+            }
         }
     }
 });
