@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\DataItem;
 use App\Entity\DataRune;
 use App\Entity\DataChampion;
+use App\Entity\DataCompetence;
 use App\Service\ItemService;
 use App\Service\RuneService;
 use App\Service\ChampionService;
@@ -136,6 +137,37 @@ class AdminController extends AbstractController
         $em->flush();
 
         return new Response('Items importés ou mis à jour avec succès !');
+    }
+
+    // Ajouter ou mettre à jour l'ID des compétences de la table data_competence dans la DB
+    #[Route('/admin/data_competence_update', name: 'update_data_competence')]
+    public function competenceUpdate(ChampionService $championService, EntityManagerInterface $em)
+    {
+        // Supprimer toutes les entrées existantes de la table des items
+        $em->createQuery('DELETE FROM App\Entity\DataCompetence')->execute();
+
+        // Récupérer les items depuis le service
+        $champions = $championService->getChampions();
+
+        // Ajouter chaque compétence à la base de données
+        foreach ($champions as $champion) {
+            foreach ($champion['spells'] as $key => $spell) {
+                $competence = new DataCompetence();
+                $competence->setId($spell['id']);
+                $competence->setNomChampion($champion['idChamp']);
+                if ($key !== 3) {
+                    $competence->setType('Basique');
+                } else {
+                    $competence->setType('Ultime');
+                }
+                $em->persist($competence);
+            }
+        }
+
+        // Flush les changements à la base de données
+        $em->flush();
+
+        return new Response('Compétences importés ou mis à jour avec succès !');
     }
 
     #[Route('/admin', name: 'app_admin')]
