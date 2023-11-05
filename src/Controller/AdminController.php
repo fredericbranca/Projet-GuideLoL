@@ -148,18 +148,14 @@ class AdminController extends AbstractController
 
         // Récupérer les items depuis le service
         $champions = $championService->getChampions();
-
+        $types = ['A', 'Z', 'E', 'R'];
         // Ajouter chaque compétence à la base de données
         foreach ($champions as $champion) {
             foreach ($champion['spells'] as $key => $spell) {
                 $competence = new DataCompetence();
                 $competence->setId($spell['id']);
                 $competence->setNomChampion($champion['idChamp']);
-                if ($key !== 3) {
-                    $competence->setType('Basique');
-                } else {
-                    $competence->setType('Ultime');
-                }
+                $competence->setType($types[$key] ?? null);
                 $em->persist($competence);
             }
         }
