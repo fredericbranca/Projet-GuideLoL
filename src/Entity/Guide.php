@@ -39,12 +39,16 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist'])]
     private Collection $GroupeEnsemblesItems;
 
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class)]
+    private Collection $groupesCompetences;
+
     public function __construct()
     {
         $this->groupeSortsInvocateur = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
         $this->groupeRunes = new ArrayCollection();
         $this->GroupeEnsemblesItems = new ArrayCollection();
+        $this->groupesCompetences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +200,36 @@ class Guide
             // set the owning side to null (unless already changed)
             if ($groupeEnsemblesItem->getGuide() === $this) {
                 $groupeEnsemblesItem->setGuide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompetencesGroup>
+     */
+    public function getGroupesCompetences(): Collection
+    {
+        return $this->groupesCompetences;
+    }
+
+    public function addGroupesCompetence(CompetencesGroup $groupesCompetence): static
+    {
+        if (!$this->groupesCompetences->contains($groupesCompetence)) {
+            $this->groupesCompetences->add($groupesCompetence);
+            $groupesCompetence->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupesCompetence(CompetencesGroup $groupesCompetence): static
+    {
+        if ($this->groupesCompetences->removeElement($groupesCompetence)) {
+            // set the owning side to null (unless already changed)
+            if ($groupesCompetence->getGuide() === $this) {
+                $groupesCompetence->setGuide(null);
             }
         }
 
