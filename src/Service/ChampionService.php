@@ -47,4 +47,11 @@ class ChampionService {
     public function getChampionImageURL() {
         return $this->imgUrl;
     }
+
+    public function getChampionSpells($idChamp) {
+        $championSpellsData = $this->lol->getChampionSpells($idChamp);
+        $championSpellsData = json_decode($championSpellsData, true)['data']['champion'];
+        
+        return $championSpellsData;
+    }
 }
