@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Guide;
 use App\Entity\DataChampion;
+use App\Form\CompetenceType;
 use App\Form\SortInvocateurType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -75,6 +76,16 @@ class GuideType extends AbstractType
                 'required' => true,
             ])
 
+            ->add('groupesCompetences', CollectionType::class, [
+                'entry_type' => CompetenceType::class,
+                'entry_options' => ['champion_id' => $options['champion_id']],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'attr' => ['class' => 'groupes-competences'],
+                'required' => true,
+            ])
+
             ->add('Valider', SubmitType::class, [
                 'label' => 'Publier le guide'
             ]);
@@ -85,5 +96,9 @@ class GuideType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Guide::class,
         ]);
+
+        // Option champion_id
+        $resolver->setDefined('champion_id');
+
     }
 }
