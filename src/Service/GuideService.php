@@ -21,9 +21,10 @@ class GuideService
             foreach ($arbres as $arbre) {
                 foreach ($types as $type) {
                     $dataRune = $form->get('groupeRunes')->get($key)->get($arbre)->get($type)->getData();
+                    $type = $form->get('groupeRunes')->get($key)->get($arbre)->get('typeArbre')->getData();
                     if ($dataRune) {
                         $associationArbresRunes = new AssociationsArbresRunes();
-                        $associationArbresRunes->setType('test');
+                        $associationArbresRunes->setType($type);
                         $associationArbresRunes->addChoixRune($dataRune);
                         $entityManager->persist($associationArbresRunes);
 
