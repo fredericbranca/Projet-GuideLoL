@@ -39,7 +39,6 @@ class LoLHttpClient extends AbstractController
                 idChamp
                 name
                 image
-                skins
             }
         }';
 
@@ -61,6 +60,35 @@ class LoLHttpClient extends AbstractController
     {
         $response = $this->httpClient->request('GET', $this->getParameter('api_url') . "/champions/" . $champion, [
             'verify_peer' => false,
+        ]);
+
+        return $response->getContent();
+    }
+
+    // Compétences de champion pour idChampion
+    public function getChampionSpells($idChamp)
+    {
+        $query = '
+            query GetChampion($idChamp: String!) {
+                champion(idChamp: $idChamp) {
+                    idChamp
+                    name
+                    skins
+                    spells
+                }
+        }';
+
+        $response = $this->httpClient->request('POST', $this->getParameter('graphql_url'), [
+            'verify_peer' => false,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'query' => $query,
+                'variables' => [
+                    'idChamp' => $idChamp,
+                ],
+            ])
         ]);
 
         return $response->getContent();
