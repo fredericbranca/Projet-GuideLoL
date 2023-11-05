@@ -37,15 +37,33 @@ let menu = document.querySelector(".new-guide-builder__menu");
 // -----------------------------
 
 /**
+ * Récupère l'id du champion sélectionné dans le formulaire de configuration.
+ * @return {string|null} L'id du champion ou null si aucun n'est sélectionné.
+ */
+function getSelectedChampionId() {
+    const selectedChampionRadio = document.querySelector('.new-guide-config__champion input[type="radio"]:checked');
+    return selectedChampionRadio ? selectedChampionRadio.value : null;
+}
+
+/**
  * Fonction pour charger le contenu dans le conteneur
- * @param {string} spanId - L'ID du span cliqué
+ * @param {string} spanId - L'id du span cliqué
  */
 async function fetchContainer(spanId) {
+    // Récupère l'id du champion sélectionné si nécessaire
+    let championId = spanId === "menu-competences" ? getSelectedChampionId() : null;
+    if (championId === null && spanId === "menu-competences") {
+        console.error("Aucun champion sélectionné pour charger les compétences.");
+        return;
+    }
+
+    let fetchURL = spanId === "menu-competences" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
+
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(mappingBuilderMenu[spanId]);
     if (!container.querySelector('.new-guide__block')) {
         try {
-            let response = await fetch(mappingFetchURLs[spanId]);
+            let response = await fetch(fetchURL);
             if (!response.ok) {
                 throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
             }
@@ -56,6 +74,26 @@ async function fetchContainer(spanId) {
         }
     }
 }
+
+/**
+ * Réinitialise le conteneur des compétences
+ */
+function resetCompetencesContainer() {
+    const competencesContainer = document.querySelector('.new-guide-builder__competences-container');
+    if (competencesContainer) {
+        competencesContainer.innerHTML = ''; // Vide le contenu du conteneur
+    }
+}
+
+// Sélectionne tous les boutons radio de champion
+const championRadios = document.querySelectorAll('.new-guide-config__champion input[type="radio"]');
+
+// Ajouter un écouteur d'événements sur chaque bouton radio pour réinitialiser le conteneur des compétences
+championRadios.forEach(radio => {
+    radio.addEventListener('change', function () {
+        resetCompetencesContainer();
+    });
+});
 
 // Fonction pour reset les boutons radio d'un élément
 function resetRadioButtons(element) {
