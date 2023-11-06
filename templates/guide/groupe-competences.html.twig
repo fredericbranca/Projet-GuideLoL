@@ -29,10 +29,9 @@
 		{% set competencesForm = groupeCompetences.competence %}
 
 		{# Boucle sur les champs des compétences #}
-		{% for competenceType, competenceField in competencesForm %}
+		{% for competenceField in competencesForm %}
 			{# On vérifie si le champ est une instance de ChoiceType #}
 			{% if competenceField.vars.block_prefixes is defined and 'choice' in competenceField.vars.block_prefixes %}
-				{% set letter = letterMap[competenceField.vars.name] %}
 				<div class="competence">
 					<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}" alt="{{ champ.spells[spellIndex].name }}">
 					{{ form_label(competenceField) }}
