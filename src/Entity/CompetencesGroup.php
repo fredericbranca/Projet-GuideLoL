@@ -28,7 +28,7 @@ class CompetencesGroup
     #[ORM\ManyToOne(inversedBy: 'groupesCompetences')]
     private ?Guide $guide = null;
 
-    #[ORM\ManyToMany(targetEntity: AssociationsCompetencesNiveaux::class, inversedBy: 'competencesGroups')]
+    #[ORM\ManyToMany(targetEntity: AssociationsCompetencesNiveaux::class, inversedBy: 'choixCompetencesNiveaux', cascade: ['persist'])]
     #[ORM\JoinTable(name: "choix_competences_niveaux")]
     private Collection $choixCompetencesNiveaux;
 

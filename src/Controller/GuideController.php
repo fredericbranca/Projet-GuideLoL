@@ -39,23 +39,28 @@ class GuideController extends AbstractController
         // Création d'un Guide
         $guide = new Guide();
         $runesPage = new RunesPage();
-        $competencesGroupe = new CompetencesGroup;
+        $formCompetences = new CompetencesGroup;
         $guide->addGroupeRune($runesPage);
-        $guide->addGroupesCompetence($competencesGroupe);
+        $guide->addGroupesCompetence($formCompetences);
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $guideData = $request->request->All();
             $groupesRunes = $form->get('groupeRunes')->getData();
             $groupesCompetences = $form->get('groupesCompetences')->getData();
-            dd($groupesCompetences);
+            $groupesCompetencesData = $guideData['guide']['groupesCompetences'];
 
             if (!$groupesRunes->isEmpty()) {
                 // Ajout des runes dans la DB
                 $guideService->runesHelper($form, $guide, $runesPage, $groupesRunes, $entityManager);
+            }
+
+            if (!empty($groupesCompetencesData) || !$groupesCompetences->isEmpty()) {
+                // Ajout des compétences dans la DB
+                $guideService->competencesHelper($guide, $formCompetences, $groupesCompetences, $groupesCompetencesData, $entityManager);
             }
 
             $entityManager->persist($guide);
@@ -63,6 +68,7 @@ class GuideController extends AbstractController
 
             return $this->redirectToRoute('new_guide');
         } else if ($form->isSubmitted() && !$form->isValid()) {
+
             // Si le formulaire est invalide
             $errors = []; // Tableau pour stocker les erreurs
             foreach ($form->getErrors(true) as $error) {

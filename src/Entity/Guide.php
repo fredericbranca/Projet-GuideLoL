@@ -39,7 +39,7 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist'])]
     private Collection $GroupeEnsemblesItems;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class)]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, cascade: ['persist'])]
     private Collection $groupesCompetences;
 
     public function __construct()

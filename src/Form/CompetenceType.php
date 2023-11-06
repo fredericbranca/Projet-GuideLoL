@@ -40,6 +40,7 @@ class CompetenceType extends AbstractType
             ->add('competence', FormType::class, [
                 'mapped' => false,
                 'required' => false,
+                'allow_extra_fields' => true,
             ]);
 
         $competencesForm = $builder->get('competence');
@@ -57,10 +58,10 @@ class CompetenceType extends AbstractType
 
         foreach ($dataCompetences as $dataCompetence) {
             $competenceType = $dataCompetence->getType();
+            $competenceId = $dataCompetence->getId();
             $maxChoices = $competenceType === 'R' ? 3 : 5;  // Limite de 3 choix pour R, 5 choix pour A, Z, et E
 
-            $competencesForm->add($competenceType, ChoiceType::class, [
-                'mapped' => false,
+            $competencesForm->add($competenceId, ChoiceType::class, [
                 'choices' => array_combine(range(1, 18), range(1, 18)),
                 'multiple' => true,
                 'expanded' => true,
@@ -68,6 +69,7 @@ class CompetenceType extends AbstractType
                     return ['data-competence' => $competenceType, 'data-choice' => $choice];
                 },
                 'attr' => ['data-max-choices' => $maxChoices],
+                'label' => $competenceType
             ]);
         }
     }
