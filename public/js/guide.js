@@ -19,14 +19,15 @@ const mappingBuilderMenu = {
 // Mapping pour les URL à fetch en fonction de l'ID du span cliqué
 const mappingFetchURLs = {
     "menu-sorts-invocateur-container": "/groupe-sorts-invocateur",
-    "menu-items-container": "/groupe-items",
+    "menu-items-container": "/ensemble-items",
     "menu-competences-container": "/groupe-competences",
     "menu-runes-container": "/groupe-runes"
 };
 
 // Initialisation des variables pour suivre les indices
 let indexSortsInvocateur = 0;
-let indexItems = 0;
+let indexEnsembleItems = 0;
+let indexGroupeItems = 0;
 let indexCompetences = 0;
 let indexRunes = 0;
 
@@ -51,6 +52,16 @@ function getSelectedChampionId() {
     return selectedChampionRadio ? selectedChampionRadio.value : null;
 }
 
+// Initialiser les index pour les items
+function initialiseIndexsItems(index) {
+    if (!ensembleItems[index]) {
+        ensembleItems[index] = {
+            indexGroup: 0
+        };
+    }
+}
+var ensembleItems = [];
+
 /**
  * Fonction pour charger le contenu dans le conteneur vide
  * @param {string} spanId - L'id du span cliqué
@@ -64,10 +75,8 @@ async function fetchContainer(spanId) {
     }
 
     let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
-    console.log(mappingBuilderMenu[spanId]);
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
-    console.log("🚀 ~ file: guide.js:71 ~ fetchContainer ~ container:", container)
     if (!container.querySelector('.new-guide__block')) {
         try {
             if (spanId === "menu-sorts-invocateur-container") {
@@ -79,8 +88,13 @@ async function fetchContainer(spanId) {
             } else if (spanId === "menu-competences-container") {
                 fetchURL += `/${indexCompetences}`;
                 indexCompetences++;
+            } else if (spanId === "menu-items-container") {
+                initialiseIndexsItems(0);
+                fetchURL += '/0';
+                ensembleItems[0].indexGroup++;
+                indexEnsembleItems++;
             }
-            
+
             let response = await fetch(fetchURL);
             if (!response.ok) {
                 throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
@@ -120,6 +134,11 @@ async function fetchContainerWithBtn(spanId) {
             } else if (spanId === "menu-competences-container") {
                 fetchURL += `/${indexCompetences}`;
                 indexCompetences++;
+            } else if (spanId === "menu-items-container") {
+                initialiseIndexsItems(indexEnsembleItems);
+                fetchURL += `/${indexEnsembleItems}`;
+                ensembleItems[indexEnsembleItems].indexGroup++;
+                indexEnsembleItems++;
             }
 
             let response = await fetch(fetchURL);
@@ -128,6 +147,33 @@ async function fetchContainerWithBtn(spanId) {
             }
             let html = await response.text();
             container.insertAdjacentHTML('beforeend', html);
+        } catch (error) {
+            console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
+        }
+    }
+}
+
+/**
+ * Fonction pour charger le groupe d'items dans le bon ensemble
+ * @param {string} setContainer - L'id du container
+ */
+async function fetchGroupeItems(setContainer) {
+    // Vérification si le container existe
+    let container = document.querySelector(`#${setContainer}`);
+    let insertIn = container.querySelector('.ensemble .sortable-list');
+    if (insertIn) {
+        try {
+            let indexSetItems = setContainer.split('_')[2];
+            initialiseIndexsItems(indexSetItems);
+            let fetchURL = "/groupe-items" + `/${indexSetItems}` + `/${ensembleItems[indexSetItems].indexGroup}`;
+            ensembleItems[indexSetItems].indexGroup++;
+
+            let response = await fetch(fetchURL);
+            if (!response.ok) {
+                throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+            }
+            let html = await response.text();
+            insertIn.insertAdjacentHTML('beforeend', html);
         } catch (error) {
             console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
         }
@@ -211,7 +257,7 @@ menu.addEventListener("click", function (event) {
     }
 });
 
-// Ajout d'un écouteur d'évènement click sur le bouton d'ajout de groupe
+// Ajout d'un écouteur d'évènement click sur le bouton d'ajout de groupe et celui pour l'ensemble d'items
 const addGroupButtons = document.querySelectorAll('.add-group');
 addGroupButtons.forEach(button => {
     button.addEventListener('click', function () {
@@ -222,6 +268,19 @@ addGroupButtons.forEach(button => {
         // Appelle fetchContainer avec le type
         fetchContainerWithBtn(`menu-${type}`);
     });
+});
+
+// Ajout d'un écouteur d'évènement click sur le bouton d'ajout d'un groupe d'item
+const itemsContainer = document.querySelector('.new-guide-builder__items-container');
+itemsContainer.addEventListener('click', function (event) {
+    // Vérifier si l'élément cliqué a la classe 'add-items'
+    if (event.target.classList.contains('add-items')) {
+        // Récupère l'id du parent pour déterminer dans quel ensemble ajouter
+        let parentId = event.target.parentElement.id;
+
+        // Appelle fetchContainer avec le type
+        fetchGroupeItems(parentId);
+    }
 });
 
 // Gérer l'état des arbres cliqués par bloc
