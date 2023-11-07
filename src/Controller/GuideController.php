@@ -38,10 +38,6 @@ class GuideController extends AbstractController
 
         // Création d'un Guide
         $guide = new Guide();
-        $runesPage = new RunesPage();
-        $formCompetences = new CompetencesGroup;
-        $guide->addGroupeRune($runesPage);
-        $guide->addGroupesCompetence($formCompetences);
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
@@ -49,18 +45,20 @@ class GuideController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $guideData = $request->request->All();
+ 
             $groupesRunes = $form->get('groupeRunes')->getData();
-            $groupesCompetences = $form->get('groupesCompetences')->getData();
-            $groupesCompetencesData = $guideData['guide']['groupesCompetences'];
 
             if (!$groupesRunes->isEmpty()) {
-                // Ajout des runes dans la DB
-                $guideService->runesHelper($form, $guide, $runesPage, $groupesRunes, $entityManager);
+                // Persist les runes
+                $guideService->runesHelper($form, $guide, $groupesRunes, $entityManager);
             }
 
-            if (!empty($groupesCompetencesData) || !$groupesCompetences->isEmpty()) {
-                // Ajout des compétences dans la DB
-                $guideService->competencesHelper($guide, $formCompetences, $groupesCompetences, $groupesCompetencesData, $entityManager);
+            $groupesCompetences = $form->get('groupesCompetences')->getData();
+
+            if (!$groupesCompetences->isEmpty() && !empty($guideData['guide']['groupesCompetences'])) {
+                $groupesCompetencesData = $guideData['guide']['groupesCompetences'];
+                // Persist les compétences
+                $guideService->competencesHelper($guide, $groupesCompetences, $groupesCompetencesData, $entityManager);
             }
 
             $entityManager->persist($guide);
@@ -88,10 +86,11 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/groupe-sorts-invocateur', name: "get_groupe_sorts_invocateur")]
+    #[Route('/groupe-sorts-invocateur/{index}', name: "get_groupe_sorts_invocateur")]
     public function getGroupeSortsInvocateur(
         SortInvocateurService $sortInvocateurService,
         ChampionService $championService,
+        int $index
     ) {
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
@@ -100,13 +99,17 @@ class GuideController extends AbstractController
 
         // Création d'un Guide
         $guide = new Guide();
-        $sortInvocateur = new SortInvocateur();
-        $guide->addGroupeSortsInvocateur($sortInvocateur);
+        for ($i = 0; $i <= $index; $i++) {
+            $guide->addGroupeSortsInvocateur(new SortInvocateur());
+        }
+
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
+        $formView = $form->createView();
+        $sortInvocateurFormView = $formView->children['groupeSortsInvocateur'][$index] ?? null;
 
         return $this->render('guide/groupe-sorts-invocateur.html.twig', [
-            'form' => $form,
+            'form' => $sortInvocateurFormView,
             'list_sorts_invocateur' => $sortsInvocateurList,
             'img_url' => $img_url,
         ]);
@@ -139,9 +142,10 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/groupe-competences/{idChamp}', name: "get_groupe_competences")]
+    #[Route('/groupe-competences/{idChamp}/{index}', name: "get_groupe_competences")]
     public function getGroupeCompetences(
         string $idChamp,
+        int $index,
         ChampionService $championService
     ): Response {
         // Récupères les compétences du Champion que l'user a choisit
@@ -149,23 +153,29 @@ class GuideController extends AbstractController
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
-        // Création du formulaire compétence
+        // Création d'un Guide
         $guide = new Guide();
-        $competence = new CompetencesGroup;
-        $guide->addGroupesCompetence($competence);
+        for ($i = 0; $i <= $index; $i++) {
+            $guide->addGroupesCompetence(new CompetencesGroup());
+        }
+
+        // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => $idChamp]);
+        $formView = $form->createView();
+        $competenceFormView = $formView->children['groupesCompetences'][$index] ?? null;
 
         return $this->render('guide/groupe-competences.html.twig', [
             'champ' => $championData,
-            'form' => $form,
+            'form' => $competenceFormView,
             'img_url' => $img_url
         ]);
     }
 
-    #[Route('/groupe-runes', name: "get_groupe_runes")]
+    #[Route('/groupe-runes/{index}', name: "get_groupe_runes")]
     public function getGroupeRunes(
         ChampionService $championService,
-        RuneService $runeService
+        RuneService $runeService,
+        int $index
     ) {
         // Get Runes
         $runesData = $runeService->getRunes();
@@ -174,13 +184,17 @@ class GuideController extends AbstractController
 
         // Création d'un guide
         $guide = new Guide();
-        $runes = new RunesPage();
-        $guide->addGroupeRune($runes);
+        for ($i = 0; $i <= $index; $i++) {
+            $guide->addGroupeRune(new RunesPage());
+        }
+
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
+        $formView = $form->createView();
+        $runeFormView = $formView->children['groupeRunes'][$index] ?? null;
 
         return $this->render('guide/groupe-runes.html.twig', [
-            'form' => $form,
+            'form' => $runeFormView,
             'img_url' => $img_url,
             'runes_data' => $runesData
         ]);

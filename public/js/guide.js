@@ -10,19 +10,25 @@ const mappingSidebarNav = {
 
 // Mapping entre les spans et les contenus du menu builder
 const mappingBuilderMenu = {
-    "menu-sorts-invocateur": ".new-guide-builder__sorts-invocateur-container",
-    "menu-items": ".new-guide-builder__items-container",
-    "menu-competences": ".new-guide-builder__competences-container",
-    "menu-runes": ".new-guide-builder__runes-container"
+    "menu-sorts-invocateur-container": ".new-guide-builder__sorts-invocateur-container",
+    "menu-items-container": ".new-guide-builder__items-container",
+    "menu-competences-container": ".new-guide-builder__competences-container",
+    "menu-runes-container": ".new-guide-builder__runes-container"
 };
 
 // Mapping pour les URL à fetch en fonction de l'ID du span cliqué
 const mappingFetchURLs = {
-    "menu-sorts-invocateur": "/groupe-sorts-invocateur",
-    "menu-items": "/groupe-items",
-    "menu-competences": "/groupe-competences",
-    "menu-runes": "/groupe-runes"
+    "menu-sorts-invocateur-container": "/groupe-sorts-invocateur",
+    "menu-items-container": "/groupe-items",
+    "menu-competences-container": "/groupe-competences",
+    "menu-runes-container": "/groupe-runes"
 };
+
+// Initialisation des variables pour suivre les indices
+let indexSortsInvocateur = 0;
+let indexItems = 0;
+let indexCompetences = 0;
+let indexRunes = 0;
 
 // -----------------------------
 // SÉLECTION DES ÉLÉMENTS DOM
@@ -46,29 +52,41 @@ function getSelectedChampionId() {
 }
 
 /**
- * Fonction pour charger le contenu dans le conteneur
+ * Fonction pour charger le contenu dans le conteneur vide
  * @param {string} spanId - L'id du span cliqué
  */
 async function fetchContainer(spanId) {
     // Récupère l'id du champion sélectionné si nécessaire
-    let championId = spanId === "menu-competences" ? getSelectedChampionId() : null;
-    if (championId === null && spanId === "menu-competences") {
+    let championId = spanId === "menu-competences-container" ? getSelectedChampionId() : null;
+    if (championId === null && spanId === "menu-competences-container") {
         console.error("Aucun champion sélectionné pour charger les compétences.");
         return;
     }
 
-    let fetchURL = spanId === "menu-competences" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
-
+    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
+    console.log(mappingBuilderMenu[spanId]);
     // Vérification si le contenu a déjà été chargé
-    let container = document.querySelector(mappingBuilderMenu[spanId]);
+    let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+    console.log("🚀 ~ file: guide.js:71 ~ fetchContainer ~ container:", container)
     if (!container.querySelector('.new-guide__block')) {
         try {
+            if (spanId === "menu-sorts-invocateur-container") {
+                fetchURL += `/${indexSortsInvocateur}`;
+                indexSortsInvocateur++;
+            } else if (spanId === "menu-runes-container") {
+                fetchURL += `/${indexRunes}`;
+                indexRunes++;
+            } else if (spanId === "menu-competences-container") {
+                fetchURL += `/${indexCompetences}`;
+                indexCompetences++;
+            }
+            
             let response = await fetch(fetchURL);
             if (!response.ok) {
                 throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
             }
             let html = await response.text();
-            container.innerHTML = html;
+            container.insertAdjacentHTML('afterbegin', html);
         } catch (error) {
             console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
         }
@@ -76,24 +94,48 @@ async function fetchContainer(spanId) {
 }
 
 /**
- * Réinitialise le conteneur des compétences
+ * Fonction pour charger le contenu dans le conteneur grâce au bouton
+ * @param {string} spanId - L'id du span cliqué
  */
-function resetCompetencesContainer() {
-    const competencesContainer = document.querySelector('.new-guide-builder__competences-container');
-    if (competencesContainer) {
-        competencesContainer.innerHTML = ''; // Vide le contenu du conteneur
+async function fetchContainerWithBtn(spanId) {
+    // Récupère l'id du champion sélectionné si nécessaire
+    let championId = spanId === "menu-competences-container" ? getSelectedChampionId() : null;
+    if (championId === null && spanId === "menu-competences-container") {
+        console.error("Aucun champion sélectionné pour charger les compétences.");
+        return;
+    }
+
+    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
+
+    // Vérification si le contenu a déjà été chargé
+    let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+    if (container.querySelector('.new-guide__block')) {
+        try {
+            if (spanId === "menu-sorts-invocateur-container") {
+                fetchURL += `/${indexSortsInvocateur}`;
+                indexSortsInvocateur++;
+            } else if (spanId === "menu-runes-container") {
+                fetchURL += `/${indexRunes}`;
+                indexRunes++;
+            } else if (spanId === "menu-competences-container") {
+                fetchURL += `/${indexCompetences}`;
+                indexCompetences++;
+            }
+
+            let response = await fetch(fetchURL);
+            if (!response.ok) {
+                throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+            }
+            let html = await response.text();
+            container.insertAdjacentHTML('beforeend', html);
+        } catch (error) {
+            console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
+        }
     }
 }
 
 // Sélectionne tous les boutons radio de champion
 const championRadios = document.querySelectorAll('.new-guide-config__champion input[type="radio"]');
-
-// Ajouter un écouteur d'événements sur chaque bouton radio pour réinitialiser le conteneur des compétences
-championRadios.forEach(radio => {
-    radio.addEventListener('change', function () {
-        resetCompetencesContainer();
-    });
-});
 
 // Fonction pour reset les boutons radio d'un élément
 function resetRadioButtons(element) {
@@ -169,16 +211,35 @@ menu.addEventListener("click", function (event) {
     }
 });
 
+// Ajout d'un écouteur d'évènement click sur le bouton d'ajout de groupe
+const addGroupButtons = document.querySelectorAll('.add-group');
+addGroupButtons.forEach(button => {
+    button.addEventListener('click', function () {
+        // Récupère la classe du parent pour déterminer quel type de groupe ajouter
+        let parentClass = this.parentElement.classList[0];
+        let type = parentClass.split('__')[1]; // extrait le type à partir de la classe
 
-// Gérer l'état des arbres cliqués
-let clickedTrees = {
-    first: null,
-    second: null
-};
+        // Appelle fetchContainer avec le type
+        fetchContainerWithBtn(`menu-${type}`);
+    });
+});
+
+// Gérer l'état des arbres cliqués par bloc
+let clickedTreesByBlock = {};
+
+// Initialiser les clics de l'arbre pour un bloc donné
+function initializeClickedTreesForBlock(index) {
+    if (!clickedTreesByBlock[index]) {
+        clickedTreesByBlock[index] = {
+            first: null,
+            second: null
+        };
+    }
+}
 
 // Fonction pour gérer l'affichage des options des runes
-function toggleRunesOptions(treeName, shouldShow) {
-    let tree = document.querySelector(`.arbre[data-name="${treeName}"]`);
+function toggleRunesOptions(parentBlock, treeName, shouldShow) {
+    let tree = parentBlock.querySelector(`.arbre[data-name="${treeName}"]`);
     let runesOptions = tree.nextElementSibling;
     runesOptions.style.display = shouldShow ? 'block' : 'none';
     if (!shouldShow) {
@@ -188,18 +249,32 @@ function toggleRunesOptions(treeName, shouldShow) {
 }
 
 // Fonction pour gérer la value de l'input hidden
-function updateHiddenInput(treeName, value) {
-    let hiddenInput = document.querySelector(`#${treeName}_typeArbre`);
+function updateHiddenInput(parentBlock, treeName, value) {
+    let hiddenInput = parentBlock.querySelector(`#${treeName}_typeArbre`);
     if (hiddenInput) {
         hiddenInput.value = value;
     }
 }
 
+const runesContainer = document.querySelector('.new-guide-builder__runes-container');
 // Gérer le clic sur les arbres
-document.addEventListener('click', function (event) {
+runesContainer.addEventListener('click', function (event) {
+    // Trouver l'élément parent .new-guide__block le plus proche du clic
+    var parentBlock = event.target.closest('.new-guide__block');
+    if (parentBlock) {
+        var index = parentBlock.id.match(/\d+$/)[0];
+        // Initialiser clickedTrees pour ce bloc
+        initializeClickedTreesForBlock(index);
+    } else {
+        return;
+    }
+
+    // Référencer l'état clickedTrees spécifique à ce bloc
+    let clickedTrees = clickedTreesByBlock[index];
+
     // Réactive les clics pour tous les arbres si aucun n'est actif
     if (!clickedTrees.first && !clickedTrees.second) {
-        document.querySelectorAll('.arbre.disabled').forEach(tree => tree.classList.remove('disabled'));
+        parentBlock.querySelectorAll('.arbre.disabled').forEach(tree => tree.classList.remove('disabled'));
         clickedTrees.first = null;
         clickedTrees.second = null;
     }
@@ -217,8 +292,8 @@ document.addEventListener('click', function (event) {
 
         // Ferme le deuxième arbre si on reclick sur le premier
         if (treeName === clickedTrees.first && clickedTrees.second) {
-            toggleRunesOptions(clickedTrees.second, false);
-            toggleRunesOptions(clickedTrees.first, false);
+            toggleRunesOptions(parentBlock, clickedTrees.second, false);
+            toggleRunesOptions(parentBlock, clickedTrees.first, false);
             clickedTrees.first = null;
             clickedTrees.second = null;
             inputsHidden.forEach(input => input.value = '');
@@ -227,27 +302,27 @@ document.addEventListener('click', function (event) {
 
         // Gérer le premier arbre
         if (!clickedTrees.first || treeName === clickedTrees.first) {
-            let runesOptions = toggleRunesOptions(treeName, event.target.nextElementSibling.style.display !== 'block');
+            let runesOptions = toggleRunesOptions(parentBlock, treeName, event.target.nextElementSibling.style.display !== 'block');
             clickedTrees.first = runesOptions.style.display === 'block' ? treeName : null;
             let firstDiv = runesOptions.querySelector('div');
             if (firstDiv) {
                 firstDiv.style.display = 'block';
             }
             // Si l'arbre est ouvert, on met à jour l'input caché en "Primaire", sinon on le réinitialise
-            updateHiddenInput(treeType, clickedTrees.first ? "Primaire" : "");
+            updateHiddenInput(parentBlock, treeType, clickedTrees.first ? "Primaire" : "");
             clickedTrees.second = null;
         }
         // Gérer le deuxième arbre, différent du premier
         else if (treeName !== clickedTrees.first) {
             // Fermer toutes les options précédemment ouvertes
             if (clickedTrees.second) {
-                const inputHidden = document.querySelector('.type-arbre-hidden[data-arbre-type="' + clickedTrees.second + '"]');
+                const inputHidden = parentBlock.querySelector('.type-arbre-hidden[data-arbre-type="' + clickedTrees.second + '"]');
                 inputHidden.value = '';
-                toggleRunesOptions(clickedTrees.second, false);
+                toggleRunesOptions(parentBlock, clickedTrees.second, false);
             }
 
             // Ouvrir le deuxième arbre
-            let runesOptions = toggleRunesOptions(treeName, true);
+            let runesOptions = toggleRunesOptions(parentBlock, treeName, true);
             if (runesOptions.style.display === 'block') {
                 clickedTrees.second = treeName;
                 let firstDiv = runesOptions.querySelector('div');
@@ -256,19 +331,19 @@ document.addEventListener('click', function (event) {
                 }
 
                 // Si le deuxième arbre est ouvert, on met à jour l'input caché en "Secondaire", sinon on le réinitialise
-                updateHiddenInput(treeType, clickedTrees.second ? "Secondaire" : "");
+                updateHiddenInput(parentBlock, treeType, clickedTrees.second ? "Secondaire" : "");
 
                 // Désactive les clics sur le deuxième arbre sélectionné
-                document.querySelector('.arbre[data-name="' + clickedTrees.second + '"]').classList.add('disabled');
+                parentBlock.querySelector('.arbre[data-name="' + clickedTrees.second + '"]').classList.add('disabled');
 
                 // Réactive les clics sur tous les autres arbres
-                document.querySelectorAll('.arbre:not([data-name="' + clickedTrees.second + '"])').forEach(tree => {
+                parentBlock.querySelectorAll('.arbre:not([data-name="' + clickedTrees.second + '"])').forEach(tree => {
                     tree.classList.remove('disabled');
                 });
             } else {
                 clickedTrees.second = null;
                 // Réactive les clics sur tous les arbres
-                document.querySelectorAll('.arbre.disabled').forEach(tree => {
+                parentBlock.querySelectorAll('.arbre.disabled').forEach(tree => {
                     tree.classList.remove('disabled');
                 });
             }
