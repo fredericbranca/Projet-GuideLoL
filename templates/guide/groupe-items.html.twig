@@ -1,45 +1,24 @@
-<div class="new-guide__block">
+<li class="item">
+	<h2>Items</h2>
+	<div class="groupe-item">
+		{{ form_label(form.titre) }}
+		{{ form_widget(form.titre) }}
 
+		{{ form_label(form.commentaire) }}
+		{{ form_widget(form.commentaire) }}
 
-	{% for ensemble in form.groupeEnsemblesItems %}
+		{{ form_label(form.ordre) }}
+		{{ form_widget(form.ordre) }}
 
-		<div class="ensemble">
-			<h2>Groupe</h2>
-			Titre du groupe
-			{{ form_widget(ensemble.titre) }}
-
-			{{ form_label(ensemble.ordre) }}
-			{{ form_widget(ensemble.ordre) }}
-
-			<ul class="sortable-list">
-				<li class="item" draggable="true">
-					<h2>Items</h2>
-					{% for groupeItems in ensemble.associationsEnsemblesItemsGroups %}
-						<div class="groupe-item">
-							{{ form_label(groupeItems.titre) }}
-							{{ form_widget(groupeItems.titre) }}
-
-							{{ form_label(groupeItems.commentaire) }}
-							{{ form_widget(groupeItems.commentaire) }}
-
-							{{ form_label(groupeItems.ordre) }}
-							{{ form_widget(groupeItems.ordre) }}
-
-							<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-								{% for item in groupeItems.choixItems %}
-									<div class="item">
-										{{ form_widget(item, {'id': item.vars.value }) }}
-										<label for="{{ item.vars.value }}">
-											<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
-										</label>
-									</div>
-								{% endfor %}
-							</div>
-						</div>
-					{% endfor %}
-				</li>
-			</ul>
-
+		<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+			{% for item in form.choixItems %}
+				<div class="item">
+					{{ form_widget(item, {'id': item.vars.value  ~ '-set' ~ form.vars.name ~ '-group' ~ form.vars.name }) }}
+					<label for="{{ item.vars.value }}-set{{ form.vars.name }}-group{{ form.vars.name }}">
+						<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
+					</label>
+				</div>
+			{% endfor %}
 		</div>
-	{% endfor %}
-</div>
+	</div>
+</li>

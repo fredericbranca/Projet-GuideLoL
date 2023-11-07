@@ -45,7 +45,7 @@ class GuideController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $guideData = $request->request->All();
- 
+
             $groupesRunes = $form->get('groupeRunes')->getData();
 
             if (!$groupesRunes->isEmpty()) {
@@ -115,8 +115,9 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/groupe-items', name: "get_groupe_items")]
-    public function getGroupeItems(
+    #[Route('/ensemble-items/{index}', name: "get_ensemble_items")]
+    public function getEnsembleItems(
+        int $index,
         ItemService $itemService,
         ChampionService $championService
     ) {
@@ -127,16 +128,63 @@ class GuideController extends AbstractController
 
         // Création d'un Guide
         $guide = new Guide();
-        $ensemble = new EnsembleItemsGroups();
-        $itemsGroup = new ItemsGroup();
-        $ensemble->addAssociationsEnsemblesItemsGroup($itemsGroup);
-        $guide->addGroupeEnsemblesItem($ensemble);
+        for ($i = 0; $i <= $index; $i++) {
+            $ensemble = new EnsembleItemsGroups();
+            $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
+            $guide->addGroupeEnsemblesItem($ensemble);
+        }
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
+        $formView = $form->createView();
+        $ensembleGroupeItemsFormView = $formView->children['groupeEnsemblesItems'][$index] ?? null;
+
+        return $this->render('guide/ensemble-items.html.twig', [
+            'form' => $ensembleGroupeItemsFormView,
+            'list_items' => $itemsList,
+            'img_url' => $img_url
+        ]);
+    }
+
+    #[Route('/groupe-items/{indexSet}/{indexGroup}', name: "get_groupe_items")]
+    public function getGroupeItems(
+        int $indexSet,
+        int $indexGroup,
+        ItemService $itemService,
+        ChampionService $championService
+    ) {
+        // Liste des items
+        $itemsList = $itemService->getItems();
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+        // Création d'un Guide
+        $guide = new Guide();
+
+        // Création des ensembles de groupe d'items jusqu'à l'indexSet
+        for ($i = 0; $i <= $indexSet; $i++) {
+            $ensemble = new EnsembleItemsGroups();
+
+            if ($i === $indexSet) {
+                // Création des groupes d'items pour l'ensemble utile uniquement
+                for ($j = 0; $j <= $indexGroup; $j++) {
+                    $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
+                }
+            }
+
+            $guide->addGroupeEnsemblesItem($ensemble);
+        }
+
+        // Création du formulaire
+        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
+        $formView = $form->createView();
+
+        // Je récupère le formulaire pour le groupe d'items spécifique à l'indexSet et indexGroup
+        $ensembleGroupeItemsFormView = $formView
+            ->children['groupeEnsemblesItems'][$indexSet]
+            ->children['associationsEnsemblesItemsGroups'][$indexGroup] ?? null;
 
         return $this->render('guide/groupe-items.html.twig', [
-            'form' => $form,
+            'form' => $ensembleGroupeItemsFormView,
             'list_items' => $itemsList,
             'img_url' => $img_url
         ]);
