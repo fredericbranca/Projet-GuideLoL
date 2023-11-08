@@ -18,6 +18,9 @@ class DataStatistiqueBonus
     #[ORM\Column]
     private ?int $bonus_line = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $icon = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,6 +53,18 @@ class DataStatistiqueBonus
     public function setBonusLine(int $bonus_line): static
     {
         $this->bonus_line = $bonus_line;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }
