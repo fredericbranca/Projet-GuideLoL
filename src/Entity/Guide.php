@@ -31,15 +31,19 @@ class Guide
     private ?\DateTimeImmutable $modified_at = null;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupeSortsInvocateur;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true)]
+    #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupeRunes;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist'])]
+    #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $GroupeEnsemblesItems;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, cascade: ['persist'])]
+    #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupesCompetences;
 
     public function __construct()
