@@ -107,6 +107,21 @@ class AdminController extends AbstractController
                 $dataBonus->setId($id);
                 $dataBonus->setBonusValue($bonusValue);
                 $dataBonus->setBonusLine($ligne);
+
+                if (strpos($bonusValue, "force adaptative") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsAdaptiveForceIcon.png");
+                } elseif (strpos($bonusValue, "vitesse d'attaque") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsAttackSpeedIcon.png");
+                } elseif (strpos($bonusValue, "accélération de compétence") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsCDRScalingIcon.png");
+                } elseif (strpos($bonusValue, "armure") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsArmorIcon.png");
+                } elseif (strpos($bonusValue, "résistance magique") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsMagicResIcon.png");
+                } elseif (strpos($bonusValue, "PV") !== false) {
+                    $dataBonus->setIcon("/perk-images/StatMods/StatModsHealthScalingIcon.png");
+                }
+
                 $em->persist($dataBonus);
             }
         }
