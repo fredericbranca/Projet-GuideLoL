@@ -23,17 +23,21 @@ class AdminController extends AbstractController
     #[Route('/admin/data_champion_update', name: 'update_data_champion')]
     public function championUpdate(ChampionService $championService, EntityManagerInterface $em)
     {
-        // Supprimer toutes les entrées existantes de la table des champions
-        $em->createQuery('DELETE FROM App\Entity\DataChampion')->execute();
-
         // Récupérer les champions depuis le service
         $champions = $championService->getChampionsName();
 
-        // Ajouter chaque champion à la base de données
         foreach ($champions as $championName) {
-            $championId = new DataChampion;
-            $championId->setId($championName);
-            $em->persist($championId);
+            // Vérifier si le champion existe déjà
+            $champion = $em->getRepository(DataChampion::class)->find($championName);
+
+            // Si le champion n'existe pas, on le crée
+            if (!$champion) {
+                $champion = new DataChampion();
+                $champion->setId($championName);
+            }
+
+            // Persist l'entité champion, que ce soit une nouvelle entrée ou une mise à jour
+            $em->persist($champion);
         }
 
         // Flush les changements à la base de données
@@ -46,17 +50,21 @@ class AdminController extends AbstractController
     #[Route('/admin/data_sort_invocateur_update', name: 'update_data_sort_invocateur')]
     public function sortsInvocateurUpdate(SortInvocateurService $sortInvocateurService, EntityManagerInterface $em)
     {
-        // Supprimer toutes les entrées existantes de la table des sorts d'invocateur
-        $em->createQuery('DELETE FROM App\Entity\DataSortInvocateur')->execute();
-
         // Récupérer les sorts d'invocateur depuis le service
         $sortsInvocateur = $sortInvocateurService->getSortsInvocateurId();
 
-        // Ajouter chaque sort d'invocateur à la base de données
-        foreach ($sortsInvocateur as $sortInvocateur) {
-            $newSort = new DataSortInvocateur();
-            $newSort->setId($sortInvocateur);
-            $em->persist($newSort);
+        foreach ($sortsInvocateur as $sortInvocateurId) {
+            // Vérifier si le sort d'invocateur existe déjà
+            $sortInvocateur = $em->getRepository(DataSortInvocateur::class)->find($sortInvocateurId);
+
+            // Si le sort d'invocateur n'existe pas, on le crée
+            if (!$sortInvocateur) {
+                $sortInvocateur = new DataSortInvocateur();
+                $sortInvocateur->setId($sortInvocateurId);
+            }
+
+            // Persist l'entité sort d'invocateur, que ce soit une nouvelle entrée ou une mise à jour
+            $em->persist($sortInvocateur);
         }
 
         // Flush les changements à la base de données
@@ -69,12 +77,6 @@ class AdminController extends AbstractController
     #[Route('/admin/data_runes_update', name: 'update_data_runes')]
     public function runesUpdate(RuneService $runeService, EntityManagerInterface $em)
     {
-        // Supprimer toutes les entrées existantes de la table des runes
-        $em->createQuery('DELETE FROM App\Entity\DataRune')->execute();
-
-        // Supprimer toutes les entrées existantes de la table des bonus
-        $em->createQuery('DELETE FROM App\Entity\DataStatistiqueBonus')->execute();
-
         // Récupération des arbres de runes
         $arbres = $runeService->getRunes();
 
@@ -87,11 +89,20 @@ class AdminController extends AbstractController
                 foreach ($slot['runes'] as $rune) {
                     $runeId = $rune['id'];
 
-                    $dataRune = new DataRune();
-                    $dataRune->setId($runeId);
+                    // Vérifier si la rune existe déjà
+                    $dataRune = $em->getRepository(DataRune::class)->find($runeId);
+
+                    // Si la rune n'existe pas, on la crée
+                    if (!$dataRune) {
+                        $dataRune = new DataRune();
+                        $dataRune->setId($runeId);
+                    }
+
+                    // Mise à jour ou ajout des informations de la rune
                     $dataRune->setRuneArbre($rune_arbre);
                     $dataRune->setRuneType($rune_type);
 
+                    // Persist l'entité rune
                     $em->persist($dataRune);
                 }
             }
@@ -100,11 +111,18 @@ class AdminController extends AbstractController
         // Récupération des statistiques bonus
         $bonusStatistiques = $runeService->getStatistiquesBonus();
 
-        // Pour chaque ligne de bonus
         foreach ($bonusStatistiques as $ligne => $bonusValues) {
             foreach ($bonusValues as $id => $bonusValue) {
-                $dataBonus = new DataStatistiqueBonus();
-                $dataBonus->setId($id);
+                // Vérifier si le bonus existe déjà
+                $dataBonus = $em->getRepository(DataStatistiqueBonus::class)->find($id);
+
+                // Si le bonus n'existe pas, on le crée
+                if (!$dataBonus) {
+                    $dataBonus = new DataStatistiqueBonus();
+                    $dataBonus->setId($id);
+                }
+
+                // Mise à jour ou ajout des informations du bonus
                 $dataBonus->setBonusValue($bonusValue);
                 $dataBonus->setBonusLine($ligne);
 
@@ -126,26 +144,32 @@ class AdminController extends AbstractController
             }
         }
 
+        // Flush les changements à la base de données
         $em->flush();
 
-        return new Response('Runes et bonus importés avec succès !');
+        return new Response('Runes et bonus importés ou mis à jour avec succès !');
     }
 
     // Ajouter ou mettre à jour l'ID des items de la table data_item dans la DB
     #[Route('/admin/data_item_update', name: 'update_data_item')]
     public function itemUpdate(ItemService $itemService, EntityManagerInterface $em)
     {
-        // Supprimer toutes les entrées existantes de la table des items
-        $em->createQuery('DELETE FROM App\Entity\DataItem')->execute();
-
         // Récupérer les items depuis le service
         $items = $itemService->getItems();
 
-        // Ajouter chaque champion à la base de données
-        foreach ($items as $id => $item) {
-            $itemId = new DataItem;
-            $itemId->setId($id);
-            $em->persist($itemId);
+        // Vérifier et mettre à jour ou ajouter chaque item dans la base de données
+        foreach ($items as $id => $itemData) {
+            // Vérifier si l'item existe déjà dans la base de données
+            $itemEntity = $em->getRepository(DataItem::class)->find($id);
+
+            // Si l'item n'existe pas, créer une nouvelle entité
+            if (!$itemEntity) {
+                $itemEntity = new DataItem();
+                $itemEntity->setId($id);
+            }
+
+            // Persister l'entité
+            $em->persist($itemEntity);
         }
 
         // Flush les changements à la base de données
@@ -158,19 +182,28 @@ class AdminController extends AbstractController
     #[Route('/admin/data_competence_update', name: 'update_data_competence')]
     public function competenceUpdate(ChampionService $championService, EntityManagerInterface $em)
     {
-        // Supprimer toutes les entrées existantes de la table des items
-        $em->createQuery('DELETE FROM App\Entity\DataCompetence')->execute();
-
-        // Récupérer les items depuis le service
+        // Récupérer les champions et leurs compétences depuis le service
         $champions = $championService->getChampions();
         $types = ['A', 'Z', 'E', 'R'];
-        // Ajouter chaque compétence à la base de données
+
+        // Parcourir chaque champion et ses compétences
         foreach ($champions as $champion) {
             foreach ($champion['spells'] as $key => $spell) {
-                $competence = new DataCompetence();
-                $competence->setId($spell['id']);
+                // Vérifier si la compétence existe déjà
+                $competence = $em->getRepository(DataCompetence::class)->find($spell['id']);
+
+                // Si la compétence n'existe pas, en créer une nouvelle
+                if (!$competence) {
+                    $competence = new DataCompetence();
+                    $competence->setId($spell['id']);
+                }
+
+                // Mettre à jour les informations de la compétence
                 $competence->setNomChampion($champion['idChamp']);
                 $competence->setType($types[$key] ?? null);
+                // Mettre à jour d'autres propriétés de la compétence si nécessaire...
+
+                // Persister l'entité compétence
                 $em->persist($competence);
             }
         }
