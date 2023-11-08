@@ -24,6 +24,13 @@ class ChampionService {
         return $champions;
     }
 
+    public function getChampion($id) {
+        $championData = $this->lol->getChampion($id);
+        $championData = json_decode($championData, true);
+
+        return $championData;
+    }
+
     public function getChampionsName() {
         $championsData = $this->lol->getChampions();
         $championsData = json_decode($championsData, true)['data']['champions'];
