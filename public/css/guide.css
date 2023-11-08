@@ -132,3 +132,23 @@
 .new-guide-builder__synergies-container {
   display: none;
 }
+
+/* Section Compétences */
+.competence {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.niveaux .case {
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+}
