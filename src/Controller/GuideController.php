@@ -13,7 +13,6 @@ use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
 use App\Entity\EnsembleItemsGroups;
-use App\Form\CompetenceType;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +29,7 @@ class GuideController extends AbstractController
         ChampionService $championService,
         GuideService $guideService,
         EntityManagerInterface $entityManager
-    ) {
+    ): Response {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
         // URL pour récupérer les images
@@ -86,12 +85,54 @@ class GuideController extends AbstractController
         ]);
     }
 
+    // Route pour afficher un Guide avec son id
+    #[Route('/guide/{idGuide}', name: 'get_guide_byId')]
+    public function getGuide(
+        int $idGuide,
+        EntityManagerInterface $em,
+        ChampionService $championService,
+        SortInvocateurService $sortInvocateurService,
+        ItemService $itemService,
+        RuneService $runeService
+    ): Response {
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+        // Liste des sorts d'invocateur
+        $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
+        // Liste des items
+        $itemsList = $itemService->getItems();
+        // Liste des runes
+        $runesData = $runeService->getRunesIds();
+
+        $guide = $em->getRepository(Guide::class)->find($idGuide);
+
+        if (!$guide) {
+            throw $this->createNotFoundException('Guide not found.');
+        }
+
+        // Récupère les data du champion
+        $championData = $championService->getChampion($guide->getChampion());
+
+        return $this->render('guide/afficher_guide.html.twig', [
+            'guide' => $guide,
+            'img_url' => $img_url,
+            'list_sorts_invocateur' => $sortsInvocateurList,
+            'list_items' => $itemsList,
+            'runes_data' => $runesData,
+            'champion' => $championData
+        ]);
+    }
+
+
+    // Routes vers les composants pour la création du Guide
+
+    // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur
     #[Route('/groupe-sorts-invocateur/{index}', name: "get_groupe_sorts_invocateur")]
     public function getGroupeSortsInvocateur(
         SortInvocateurService $sortInvocateurService,
         ChampionService $championService,
         int $index
-    ) {
+    ): Response {
         // Liste des sorts d'invocateur
         $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
         // URL pour récupérer les images
@@ -115,12 +156,13 @@ class GuideController extends AbstractController
         ]);
     }
 
+    // Route composant formulaire pour ajouter un Ensebme de Groupe d'Items
     #[Route('/ensemble-items/{index}', name: "get_ensemble_items")]
     public function getEnsembleItems(
         int $index,
         ItemService $itemService,
         ChampionService $championService
-    ) {
+    ): Response {
         // Liste des items
         $itemsList = $itemService->getItems();
         // URL pour récupérer les images
@@ -146,13 +188,14 @@ class GuideController extends AbstractController
         ]);
     }
 
+    // Route composant formulaire pour ajouter un groupe d'Items
     #[Route('/groupe-items/{indexSet}/{indexGroup}', name: "get_groupe_items")]
     public function getGroupeItems(
         int $indexSet,
         int $indexGroup,
         ItemService $itemService,
         ChampionService $championService
-    ) {
+    ): Response {
         // Liste des items
         $itemsList = $itemService->getItems();
         // URL pour récupérer les images
@@ -190,6 +233,8 @@ class GuideController extends AbstractController
         ]);
     }
 
+
+    // Route composant formulaire pour ajouter un Groupe de Compétences
     #[Route('/groupe-competences/{idChamp}/{index}', name: "get_groupe_competences")]
     public function getGroupeCompetences(
         string $idChamp,
@@ -219,12 +264,13 @@ class GuideController extends AbstractController
         ]);
     }
 
+    // Route composant formulaire pour ajouter un groupe de Runes
     #[Route('/groupe-runes/{index}', name: "get_groupe_runes")]
     public function getGroupeRunes(
         ChampionService $championService,
         RuneService $runeService,
         int $index
-    ) {
+    ): Response {
         // Get Runes
         $runesData = $runeService->getRunes();
         // URL pour récupérer les images
