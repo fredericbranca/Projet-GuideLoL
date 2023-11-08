@@ -39,8 +39,48 @@ class RuneService
             $key = $rune['id'];
             $runes[$key] = $rune;
         }
-    
+
         return $runes;
+    }
+
+    /**
+     * Récupère et renvoie les données complètes des runes par id
+     *
+     * @return array Tableau de runes indexé par leurs ID
+     */
+    public function getRunesIds()
+    {
+        $runesData = $this->lol->getRunes();
+        $arbres = json_decode($runesData, true)['hydra:member'];
+
+        $runeData = [];
+
+        foreach ($arbres as $arbre) {
+            $id = $arbre['id'];
+            $runeData[$id] = [
+                'id' => $id,
+                'idRune' => $arbre['idRune'],
+                'key' => $arbre['key'],
+                'icon' => $arbre['icon'],
+                'name' => $arbre['name'],
+            ];
+
+            foreach ($arbre['slots'] as $slot) {
+                foreach ($slot['runes'] as $rune) {
+                    $id = $rune['id'];
+                    $runeData[$id] = [
+                        'id' => $id,
+                        'key' => $rune['key'],
+                        'icon' => $rune['icon'],
+                        'name' => $rune['name'],
+                        'shortDesc' => $rune['shortDesc'],
+                        'longDesc' => $rune['longDesc'],
+                    ];
+                }
+            }
+        }
+
+        return $runeData;
     }
 
     /**
