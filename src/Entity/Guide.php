@@ -6,6 +6,7 @@ use App\Repository\GuideRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\DataChampion;
 
 #[ORM\Entity(repositoryClass: GuideRepository::class)]
 class Guide
@@ -15,8 +16,9 @@ class Guide
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $champion = null;
+    #[ORM\ManyToOne(targetEntity: DataChampion::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?DataChampion $champion = null;
 
     #[ORM\Column(length: 100)]
     private ?string $titre = null;
@@ -60,12 +62,12 @@ class Guide
         return $this->id;
     }
 
-    public function getChampion(): ?string
+    public function getChampion(): ?DataChampion
     {
         return $this->champion;
     }
 
-    public function setChampion(?string $champion): static
+    public function setChampion(?DataChampion $champion): self
     {
         $this->champion = $champion;
 
