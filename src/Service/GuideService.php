@@ -6,7 +6,6 @@ use App\Entity\DataCompetence;
 use App\Entity\AssociationsRunesBonus;
 use App\Entity\AssociationsArbresRunes;
 use App\Entity\AssociationsCompetencesNiveaux;
-use App\Entity\RunesPage;
 
 class GuideService
 {
