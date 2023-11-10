@@ -1,27 +1,66 @@
-<div class="new-guide__block" id="{{ form.vars.id }}">
-	<div>
-		{{ form_label(form.titre) }}
-		{{ form_widget(form.titre) }}
-	</div>
+{% if forms is defined %}
 
-	<div>
-		{{ form_label(form.commentaire) }}
-		{{ form_widget(form.commentaire) }}
-	</div>
+	{% for form in forms %}
 
-	<div>
-		{{ form_label(form.ordre) }}
-		{{ form_widget(form.ordre) }}
-	</div>
-
-	<div style="display:flex; flex-wrap: wrap">
-		{% for choice in form.choixSortInvocateur %}
+		<div class="new-guide__block" id="{{ form.vars.id }}">
 			<div>
-				{{ form_widget(choice, {'id': choice.vars.value ~ '-' ~ form.vars.name }) }}
-				<label for="{{ choice.vars.value }}-{{ form.vars.name }}">
-					<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
-				</label>
+				{{ form_label(form.titre) }}
+				{{ form_widget(form.titre) }}
 			</div>
-		{% endfor %}
+
+			<div>
+				{{ form_label(form.commentaire) }}
+				{{ form_widget(form.commentaire) }}
+			</div>
+
+			<div>
+				{{ form_label(form.ordre) }}
+				{{ form_widget(form.ordre) }}
+			</div>
+
+			<div style="display:flex; flex-wrap: wrap">
+				{% for choice in form.choixSortInvocateur %}
+					<div>
+						{{ form_widget(choice, {'id': choice.vars.value ~ '-' ~ form.vars.name }) }}
+						<label for="{{ choice.vars.value }}-{{ form.vars.name }}">
+							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+						</label>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+	{% endfor %}
+
+{% else %}
+
+	<div class="new-guide__block" id="{{ form.vars.id }}">
+		<div>
+			{{ form_label(form.titre) }}
+			{{ form_widget(form.titre) }}
+		</div>
+
+		<div>
+			{{ form_label(form.commentaire) }}
+			{{ form_widget(form.commentaire) }}
+		</div>
+
+		<div>
+			{{ form_label(form.ordre) }}
+			{{ form_widget(form.ordre) }}
+		</div>
+
+		<div style="display:flex; flex-wrap: wrap">
+			{% for choice in form.choixSortInvocateur %}
+				<div>
+					{{ form_widget(choice, {'id': choice.vars.value ~ '-' ~ form.vars.name }) }}
+					<label for="{{ choice.vars.value }}-{{ form.vars.name }}">
+						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+					</label>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
-</div>
+
+
+{% endif %}
