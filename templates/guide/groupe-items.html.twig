@@ -1,24 +1,22 @@
-<li class="item">
+<li class="groupe-item">
 	<h2>Items</h2>
-	<div class="groupe-item">
-		{{ form_label(form.titre) }}
-		{{ form_widget(form.titre) }}
+	{{ form_label(form.titre) }}
+	{{ form_widget(form.titre) }}
 
-		{{ form_label(form.commentaire) }}
-		{{ form_widget(form.commentaire) }}
+	{{ form_label(form.commentaire) }}
+	{{ form_widget(form.commentaire) }}
 
-		{{ form_label(form.ordre) }}
-		{{ form_widget(form.ordre) }}
+	{{ form_label(form.ordre) }}
+	{{ form_widget(form.ordre) }}
 
-		<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-			{% for item in form.choixItems %}
-				<div class="item">
-					{{ form_widget(item, {'id': item.vars.value  ~ '-set' ~ form.vars.name ~ '-group' ~ form.vars.name }) }}
-					<label for="{{ item.vars.value }}-set{{ form.vars.name }}-group{{ form.vars.name }}">
-						<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
-					</label>
-				</div>
-			{% endfor %}
-		</div>
+	<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+		{% for item in form.choixItems %}
+			<div class="item">
+				{{ form_widget(item, {'id': item.vars.value  ~ '-set' ~ form.parent.parent.vars.name ~ '-group' ~ form.vars.name }) }}
+				<label for="{{ item.vars.value }}-set{{ form.parent.parent.vars.name }}-group{{ form.vars.name }}">
+					<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
+				</label>
+			</div>
+		{% endfor %}
 	</div>
 </li>
