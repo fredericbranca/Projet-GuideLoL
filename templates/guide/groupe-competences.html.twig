@@ -1,5 +1,4 @@
 {% if forms is defined %}
-
 	{% for form in forms %}
 
 		<div class="new-guide__block" id="{{ form.vars.id }}">
@@ -19,7 +18,7 @@
 				{{ form_widget(form.ordre) }}
 			</div>
 
-			<div class="competence">
+			<div class="competence-passive">
 				<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}" alt="{{ champ.passive.name }}">
 				Compétence passive :
 				{{ champ.passive.name }}
@@ -46,6 +45,7 @@
 
 		</div>
 
+
 	{% endfor %}
 
 {% else %}
@@ -67,7 +67,7 @@
 			{{ form_widget(form.ordre) }}
 		</div>
 
-		<div class="competence">
+		<div class="competence-passive">
 			<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}" alt="{{ champ.passive.name }}">
 			Compétence passive :
 			{{ champ.passive.name }}
