@@ -25,11 +25,36 @@ const mappingFetchURLs = {
 };
 
 // Initialisation des variables pour suivre les indices
-let indexSortsInvocateur = 0;
-let indexEnsembleItems = 0;
-let indexGroupeItems = 0;
-let indexCompetences = 0;
-let indexRunes = 0;
+function blockCount(className) {
+    let container = document.querySelector(className + ' .new-guide-builder__container');
+    let blocks = container.querySelectorAll('.new-guide__block');
+    return blocks.length;
+}
+
+let indexSortsInvocateur = blockCount(".new-guide-builder__sorts-invocateur-container");
+let indexEnsembleItems = blockCount(".new-guide-builder__items-container");
+let indexCompetences = blockCount(".new-guide-builder__competences-container");
+let indexRunes = blockCount(".new-guide-builder__runes-container");
+
+// Initialiser le statut des fetch à l'update
+var fetchUpdate = {};
+for (var key in mappingFetchURLs) {
+    if (mappingFetchURLs.hasOwnProperty(key)) {
+        fetchUpdate[key] = { fetchUpdate: false };
+    }
+}
+
+// Initiatlisation de l'idGuide si la page est en mode édition
+var pathname = window.location.pathname;
+
+// Expression régulière : /guide/{int}/edit
+var regex = /^\/guide\/(\d+)(\/edit)$/;
+
+// Testez si le pathname correspond
+if (regex.test(pathname)) {
+    // id du guide à partir de l'URL
+    var guideId = pathname.match(regex)[1];
+}
 
 // -----------------------------
 // SÉLECTION DES ÉLÉMENTS DOM
@@ -53,6 +78,7 @@ function getSelectedChampionId() {
 }
 
 // Initialiser les index pour les items
+var ensembleItems = [];
 function initialiseIndexsItems(index) {
     if (!ensembleItems[index]) {
         ensembleItems[index] = {
@@ -60,7 +86,28 @@ function initialiseIndexsItems(index) {
         };
     }
 }
-var ensembleItems = [];
+
+/**
+ * Fonction pour charger les conteneurs avec les données d'éditions
+ * @param {string} spanId - L'id du span cliqué
+ * @param {string} championId - L'id du champion (si nécessaire)
+ */
+async function fetchUpdatedContainer(spanId, championId) {
+
+    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/edit/${championId}/${guideId}` : `${mappingFetchURLs[spanId]}/edit/${guideId}`;
+    let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+    try {
+        let response = await fetch(fetchURL);
+        if (!response.ok) {
+            console.error(`Échec du chargement depuis l'URL : ${fetchURL}, statut : ${response.status}`);
+            return;
+        }
+        let html = await response.text();
+        container.insertAdjacentHTML('afterbegin', html);
+    } catch (error) {
+        console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
+    }
+}
 
 /**
  * Fonction pour charger le contenu dans le conteneur vide
@@ -73,8 +120,13 @@ async function fetchContainer(spanId) {
         console.error("Aucun champion sélectionné pour charger les compétences.");
         return;
     }
+    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/create/${championId}` : `${mappingFetchURLs[spanId]}/create`;
 
-    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
+    if (guideId && fetchUpdate[spanId].fetchUpdate === false) {
+        await fetchUpdatedContainer(spanId, championId);
+        fetchUpdate[spanId].fetchUpdate = true;
+    }
+
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
     if (!container.querySelector('.new-guide__block')) {
@@ -119,26 +171,27 @@ async function fetchContainerWithBtn(spanId) {
         return;
     }
 
-    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/${championId}` : mappingFetchURLs[spanId];
+    let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/create/${championId}` : `${mappingFetchURLs[spanId]}/create`;
 
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+
     if (container.querySelector('.new-guide__block')) {
         try {
             if (spanId === "menu-sorts-invocateur-container") {
-                fetchURL += `/${indexSortsInvocateur}`;
-                indexSortsInvocateur++;
+                indexSortsInvocateur = blockCount(mappingBuilderMenu[spanId]);
+                fetchURL += `/${indexSortsInvocateur++}`;
             } else if (spanId === "menu-runes-container") {
-                fetchURL += `/${indexRunes}`;
-                indexRunes++;
+                indexRunes = blockCount(mappingBuilderMenu[spanId]);
+                fetchURL += `/${indexRunes++}`;
             } else if (spanId === "menu-competences-container") {
-                fetchURL += `/${indexCompetences}`;
-                indexCompetences++;
+                indexCompetences = blockCount(mappingBuilderMenu[spanId]);
+                fetchURL += `/${indexCompetences++}`;
             } else if (spanId === "menu-items-container") {
+                indexEnsembleItems = blockCount(mappingBuilderMenu[spanId]);
                 initialiseIndexsItems(indexEnsembleItems);
                 fetchURL += `/${indexEnsembleItems}`;
                 ensembleItems[indexEnsembleItems].indexGroup++;
-                indexEnsembleItems++;
             }
 
             let response = await fetch(fetchURL);
@@ -161,10 +214,14 @@ async function fetchGroupeItems(setContainer) {
     // Vérification si le container existe
     let container = document.querySelector(`#${setContainer}`);
     let insertIn = container.querySelector('.ensemble .sortable-list');
+    let blocks = container.querySelectorAll('.groupe-item');
+    let nbBlocksItems = blocks.length;
+
     if (insertIn) {
         try {
             let indexSetItems = setContainer.split('_')[2];
             initialiseIndexsItems(indexSetItems);
+            ensembleItems[indexSetItems].indexGroup = nbBlocksItems;
             let fetchURL = "/groupe-items" + `/${indexSetItems}` + `/${ensembleItems[indexSetItems].indexGroup}`;
             ensembleItems[indexSetItems].indexGroup++;
 
@@ -416,7 +473,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let guideValiderButton = document.getElementById('guide_Valider');
 
     if (actionPublierButton && guideValiderButton) {
-        actionPublierButton.addEventListener('click', function () {
+        actionPublierButton.addEventListener('click', async function () {
+            if (guideId) {
+                for (var key in mappingFetchURLs) {
+                    if (mappingFetchURLs.hasOwnProperty(key)) {
+                        await fetchContainer(key);
+                    }
+                }
+            }
             guideValiderButton.click();
         });
     }
