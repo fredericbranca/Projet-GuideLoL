@@ -49,12 +49,12 @@
 			{# Choix du Champion #}
 			<div class="new-guide-config__champion">
 				<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-					{% for choice in form.champion %}
+					{% for champion in form.champion %}
 						<div>
-							{{ form_widget(choice, {'id': choice.vars.value }) }}
+							{{ form_widget(champion) }}
 							{# génère le bouton radio #}
-							<label for="{{ choice.vars.value }}">
-								<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[choice.vars.value].image }}" alt="{{ champions[choice.vars.value].name }}">
+							<label for="{{ champion.vars.id }}">
+								<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}" alt="{{ champions[champion.vars.value].name }}">
 							</label>
 						</div>
 					{% endfor %}
