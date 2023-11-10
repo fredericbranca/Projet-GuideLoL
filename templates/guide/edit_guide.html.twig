@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block body %}
+
 	<h1>Editer un guide</h1>
 
 	<div
@@ -107,4 +108,8 @@
 
 </div>
 
-<script src="{{ asset('js/guide.js') }}" defer></script>{% endblock %}
+<script src="{{ asset('js/guide.js') }}" defer></script>
+<script>
+	var infos_sorts = {{ infos_sorts|json_encode|raw }};
+</script>
+<script src="{{ asset('js/checkboxCompetences.js') }}"></script>{% endblock %}
