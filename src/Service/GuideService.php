@@ -17,6 +17,13 @@ class GuideService
         foreach ($groupesRunes as $key => $groupeRunes) {
             $runesPage = $existingRunesPages->get($key);
 
+            // Suppression des données des runes actuelles
+            $choixRunesPages = $runesPage->getChoixRunesPages();
+            foreach ($choixRunesPages as $choixRunesPage) {
+                $runesPage->removeChoixRunesPages($choixRunesPage);
+            }
+
+            // Entre les données dans groupeRunes
             $runesPage->setTitre($groupeRunes->getTitre());
             $runesPage->setCommentaire($groupeRunes->getCommentaire());
             $runesPage->setOrdre($groupeRunes->getOrdre());
@@ -75,6 +82,12 @@ class GuideService
         foreach ($groupesCompetences as $key => $groupeCompetence) {
             $formCompetences = $existingCompetencesGroupes->get($key);
 
+            // Suppression des données des compétences actuelles
+            $choixCompetences = $formCompetences->getChoixCompetencesNiveaux();
+            foreach ($choixCompetences as $competences) {
+                $formCompetences->removeChoixCompetencesNiveau($competences);
+            }
+            // Entre les données dans groupesCompetences
             $formCompetences->setTitre($groupeCompetence->getTitre());
             $formCompetences->setCommentaire($groupeCompetence->getCommentaire());
             $formCompetences->setOrdre($groupeCompetence->getOrdre());
