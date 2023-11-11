@@ -18,6 +18,9 @@ class DataRune
     #[ORM\Column(length: 20)]
     private ?string $runeType = null;
 
+    #[ORM\Column]
+    private ?int $ordre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,6 +53,18 @@ class DataRune
     public function setRuneType(string $runeType): static
     {
         $this->runeType = $runeType;
+
+        return $this;
+    }
+
+    public function getOrdre(): ?int
+    {
+        return $this->ordre;
+    }
+
+    public function setOrdre(int $ordre): static
+    {
+        $this->ordre = $ordre;
 
         return $this;
     }
