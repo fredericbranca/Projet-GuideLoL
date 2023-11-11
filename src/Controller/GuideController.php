@@ -13,6 +13,7 @@ use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
 use App\Entity\EnsembleItemsGroups;
+use App\Service\CompetenceService;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,21 +23,46 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GuideController extends AbstractController
 {
+    private $sortInvocateurService;
+    private $championService;
+    private $itemService;
+    private $runeService;
+    private $entityManager;
+
+    public function __construct(
+        SortInvocateurService $sortInvocateurService,
+        ChampionService $championService,
+        ItemService $itemService,
+        RuneService $runeService,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->sortInvocateurService = $sortInvocateurService;
+        $this->championService = $championService;
+        $this->itemService = $itemService;
+        $this->entityManager = $entityManager;
+        $this->runeService = $runeService;
+    }
+
+
     // Route qui mène vers la création d'un guide et redirige vers le guide créé s'il est validé
     #[Route('/guide/new', name: 'new_guide')]
+    #[Route('/guide/{idGuide}/edit', name: 'edit_guide')]
     public function new(
         Request $request,
         ChampionService $championService,
         GuideService $guideService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        RuneService $runeService,
+        CompetenceService $competenceService,
+        int $idGuide = null
     ): Response {
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
-        // Création d'un Guide
-        $guide = new Guide();
+        // Récupère le guide avec l'id ou en créé un s'il n'existe pas
+        $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
@@ -63,7 +89,7 @@ class GuideController extends AbstractController
             $entityManager->persist($guide);
             $entityManager->flush();
 
-            return $this->redirectToRoute('new_guide');
+            return $this->redirectToRoute('get_guide_byId', ['idGuide' => $guide->getId()]);
         } else if ($form->isSubmitted() && !$form->isValid()) {
 
             // Si le formulaire est invalide
@@ -78,11 +104,26 @@ class GuideController extends AbstractController
             ]);
         }
 
-        return $this->render('guide/create_guide.html.twig', [
-            'form' => $form,
-            'champions' => $championsData,
-            'img_url' => $img_url,
-        ]);
+        if (!$idGuide) {
+            return $this->render('guide/create_guide.html.twig', [
+                'form' => $form,
+                'champions' => $championsData,
+                'img_url' => $img_url,
+            ]);
+        } else {
+            // Infos du niveaux des compétences
+            $infoNiveauxSorts = $competenceService->getNiveauxParSorts($guide);
+            // Infos des runes sélectionnées
+            $infosRunes = $runeService->getRunesSelection($guide);
+
+            return $this->render('guide/edit_guide.html.twig', [
+                'form' => $form,
+                'champions' => $championsData,
+                'img_url' => $img_url,
+                'infos_sorts' => $infoNiveauxSorts,
+                'infos_runes' => $infosRunes
+            ]);
+        }
     }
 
     // Route pour afficher un Guide avec son id
@@ -124,73 +165,78 @@ class GuideController extends AbstractController
     }
 
 
-    // Routes vers les composants pour la création du Guide
+    // Routes vers les composants pour la création et l'édition de Guide
 
-    // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur
-    #[Route('/groupe-sorts-invocateur/{index}', name: "get_groupe_sorts_invocateur")]
-    public function getGroupeSortsInvocateur(
-        SortInvocateurService $sortInvocateurService,
-        ChampionService $championService,
-        int $index
-    ): Response {
-        // Liste des sorts d'invocateur
-        $sortsInvocateurList = $sortInvocateurService->getSortsInvocateur();
-        // URL pour récupérer les images
-        $img_url = $championService->getChampionImageURL();
-
-        // Création d'un Guide
-        $guide = new Guide();
-        for ($i = 0; $i <= $index; $i++) {
-            $guide->addGroupeSortsInvocateur(new SortInvocateur());
+    // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur ou sa version avec les données du guide
+    #[Route('/groupe-sorts-invocateur/create/{index}', name: "create_groupe_sorts_invocateur")]
+    #[Route('/groupe-sorts-invocateur/edit/{idGuide}', name: "edit_groupe_sorts_invocateur")]
+    public function createOrEditGroupeSortsInvocateur(int $index = null, int $idGuide = null): Response
+    {
+        // Initialisation ou récupération du Guide
+        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
+        if (!$idGuide && $index !== null) {
+            for ($i = 0; $i <= $index; $i++) {
+                $guide->addGroupeSortsInvocateur(new SortInvocateur());
+            }
         }
 
-        // Création du formulaire
-        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
-        $formView = $form->createView();
-        $sortInvocateurFormView = $formView->children['groupeSortsInvocateur'][$index] ?? null;
+        // Appel de la méthode globale pour créer le formulaire
+        $formInfo = $this->createGuideForm($guide, 'sorts', $index, null);
 
-        return $this->render('guide/groupe-sorts-invocateur.html.twig', [
-            'form' => $sortInvocateurFormView,
-            'list_sorts_invocateur' => $sortsInvocateurList,
-            'img_url' => $img_url,
-        ]);
+        if (!$idGuide && $index !== null) {
+            return $this->render('guide/groupe-sorts-invocateur.html.twig', [
+                'form' => $formInfo['form'],
+                'list_sorts_invocateur' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        } else {
+            // Affichage de la vue avec les données du formulaire
+            return $this->render('guide/groupe-sorts-invocateur.html.twig', [
+                'forms' => $formInfo['form'],
+                'list_sorts_invocateur' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        }
     }
 
-    // Route composant formulaire pour ajouter un Ensebme de Groupe d'Items
-    #[Route('/ensemble-items/{index}', name: "get_ensemble_items")]
-    public function getEnsembleItems(
-        int $index,
-        ItemService $itemService,
-        ChampionService $championService
-    ): Response {
-        // Liste des items
-        $itemsList = $itemService->getItems();
-        // URL pour récupérer les images
-        $img_url = $championService->getChampionImageURL();
+    // Route composant formulaire pour ajouter un Ensemble de groupe d'item ou sa version avec les données du guide
+    #[Route('/ensemble-items/create/{index}', name: "create_ensemble_items")]
+    #[Route('/ensemble-items/edit/{idGuide}', name: "edit_ensemble_items")]
+    public function createOrEditEnsembleItems(int $index = null, int $idGuide = null): Response
+    {
+        // Initialisation ou récupération du Guide
+        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
-        // Création d'un Guide
-        $guide = new Guide();
-        for ($i = 0; $i <= $index; $i++) {
-            $ensemble = new EnsembleItemsGroups();
-            $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
-            $guide->addGroupeEnsemblesItem($ensemble);
+        if (!$idGuide && $index !== null) {
+            for ($i = 0; $i <= $index; $i++) {
+                $ensemble = new EnsembleItemsGroups();
+                $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
+                $guide->addGroupeEnsemblesItem($ensemble);
+            }
         }
 
-        // Création du formulaire
-        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
-        $formView = $form->createView();
-        $ensembleGroupeItemsFormView = $formView->children['groupeEnsemblesItems'][$index] ?? null;
+        // Appel de la méthode globale pour créer le formulaire
+        $formInfo = $this->createGuideForm($guide, 'ensembleItems', $index, null);
 
-        return $this->render('guide/ensemble-items.html.twig', [
-            'form' => $ensembleGroupeItemsFormView,
-            'list_items' => $itemsList,
-            'img_url' => $img_url
-        ]);
+        if (!$idGuide && $index !== null) {
+            return $this->render('guide/ensemble-items.html.twig', [
+                'form' => $formInfo['form'],
+                'list_items' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        } else {
+            // Affichage de la vue avec les données du formulaire
+            return $this->render('guide/ensemble-items.html.twig', [
+                'forms' => $formInfo['form'],
+                'list_items' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        }
     }
 
     // Route composant formulaire pour ajouter un groupe d'Items
-    #[Route('/groupe-items/{indexSet}/{indexGroup}', name: "get_groupe_items")]
-    public function getGroupeItems(
+    #[Route('/groupe-items/{indexSet}/{indexGroup}', name: "create_groupe_items")]
+    public function createGroupeItems(
         int $indexSet,
         int $indexGroup,
         ItemService $itemService,
@@ -235,63 +281,75 @@ class GuideController extends AbstractController
 
 
     // Route composant formulaire pour ajouter un Groupe de Compétences
-    #[Route('/groupe-competences/{idChamp}/{index}', name: "get_groupe_competences")]
-    public function getGroupeCompetences(
+    #[Route('/groupe-competences/create/{idChamp}/{index}', name: "create_groupe_competences")]
+    #[Route('/groupe-competences/edit/{idChamp}/{idGuide}', name: "edit_groupe_competences")]
+    public function createOrEditGroupeCompetences(
         string $idChamp,
-        int $index,
-        ChampionService $championService
+        int $index = null,
+        int $idGuide = null,
+        ChampionService $championService,
     ): Response {
+        // Initialisation ou récupération du Guide
+        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
+
+        if (!$idGuide && $index !== null) {
+            for ($i = 0; $i <= $index; $i++) {
+                $guide->addGroupesCompetence(new CompetencesGroup());
+            }
+        }
+
+        // Appel de la méthode globale pour créer le formulaire
+        $formInfo = $this->createGuideForm($guide, 'competences', $index, $idChamp);
+
         // Récupères les compétences du Champion que l'user a choisit
         $championData = $championService->getChampionSpells($idChamp);
-        // URL pour récupérer les images
-        $img_url = $championService->getChampionImageURL();
 
-        // Création d'un Guide
-        $guide = new Guide();
-        for ($i = 0; $i <= $index; $i++) {
-            $guide->addGroupesCompetence(new CompetencesGroup());
+        if (!$idGuide && $index !== null) {
+            return $this->render('guide/groupe-competences.html.twig', [
+                'form' => $formInfo['form'],
+                'champ' => $championData,
+                'img_url' => $formInfo['img_url'],
+            ]);
+        } else {
+            // Affichage de la vue avec les données du formulaire
+            return $this->render('guide/groupe-competences.html.twig', [
+                'forms' => $formInfo['form'],
+                'champ' => $championData,
+                'img_url' => $formInfo['img_url']
+            ]);
         }
-
-        // Création du formulaire
-        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => $idChamp]);
-        $formView = $form->createView();
-        $competenceFormView = $formView->children['groupesCompetences'][$index] ?? null;
-
-        return $this->render('guide/groupe-competences.html.twig', [
-            'champ' => $championData,
-            'form' => $competenceFormView,
-            'img_url' => $img_url
-        ]);
     }
 
-    // Route composant formulaire pour ajouter un groupe de Runes
-    #[Route('/groupe-runes/{index}', name: "get_groupe_runes")]
-    public function getGroupeRunes(
-        ChampionService $championService,
-        RuneService $runeService,
-        int $index
-    ): Response {
-        // Get Runes
-        $runesData = $runeService->getRunes();
-        // URL pour récupérer les images
-        $img_url = $championService->getChampionImageURL();
-
-        // Création d'un guide
-        $guide = new Guide();
-        for ($i = 0; $i <= $index; $i++) {
-            $guide->addGroupeRune(new RunesPage());
+    // Route composant formulaire pour ajouter un groupe de Runes ou sa version avec les données du guide
+    #[Route('/groupe-runes/create/{index}', name: "create_groupe_runes")]
+    #[Route('/groupe-runes/edit/{idGuide}', name: "edit_groupe_runes")]
+    public function createOrEditGroupeRunes(int $index = null, int $idGuide = null): Response
+    {
+        // Initialisation ou récupération du Guide
+        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
+        if (!$idGuide && $index !== null) {
+            for ($i = 0; $i <= $index; $i++) {
+                $guide->addGroupeRune(new RunesPage());
+            }
         }
 
-        // Création du formulaire
-        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
-        $formView = $form->createView();
-        $runeFormView = $formView->children['groupeRunes'][$index] ?? null;
+        // Appel de la méthode globale pour créer le formulaire
+        $formInfo = $this->createGuideForm($guide, 'runes', $index, null);
 
-        return $this->render('guide/groupe-runes.html.twig', [
-            'form' => $runeFormView,
-            'img_url' => $img_url,
-            'runes_data' => $runesData
-        ]);
+        if (!$idGuide && $index !== null) {
+            return $this->render('guide/groupe-runes.html.twig', [
+                'form' => $formInfo['form'],
+                'runes_data' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        } else {
+            // Affichage de la vue avec les données du formulaire
+            return $this->render('guide/groupe-runes.html.twig', [
+                'forms' => $formInfo['form'],
+                'runes_data' => $formInfo['list'],
+                'img_url' => $formInfo['img_url'],
+            ]);
+        }
     }
 
     #[Route('/guide', name: 'app_guide')]
@@ -300,5 +358,56 @@ class GuideController extends AbstractController
         return $this->render('guide/index.html.twig', [
             'controller_name' => 'GuideController',
         ]);
+    }
+
+    // Fonction commune pour créer le formulaire et préparer les données pour le rendu
+    private function createGuideForm(Guide $guide, string $type, ?int $index, ?string $idChamp): array
+    {
+        // Création du formulaire
+        $form = $this->createForm(GuideType::class, $guide, ['champion_id' => $idChamp]);
+
+        // Générer la vue du formulaire
+        $formView = $form->createView();
+
+        // Logique pour sélectionner la bonne partie du formulaire en fonction du type et de l'index
+        $childView = null;
+        switch ($type) {
+            case 'sorts':
+                $childView = $formView->children['groupeSortsInvocateur'] ?? null;
+                if ($index !== null) {
+                    $childView = $childView[$index] ?? null;
+                }
+                $list = $this->sortInvocateurService->getSortsInvocateur();
+                break;
+            case 'ensembleItems':
+                $childView = $formView->children['groupeEnsemblesItems'] ?? null;
+                if ($index !== null) {
+                    $childView = $childView[$index] ?? null;
+                }
+                $list = $this->itemService->getItems();
+                break;
+            case 'competences':
+                $childView = $formView->children['groupesCompetences'] ?? null;
+                if ($index !== null) {
+                    $childView = $childView[$index] ?? null;
+                }
+                $list = null;
+                break;
+            case 'runes':
+                $childView = $formView->children['groupeRunes'] ?? null;
+                if ($index !== null) {
+                    $childView = $childView[$index] ?? null;
+                }
+                $list = $this->runeService->getRunes();
+                break;
+        }
+
+        $img_url = $this->championService->getChampionImageURL();
+
+        return [
+            'form' => $childView,
+            'list' => $list,
+            'img_url' => $img_url,
+        ];
     }
 }
