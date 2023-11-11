@@ -122,4 +122,62 @@ class RuneService
             ]
         ];
     }
+
+
+    public function getRunesSelection($guide)
+    {
+
+        $groupesRunes = $guide->getGroupeRunes();
+
+        // Créer un tableau pour stocker les informations combinées pour tous les groupes de runes
+        $informationsTousGroupes = [];
+
+        // Parcourir chaque groupe de compétences
+        foreach ($groupesRunes as $groupe) {
+            $choixRunesPages = $groupe->getChoixRunesPages();
+
+            // Créer un tableau pour le groupe de runes courant
+            $informationsGroupe = [
+                'Primaire' => [],    // Initialisation des tableaux pour chaque type
+                'Secondaire' => [],
+                'Bonus' => []
+            ];
+
+            foreach ($choixRunesPages as $associationRunesBonus) {
+
+                $arbres = $associationRunesBonus->getChoixArbres();
+
+                foreach ($arbres as $arbre) {
+                    $choixRunes = $arbre->getChoixRunes();
+                    $typeArbre = $arbre->getType();
+
+                    foreach ($choixRunes as $rune) {
+                        // Pour chaque rune, ajoute les détails dans le tableau
+                        $informationsGroupe[$typeArbre][] = [
+                            'id' => $rune->getId(),
+                            'runeArbre' => $rune->getRuneArbre(),
+                            'runeType' => $rune->getRuneType(),
+                            'ordre' => $rune->getOrdre()
+                        ];
+                    }
+                }
+
+                $bonus = $associationRunesBonus->getChoixStatistiquesBonus();
+
+                foreach ($bonus as $runeBonus) {
+                    // Pour chaque bonus, ajoute les détails dans le tableau
+                    $informationsGroupe['Bonus'][] = [
+                        'id' => $runeBonus->getId(),
+                        'bonus_value' => $runeBonus->getBonusValue(),
+                        'bonus_line' => $runeBonus->getBonusLine()
+                    ];
+                }
+            }
+
+            // Ajouter les informations du groupe actuel au tableau principal
+            $informationsTousGroupes[] = $informationsGroupe;
+        }
+
+        return $informationsTousGroupes;
+    }
 }
