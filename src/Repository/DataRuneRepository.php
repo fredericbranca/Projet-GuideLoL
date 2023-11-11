@@ -28,6 +28,7 @@ class DataRuneRepository extends ServiceEntityRepository
             ->andWhere('dr.runeType = :type')
             ->setParameter('arbre', $arbre)
             ->setParameter('type', $type)
+            ->orderBy('dr.ordre', 'ASC')
             ->getQuery()
             ->getResult();
     }

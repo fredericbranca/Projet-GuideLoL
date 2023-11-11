@@ -86,7 +86,7 @@ class AdminController extends AbstractController
             foreach ($arbre['slots'] as $slotKey => $slot) {
                 $rune_type = $slotKey === 'Primary' ? 'Primary' : 'Secondary' . $slotKey;
 
-                foreach ($slot['runes'] as $rune) {
+                foreach ($slot['runes'] as $key => $rune) {
                     $runeId = $rune['id'];
 
                     // Vérifier si la rune existe déjà
@@ -101,6 +101,7 @@ class AdminController extends AbstractController
                     // Mise à jour ou ajout des informations de la rune
                     $dataRune->setRuneArbre($rune_arbre);
                     $dataRune->setRuneType($rune_type);
+                    $dataRune->setOrdre($key);
 
                     // Persist l'entité rune
                     $em->persist($dataRune);
