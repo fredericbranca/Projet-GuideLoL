@@ -44,6 +44,17 @@ for (var key in mappingFetchURLs) {
     }
 }
 
+
+var savedForm = [];
+// Sauvegarde et update les forms pour les prochains chargement
+function saveForm(id, form) {
+    if (!savedForm[id]) {
+        savedForm[id] = {
+            html: form
+        };
+    }
+}
+
 // Initiatlisation de l'idGuide si la page est en mode édition
 var pathname = window.location.pathname;
 
@@ -75,16 +86,6 @@ let menu = document.querySelector(".new-guide-builder__menu");
 function getSelectedChampionId() {
     const selectedChampionRadio = document.querySelector('.new-guide-config__champion input[type="radio"]:checked');
     return selectedChampionRadio ? selectedChampionRadio.value : null;
-}
-
-// Initialiser les index pour les items
-var ensembleItems = [];
-function initialiseIndexsItems(index) {
-    if (!ensembleItems[index]) {
-        ensembleItems[index] = {
-            indexGroup: 0
-        };
-    }
 }
 
 /**
@@ -120,6 +121,7 @@ async function fetchContainer(spanId) {
         console.error("Aucun champion sélectionné pour charger les compétences.");
         return;
     }
+
     let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/create/${championId}` : `${mappingFetchURLs[spanId]}/create`;
 
     if (guideId && fetchUpdate[spanId].fetchUpdate === false) {
@@ -129,30 +131,27 @@ async function fetchContainer(spanId) {
 
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+    let ensemble = container.parentNode;
+
     if (!container.querySelector('.new-guide__block')) {
         try {
-            if (spanId === "menu-sorts-invocateur-container") {
-                fetchURL += `/${indexSortsInvocateur}`;
-                indexSortsInvocateur++;
-            } else if (spanId === "menu-runes-container") {
-                fetchURL += `/${indexRunes}`;
-                indexRunes++;
-            } else if (spanId === "menu-competences-container") {
-                fetchURL += `/${indexCompetences}`;
-                indexCompetences++;
-            } else if (spanId === "menu-items-container") {
-                initialiseIndexsItems(0);
-                fetchURL += '/0';
-                ensembleItems[0].indexGroup++;
-                indexEnsembleItems++;
-            }
+            let html;
 
-            let response = await fetch(fetchURL);
-            if (!response.ok) {
-                throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+            if (savedForm[ensemble.className]) {
+                html = savedForm[ensemble.className].html;
+            } else {
+                let response = await fetch(fetchURL);
+                if (!response.ok) {
+                    throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+                }
+                html = await response.text();
+                
+                saveForm(ensemble.className, html)
             }
-            let html = await response.text();
+            
             container.insertAdjacentHTML('afterbegin', html);
+            updateGroupIds(ensemble);
+
         } catch (error) {
             console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
         }
@@ -175,31 +174,27 @@ async function fetchContainerWithBtn(spanId) {
 
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
+    let ensemble = container.parentNode;
 
     if (container) {
         try {
-            if (spanId === "menu-sorts-invocateur-container") {
-                indexSortsInvocateur = blockCount(mappingBuilderMenu[spanId]);
-                fetchURL += `/${indexSortsInvocateur++}`;
-            } else if (spanId === "menu-runes-container") {
-                indexRunes = blockCount(mappingBuilderMenu[spanId]);
-                fetchURL += `/${indexRunes++}`;
-            } else if (spanId === "menu-competences-container") {
-                indexCompetences = blockCount(mappingBuilderMenu[spanId]);
-                fetchURL += `/${indexCompetences++}`;
-            } else if (spanId === "menu-items-container") {
-                indexEnsembleItems = blockCount(mappingBuilderMenu[spanId]);
-                initialiseIndexsItems(indexEnsembleItems);
-                fetchURL += `/${indexEnsembleItems}`;
-                ensembleItems[indexEnsembleItems].indexGroup++;
+            let html;
+
+            if (savedForm[ensemble.className]) {
+                html = savedForm[ensemble.className].html;
+            } else {
+                let response = await fetch(fetchURL);
+                if (!response.ok) {
+                    throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+                }
+                html = await response.text();
+                saveForm(ensemble.className, html)
             }
 
-            let response = await fetch(fetchURL);
-            if (!response.ok) {
-                throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
-            }
-            let html = await response.text();
             container.insertAdjacentHTML('beforeend', html);
+
+            updateGroupIds(ensemble);
+
         } catch (error) {
             console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
         }
@@ -214,23 +209,31 @@ async function fetchGroupeItems(setContainer) {
     // Vérification si le container existe
     let container = document.querySelector(`#${setContainer}`);
     let insertIn = container.querySelector('.ensemble .sortable-list');
-    let blocks = container.querySelectorAll('.groupe-item');
-    let nbBlocksItems = blocks.length;
+    let ensemble = document.querySelector('.new-guide-builder__items-container');
+
 
     if (insertIn) {
         try {
-            let indexSetItems = setContainer.split('_')[2];
-            initialiseIndexsItems(indexSetItems);
-            ensembleItems[indexSetItems].indexGroup = nbBlocksItems;
-            let fetchURL = "/groupe-items" + `/${indexSetItems}` + `/${ensembleItems[indexSetItems].indexGroup}`;
-            ensembleItems[indexSetItems].indexGroup++;
+            let html;
 
-            let response = await fetch(fetchURL);
-            if (!response.ok) {
-                throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+            if (savedForm[insertIn.className]) {
+                html = savedForm[insertIn.className].html;
+            } else {
+                let fetchURL = "/groupe-items/create";
+
+                let response = await fetch(fetchURL);
+                if (!response.ok) {
+                    throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
+                }
+                html = await response.text();
+                saveForm(insertIn.className, html)
             }
-            let html = await response.text();
+            
             insertIn.insertAdjacentHTML('beforeend', html);
+
+            updateItemsGroupIds(insertIn);
+            updateGroupIds(ensemble);
+
         } catch (error) {
             console.error("Il y a eu un problème avec l'opération fetch: ", error.message);
         }
