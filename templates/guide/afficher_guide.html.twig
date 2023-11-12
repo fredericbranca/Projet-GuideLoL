@@ -3,7 +3,7 @@
 {% block title %}Guide
 {% endblock %}
 
-{% block stylesheets %}
+{% block additional_css %}
 	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
 {% endblock %}
 
@@ -60,7 +60,7 @@
 							{% for type in ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'] %}
 								{% for rune in primaire %}
 									{% if rune.runeType == type %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}" alt="{{ runes_data[rune.id].name }}">
+										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
 									{% endif %}
 								{% endfor %}
 							{% endfor %}
@@ -72,7 +72,7 @@
 							{% for type in ['Secondary1', 'Secondary2', 'Secondary3'] %}
 								{% for rune in secondaire %}
 									{% if rune.runeType == type %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}" alt="{{ runes_data[rune.id].name }}">
+										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
 									{% endif %}
 								{% endfor %}
 							{% endfor %}
@@ -84,7 +84,7 @@
 							{% for i in 1..3 %}
 								{% for bonusData in bonus %}
 									{% if bonusData.bonusLine == i %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ bonusData.icon }}" alt="">
+										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ bonusData.icon }}.webp" alt="">
 										{{ bonusData.bonusValue }}
 									{% endif %}
 								{% endfor %}
@@ -112,7 +112,7 @@
 						{{ groupeSortsInvocateur.commentaire }}</div>
 
 					{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
-						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
+						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}.webp" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
 					{% endfor %}
 
 				</div>
@@ -145,7 +145,7 @@
 								{{ itemsGroups.commentaire }}</div>
 
 							{% for choixItems in itemsGroups.choixItems %}
-								<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[choixItems.id].image }}" alt="{{ list_items[choixItems.id].name }}">
+								<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[choixItems.id].image }}.webp" alt="{{ list_items[choixItems.id].name }}">
 							{% endfor %}
 
 						</li>
@@ -173,7 +173,7 @@
 						{{ groupesCompetences.commentaire }}</div>
 
 					<div class="competence-passive">
-						<img src="{{ img_url }}/passive/{{ champion.passive.image.full }}" alt="{{ champion.passive.name }}">
+						<img src="{{ img_url }}/passive/{{ champion.passive.image.full }}.webp" alt="{{ champion.passive.name }}">
 						Compétence passive :
 						{{ champion.passive.name }}
 					</div>
@@ -184,7 +184,7 @@
 							{% set index = loop.index0 %}
 
 							{% for competence in choixCompetencesNiveaux.competences %}
-								<img src="{{ img_url }}/spell/{{ champion.spells[index].image.full }}" alt="{{ champion.spells[index].name }}">
+								<img src="{{ img_url }}/spell/{{ champion.spells[index].image.full }}.webp" alt="{{ champion.spells[index].name }}">
 
 								<div class="niveaux">
 									{% for niveau in 1..18 %}

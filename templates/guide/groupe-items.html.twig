@@ -14,7 +14,7 @@
 			<div class="item">
 				{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.parent.parent.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
 				<label for="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}]{{ item.vars.value }}">
-					<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
+					<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
 				</label>
 			</div>
 		{% endfor %}

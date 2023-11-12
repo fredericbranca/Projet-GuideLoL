@@ -3,7 +3,7 @@
 {% block title %}Créer un guide
 {% endblock %}
 
-{% block stylesheets %}
+{% block additional_css %}
 	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
 {% endblock %}
 
@@ -54,7 +54,7 @@
 							{{ form_widget(champion) }}
 							{# génère le bouton radio #}
 							<label for="{{ champion.vars.id }}">
-								<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}" alt="{{ champions[champion.vars.value].name }}">
+								<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
 							</label>
 						</div>
 					{% endfor %}
@@ -74,7 +74,7 @@
 			</div>
 
 			{# Choix des summoner spells #}
-			<div class="new-guide-builder__sorts-invocateur-container current">
+			<div class="new-guide-builder__sorts-invocateur-container">
 				<div class="new-guide-builder__container"></div>
 				<span class="flat-btn add-group">Ajouter d'un groupe de Sorts</span>
 			</div>
@@ -106,4 +106,6 @@
 
 </div>
 
-<script src="{{ asset('js/guide.js') }}"></script>{% endblock %}
+<script src="{{ asset('js/guide.js') }}"></script>
+
+{% endblock %}
