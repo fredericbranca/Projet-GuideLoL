@@ -1,0 +1,174 @@
+/* Style CSS de la navbar */
+
+.navbar {
+  position: relative;
+  background-color: #06070c;
+  display: flex;
+  align-items: center;
+  height: 65px;
+  box-shadow: inset 0 2px 0 0 #dac286, inset 0 -2px 0 0 #dac286;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 15%;
+  gap: 30px;
+}
+
+.navbar a {
+  font-size: 16px;
+}
+
+.nav-logo {
+  position: absolute;
+  width: 216px;
+  height: auto;
+  top: 37px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 1;
+}
+
+.nav-links,
+.nav-auth {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 82px;
+}
+
+.nav-auth {
+  text-align: right;
+}
+
+.nav-link {
+  color: #dac286;
+  text-decoration: none;
+  transition: color 0.5s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #bbc2db;
+}
+
+.login-link {
+  text-decoration: none;
+  color: #dac286;
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 5px 40px;
+  border: 2px solid #dac286;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.wrapper::after {
+  content: "";
+  position: absolute;
+  top: -450%;
+  left: -200%;
+  width: 260px;
+  height: 240px;
+  opacity: 0;
+  transform: rotate(25deg);
+  background: hsla(0, 0%, 100%, 0.13);
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0.13) 0,
+    hsla(0, 0%, 100%, 0.13) 77%,
+    hsla(0, 0%, 100%, 0.5) 92%,
+    hsla(0, 0%, 100%, 0)
+  );
+}
+.wrapper:hover::after {
+  opacity: 1;
+  top: -35%;
+  left: -35%;
+  transition-property: left, top, opacity;
+  transition-duration: 0.7s, 0.7s, 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Styles pour les écrans jusqu'à 1200px */
+@media screen and (max-width: 1500px) {
+  .navbar-nav {
+    margin: 0 10%;
+  }
+
+  .nav-links,
+  .nav-auth {
+    gap: 50px;
+  }
+}
+
+/* Styles pour les écrans jusqu'à 1200px */
+@media screen and (max-width: 1200px) {
+  .navbar-nav {
+    margin: 0 10%;
+  }
+
+  .navbar a {
+    font-size: 12px;
+  }
+
+  .wrapper a {
+    font-size: 16px;
+  }
+
+  .nav-links,
+  .nav-auth {
+    gap: 30px;
+  }
+
+  .nav-logo {
+    width: 170px;
+    top: 43px;
+  }
+}
+
+/* Styles pour les écrans jusqu'à 768px (tablettes) */
+@media screen and (max-width: 768px) {
+  .navbar-nav {
+    gap: 20px;
+  }
+
+  .navbar a {
+    font-size: 8px;
+  }
+
+  .wrapper {
+    padding: px 30px;
+  }
+
+  .wrapper a {
+    font-size: 13px;
+  }
+
+  .nav-links,
+  .nav-auth {
+    gap: 20px;
+  }
+
+  .nav-logo {
+    width: 140px;
+    top: 46px;
+  }
+}
+
+/* Styles pour les écrans jusqu'à 480px (mobiles) */
+@media screen and (max-width: 480px) {
+  .navbar-nav {
+    margin: 0 5%; /* Réduire davantage les marges */
+  }
+
+  .nav-links,
+  .nav-auth {
+    gap: 20px;
+  }
+}
