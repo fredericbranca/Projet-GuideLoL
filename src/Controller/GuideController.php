@@ -168,22 +168,23 @@ class GuideController extends AbstractController
     // Routes vers les composants pour la création et l'édition de Guide
 
     // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur ou sa version avec les données du guide
-    #[Route('/groupe-sorts-invocateur/create/{index}', name: "create_groupe_sorts_invocateur")]
+    #[Route('/groupe-sorts-invocateur/create', name: "create_groupe_sorts_invocateur")]
     #[Route('/groupe-sorts-invocateur/edit/{idGuide}', name: "edit_groupe_sorts_invocateur")]
-    public function createOrEditGroupeSortsInvocateur(int $index = null, int $idGuide = null): Response
+    public function createOrEditGroupeSortsInvocateur(int $idGuide = null): Response
     {
+        $index = null;
+
         // Initialisation ou récupération du Guide
         $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
-        if (!$idGuide && $index !== null) {
-            for ($i = 0; $i <= $index; $i++) {
-                $guide->addGroupeSortsInvocateur(new SortInvocateur());
-            }
+        if (!$idGuide) {
+            $guide->addGroupeSortsInvocateur(new SortInvocateur());
+            $index = 0;
         }
 
         // Appel de la méthode globale pour créer le formulaire
         $formInfo = $this->createGuideForm($guide, 'sorts', $index, null);
 
-        if (!$idGuide && $index !== null) {
+        if (!$idGuide) {
             return $this->render('guide/groupe-sorts-invocateur.html.twig', [
                 'form' => $formInfo['form'],
                 'list_sorts_invocateur' => $formInfo['list'],
@@ -200,25 +201,26 @@ class GuideController extends AbstractController
     }
 
     // Route composant formulaire pour ajouter un Ensemble de groupe d'item ou sa version avec les données du guide
-    #[Route('/ensemble-items/create/{index}', name: "create_ensemble_items")]
+    #[Route('/ensemble-items/create', name: "create_ensemble_items")]
     #[Route('/ensemble-items/edit/{idGuide}', name: "edit_ensemble_items")]
     public function createOrEditEnsembleItems(int $index = null, int $idGuide = null): Response
     {
+        $index = null;
+
         // Initialisation ou récupération du Guide
         $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
-        if (!$idGuide && $index !== null) {
-            for ($i = 0; $i <= $index; $i++) {
-                $ensemble = new EnsembleItemsGroups();
-                $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
-                $guide->addGroupeEnsemblesItem($ensemble);
-            }
+        if (!$idGuide) {
+            $ensemble = new EnsembleItemsGroups();
+            $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
+            $guide->addGroupeEnsemblesItem($ensemble);
+            $index = 0;
         }
 
         // Appel de la méthode globale pour créer le formulaire
         $formInfo = $this->createGuideForm($guide, 'ensembleItems', $index, null);
 
-        if (!$idGuide && $index !== null) {
+        if (!$idGuide) {
             return $this->render('guide/ensemble-items.html.twig', [
                 'form' => $formInfo['form'],
                 'list_items' => $formInfo['list'],
@@ -235,10 +237,8 @@ class GuideController extends AbstractController
     }
 
     // Route composant formulaire pour ajouter un groupe d'Items
-    #[Route('/groupe-items/{indexSet}/{indexGroup}', name: "create_groupe_items")]
+    #[Route('/groupe-items/create', name: "create_groupe_items")]
     public function createGroupeItems(
-        int $indexSet,
-        int $indexGroup,
         ItemService $itemService,
         ChampionService $championService
     ): Response {
@@ -249,19 +249,10 @@ class GuideController extends AbstractController
         // Création d'un Guide
         $guide = new Guide();
 
-        // Création des ensembles de groupe d'items jusqu'à l'indexSet
-        for ($i = 0; $i <= $indexSet; $i++) {
-            $ensemble = new EnsembleItemsGroups();
-
-            if ($i === $indexSet) {
-                // Création des groupes d'items pour l'ensemble utile uniquement
-                for ($j = 0; $j <= $indexGroup; $j++) {
-                    $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
-                }
-            }
-
-            $guide->addGroupeEnsemblesItem($ensemble);
-        }
+        // Création du groupe d'items
+        $ensemble = new EnsembleItemsGroups();
+        $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
+        $guide->addGroupeEnsemblesItem($ensemble);
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
@@ -269,8 +260,8 @@ class GuideController extends AbstractController
 
         // Je récupère le formulaire pour le groupe d'items spécifique à l'indexSet et indexGroup
         $ensembleGroupeItemsFormView = $formView
-            ->children['groupeEnsemblesItems'][$indexSet]
-            ->children['associationsEnsemblesItemsGroups'][$indexGroup] ?? null;
+            ->children['groupeEnsemblesItems'][0]
+            ->children['associationsEnsemblesItemsGroups'][0] ?? null;
 
         return $this->render('guide/groupe-items.html.twig', [
             'form' => $ensembleGroupeItemsFormView,
@@ -281,21 +272,21 @@ class GuideController extends AbstractController
 
 
     // Route composant formulaire pour ajouter un Groupe de Compétences
-    #[Route('/groupe-competences/create/{idChamp}/{index}', name: "create_groupe_competences")]
+    #[Route('/groupe-competences/create/{idChamp}', name: "create_groupe_competences")]
     #[Route('/groupe-competences/edit/{idChamp}/{idGuide}', name: "edit_groupe_competences")]
     public function createOrEditGroupeCompetences(
         string $idChamp,
-        int $index = null,
         int $idGuide = null,
         ChampionService $championService,
     ): Response {
+        $index = null;
+
         // Initialisation ou récupération du Guide
         $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
-        if (!$idGuide && $index !== null) {
-            for ($i = 0; $i <= $index; $i++) {
-                $guide->addGroupesCompetence(new CompetencesGroup());
-            }
+        if (!$idGuide) {
+            $guide->addGroupesCompetence(new CompetencesGroup());
+            $index = 0;
         }
 
         // Appel de la méthode globale pour créer le formulaire
@@ -304,7 +295,7 @@ class GuideController extends AbstractController
         // Récupères les compétences du Champion que l'user a choisit
         $championData = $championService->getChampionSpells($idChamp);
 
-        if (!$idGuide && $index !== null) {
+        if (!$idGuide) {
             return $this->render('guide/groupe-competences.html.twig', [
                 'form' => $formInfo['form'],
                 'champ' => $championData,
@@ -321,22 +312,23 @@ class GuideController extends AbstractController
     }
 
     // Route composant formulaire pour ajouter un groupe de Runes ou sa version avec les données du guide
-    #[Route('/groupe-runes/create/{index}', name: "create_groupe_runes")]
+    #[Route('/groupe-runes/create', name: "create_groupe_runes")]
     #[Route('/groupe-runes/edit/{idGuide}', name: "edit_groupe_runes")]
     public function createOrEditGroupeRunes(int $index = null, int $idGuide = null): Response
     {
+        $index = null;
+
         // Initialisation ou récupération du Guide
         $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
-        if (!$idGuide && $index !== null) {
-            for ($i = 0; $i <= $index; $i++) {
-                $guide->addGroupeRune(new RunesPage());
-            }
+        if (!$idGuide) {
+            $guide->addGroupeRune(new RunesPage());
+            $index = 0;
         }
 
         // Appel de la méthode globale pour créer le formulaire
         $formInfo = $this->createGuideForm($guide, 'runes', $index, null);
 
-        if (!$idGuide && $index !== null) {
+        if (!$idGuide) {
             return $this->render('guide/groupe-runes.html.twig', [
                 'form' => $formInfo['form'],
                 'runes_data' => $formInfo['list'],
