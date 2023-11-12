@@ -12,11 +12,13 @@
 	<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
 		{% for item in form.choixItems %}
 			<div class="item">
-				{{ form_widget(item, {'id': item.vars.value  ~ '-set' ~ form.parent.parent.vars.name ~ '-group' ~ form.vars.name }) }}
-				<label for="{{ item.vars.value }}-set{{ form.parent.parent.vars.name }}-group{{ form.vars.name }}">
+				{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.parent.parent.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
+				<label for="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}]{{ item.vars.value }}">
 					<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}" alt="{{ list_items[item.vars.value].name }}">
 				</label>
 			</div>
 		{% endfor %}
 	</div>
+
+	<span class="flat-btn supprimer-itemsGroupe">Supprimer</span>
 </li>

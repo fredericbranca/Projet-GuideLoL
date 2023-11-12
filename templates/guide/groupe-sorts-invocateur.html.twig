@@ -21,13 +21,15 @@
 			<div style="display:flex; flex-wrap: wrap">
 				{% for choice in form.choixSortInvocateur %}
 					<div>
-						{{ form_widget(choice, {'id': choice.vars.value ~ '-' ~ form.vars.name }) }}
-						<label for="{{ choice.vars.value }}-{{ form.vars.name }}">
+						{{ form_widget(choice, {'id': 'guide[groupeSortsInvocateur][' ~ form.vars.name ~ ']' ~ choice.vars.value }) }}
+						<label for="guide[groupeSortsInvocateur][{{ form.vars.name }}]{{ choice.vars.value }}">
 							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
 						</label>
 					</div>
 				{% endfor %}
 			</div>
+
+			<span class="flat-btn supprimer-groupe">Supprimer</span>
 		</div>
 
 	{% endfor %}
@@ -53,13 +55,15 @@
 		<div style="display:flex; flex-wrap: wrap">
 			{% for choice in form.choixSortInvocateur %}
 				<div>
-					{{ form_widget(choice, {'id': choice.vars.value ~ '-' ~ form.vars.name }) }}
-					<label for="{{ choice.vars.value }}-{{ form.vars.name }}">
+					{{ form_widget(choice, {'id': 'guide[groupeSortsInvocateur][' ~ form.vars.name ~ ']' ~ choice.vars.value }) }}
+					<label for="guide[groupeSortsInvocateur][{{ form.vars.name }}]{{ choice.vars.value }}">
 						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
 					</label>
 				</div>
 			{% endfor %}
 		</div>
+
+		<span class="flat-btn supprimer-groupe">Supprimer</span>
 	</div>
 
 
