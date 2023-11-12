@@ -25,11 +25,11 @@ const mappingFetchURLs = {
 };
 
 // Initialisation des variables pour suivre les indices
-function blockCount(className) {
+const blockCount = (className) => {
     let container = document.querySelector(className + ' .new-guide-builder__container');
     let blocks = container.querySelectorAll('.new-guide__block');
     return blocks.length;
-}
+};
 
 let indexSortsInvocateur = blockCount(".new-guide-builder__sorts-invocateur-container");
 let indexEnsembleItems = blockCount(".new-guide-builder__items-container");
@@ -176,7 +176,7 @@ async function fetchContainerWithBtn(spanId) {
     // Vérification si le contenu a déjà été chargé
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
 
-    if (container.querySelector('.new-guide__block')) {
+    if (container) {
         try {
             if (spanId === "menu-sorts-invocateur-container") {
                 indexSortsInvocateur = blockCount(mappingBuilderMenu[spanId]);
@@ -262,6 +262,98 @@ function resetAllTrees() {
 // -----------------------
 // ÉCOUTEURS D'ÉVÉNEMENTS
 // -----------------------
+
+// Gestionnaire d'événements globaux pour la suppression de groupes et ensemble
+// Supprime l'élément parent du bouton cliqué
+document.addEventListener('click', function (event) {
+    if (event.target.classList.contains('supprimer-groupe')) {
+        // Trouve le parent le plus proche qui commence par '.new-guide-builder'
+        let ensemble = event.target.closest('[class^="new-guide-builder"]');
+
+        // Si l'ensemble trouvé est '.new-guide-builder__container', remonte d'un niveau
+        if (ensemble && ensemble.classList.contains('new-guide-builder__container')) {
+            ensemble = ensemble.parentNode;
+        }
+
+        // Vérifie que l'ensemble existe
+        if (ensemble) {
+            event.target.parentNode.remove();
+            updateGroupIds(ensemble);
+        }
+    }
+    if (event.target.classList.contains('supprimer-itemsGroupe')) {
+        // Trouve le parent le plus proche qui commence par '.new-guide-builder'
+        let ensemble = event.target.closest('[class^="sortable-list"]');
+
+        event.target.parentNode.remove();
+        updateItemsGroupIds(ensemble);
+    }
+});
+
+const updateGroupIds = (ensembleSelector) => {
+    let groupes = ensembleSelector.querySelectorAll('.new-guide__block');
+
+    groupes.forEach((group, index) => {
+        // Mettre à jour l'ID du groupe
+        group.id = group.id.replace(/\d+$/, index.toString());
+
+        // Mettre à jour les IDs et noms des éléments enfants
+        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"]');
+        childElements.forEach(el => {
+            if (el.id) {
+                el.id = el.id.replace(/\d+/, index.toString());
+            }
+            if (el.name) {
+                el.name = el.name.replace(/\d+/, index.toString());
+            }
+            if (el.htmlFor) {
+                el.htmlFor = el.htmlFor.replace(/\d+/, index.toString());
+            }
+        });
+    });
+};
+
+const updateItemsGroupIds = (ensembleSelector) => {
+    let groupes = ensembleSelector.querySelectorAll('.groupe-item');
+
+    groupes.forEach((group, indexGroupe) => {
+        // Mettre à jour l'ID du groupe
+        let idParts = group.id.split(/(\d+)/);
+        if (idParts.length > 3) {
+            idParts[3] = indexGroupe.toString();
+            group.id = idParts.join('');
+        }
+
+        // Mettre à jour les IDs et noms des éléments enfants
+        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"]');
+        childElements.forEach(el => {
+            if (el.id) {
+                let idParts = el.id.split(/(\d+)/);
+                if (idParts.length > 3) {
+                    idParts[3] = indexGroupe.toString();
+                    el.id = idParts.join('');
+                }
+            }
+
+            if (el.name) {
+                // Logique pour name
+                let nameParts = el.name.split(/(\[\d+\])/);
+                if (nameParts.length > 1) {
+                    nameParts[3] = `[${indexGroupe}]`;
+                    el.name = nameParts.join('');
+                }
+            }
+
+            if (el.htmlFor) {
+                let htmlForParts = el.htmlFor.split(/(\d+)/);
+                if (htmlForParts.length > 3) {
+                    htmlForParts[3] = indexGroupe.toString();
+                    el.htmlFor = htmlForParts.join('');
+                }
+            }
+        });
+    });
+};
 
 // Ajout d'un écouteur d'événement au click sur la sidebar
 sidebar.addEventListener("click", function (event) {
@@ -372,13 +464,23 @@ function updateHiddenInput(parentBlock, treeName, value) {
     }
 }
 
+let uniqueClickId = 0;
 const runesContainer = document.querySelector('.new-guide-builder__runes-container');
 // Gérer le clic sur les arbres
 runesContainer.addEventListener('click', function (event) {
     // Trouver l'élément parent .new-guide__block le plus proche du clic
     var parentBlock = event.target.closest('.new-guide__block');
     if (parentBlock) {
-        var index = parentBlock.id.match(/\d+$/)[0];
+        // Vérifier si data-click existe
+        if (!parentBlock.hasAttribute('data-click')) {
+            // Si non, crée data-click avec un id unique
+            parentBlock.setAttribute('data-click', `clickId-${uniqueClickId}`);
+            uniqueClickId++; // Incrémenter l'ID unique pour le prochain usage
+        }
+
+        // Utiliser la valeur de data-click
+        var index = parentBlock.getAttribute('data-click');
+
         // Initialiser clickedTrees pour ce bloc
         initializeClickedTreesForBlock(index);
     } else {
