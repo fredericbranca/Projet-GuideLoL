@@ -34,87 +34,89 @@
 
 			<div class="col-right">
 				{{ form_start(form) }}
-					{# Container de la première partie du guide (configuration) #}
-					<div
-						class="new-guide-config">
-						{# Ajout d'un titre #}
-						<div class="new-guide-config__title">
-							{{ form_label(form.titre)}}
-							{{ form_widget(form.titre)}}
-							{{ form_errors(form.titre)}}
-						</div>
-
-						{# Choix du rôle #}
-						<div class="new-guide-config__role">
-							{{ form_label(form.voie)}}
-							{{ form_widget(form.voie)}}
-							{{ form_errors(form.voie)}}
-						</div>
-
-						{# Choix du Champion #}
-						<div class="new-guide-config__champion">
-							<div class="liste-champions">
-								{% for champion in form.champion %}
-									<div>
-										{{ form_widget(champion) }}
-										{# génère le bouton radio #}
-										<label for="{{ champion.vars.id }}">
-											<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
-										</label>
-									</div>
-								{% endfor %}
-							</div>
-							{# affiche les erreurs #}
-							{{ form_errors(form.champion) }}
-						</div>
+				{# Container de la première partie du guide (configuration) #}
+				<div
+					class="new-guide-config">
+					{# Ajout d'un titre #}
+					<div class="new-guide-config__title">
+						{{ form_label(form.titre)}}
+						{{ form_widget(form.titre)}}
+						{{ form_errors(form.titre)}}
 					</div>
 
-					<div class="new-guide-builder">
-
-						<div class="new-guide-builder__menu">
-							<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur</span>
-							<span id="menu-items-container">Items</span>
-							<span id="menu-competences-container">Compétences</span>
-							<span id="menu-runes-container">Runes</span>
-						</div>
-
-						{# Choix des summoner spells #}
-						<div class="new-guide-builder__sorts-invocateur-container current">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Sorts</span>
-						</div>
-
-						{# Choix des items #}
-						<div class="new-guide-builder__items-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un ensemble d'Items</span>
-						</div>
-
-						{# Choix des compétences #}
-						<div class="new-guide-builder__competences-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Compétences</span>
-						</div>
-
-						{# Choix des runes #}
-						<div class="new-guide-builder__runes-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Runes</span>
-						</div>
-
+					{# Choix du rôle #}
+					<div class="new-guide-config__role">
+						{{ form_label(form.voie)}}
+						{{ form_widget(form.voie)}}
+						{{ form_errors(form.voie)}}
 					</div>
 
-					{{ form_widget(form._token) }}
-					<button style="display: none" type="submit" id="guide_Valider" name="guide[Valider]"/>
-				</form>
-			</div>
+					{# Choix du Champion #}
+					<div class="new-guide-config__champion">
+						<div class="liste-champions">
+							{% for champion in form.champion %}
+								<div>
+									{{ form_widget(champion) }}
+									{# génère le bouton radio #}
+									<label for="{{ champion.vars.id }}">
+										<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
+									</label>
+								</div>
+							{% endfor %}
+						</div>
+						{# affiche les erreurs #}
+						{{ form_errors(form.champion) }}
+					</div>
+				</div>
+
+				<div class="new-guide-builder">
+
+					<div class="new-guide-builder__menu">
+						<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur</span>
+						<span id="menu-items-container">Items</span>
+						<span id="menu-competences-container">Compétences</span>
+						<span id="menu-runes-container">Runes</span>
+					</div>
+
+					{# Choix des summoner spells #}
+					<div class="new-guide-builder__sorts-invocateur-container current">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Sorts</span>
+					</div>
+
+					{# Choix des items #}
+					<div class="new-guide-builder__items-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un ensemble d'Items</span>
+					</div>
+
+					{# Choix des compétences #}
+					<div class="new-guide-builder__competences-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Compétences</span>
+					</div>
+
+					{# Choix des runes #}
+					<div class="new-guide-builder__runes-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Runes</span>
+					</div>
+
+				</div>
+
+				{{ form_widget(form._token) }}
+				<button style="display: none" type="submit" id="guide_Valider" name="guide[Valider]"/>
+			</form>
 		</div>
 	</div>
+</div>
 
 <script src="{{ asset('js/guide.js') }}"></script>
 <script>
 	var infos_sorts = {{ infos_sorts|json_encode|raw }};
-var infos_runes = {{ infos_runes|json_encode|raw }};
+	var infos_runes = {{ infos_runes|json_encode|raw }};
 </script>
 <script src="{{ asset('js/checkboxCompetences.js') }}"></script>
-<script src="{{ asset('js/checkRadioRunes.js') }}"></script>{% endblock %}
+<script src="{{ asset('js/checkRadioRunes.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="{{ asset('js/guide-sortable.js') }}"></script>{% endblock %}
