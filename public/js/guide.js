@@ -145,10 +145,10 @@ async function fetchContainer(spanId) {
                     throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
                 }
                 html = await response.text();
-                
+
                 saveForm(ensemble.className, html)
             }
-            
+
             container.insertAdjacentHTML('afterbegin', html);
             updateGroupIds(ensemble);
 
@@ -228,10 +228,9 @@ async function fetchGroupeItems(setContainer) {
                 html = await response.text();
                 saveForm(insertIn.className, html)
             }
-            
+
             insertIn.insertAdjacentHTML('beforeend', html);
 
-            updateItemsGroupIds(insertIn);
             updateGroupIds(ensemble);
 
         } catch (error) {
@@ -267,8 +266,9 @@ function resetAllTrees() {
 // -----------------------
 
 // Gestionnaire d'événements globaux pour la suppression de groupes et ensemble
-// Supprime l'élément parent du bouton cliqué
-document.addEventListener('click', function (event) {
+let blockBuilder = document.querySelector('.new-guide-builder');
+blockBuilder.addEventListener('click', function (event) {
+    // Supprime l'élément parent du bouton cliqué
     if (event.target.classList.contains('supprimer-groupe')) {
         // Trouve le parent le plus proche qui commence par '.new-guide-builder'
         let ensemble = event.target.closest('[class^="new-guide-builder"]');
@@ -291,6 +291,20 @@ document.addEventListener('click', function (event) {
         event.target.parentNode.remove();
         updateItemsGroupIds(ensemble);
     }
+
+
+    // Vérifie si l'élément cliqué a la classe .titre-groupe ou .titre-groupe-item
+    if (event.target.classList.contains('titre-groupe') || event.target.classList.contains('titre-groupe-item')) {
+        // Trouve la div suivante la plus proche
+        var nextDiv = event.target.nextElementSibling;
+
+        // Vérifie si la div suivante est .groupe-content
+        if (nextDiv && nextDiv.classList.contains('groupe-content')) {
+            // Basculer entre display: none et display: block
+            nextDiv.style.display = (nextDiv.style.display === 'none' ? 'block' : 'none');
+        }
+    }
+
 });
 
 const updateGroupIds = (ensembleSelector) => {
@@ -313,6 +327,8 @@ const updateGroupIds = (ensembleSelector) => {
                 el.htmlFor = el.htmlFor.replace(/\d+/, index.toString());
             }
         });
+
+        updateItemsGroupIds(group);
     });
 };
 
