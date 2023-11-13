@@ -1,13 +1,13 @@
 /* Position des éléments */
 #new-guide {
-  margin-top: 10%;
+  margin-top: 1%;
 }
 
 .creation-guide {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  gap: 2%
+  gap: 2%;
 }
 
 .col-left {
@@ -18,7 +18,8 @@
   width: 70%;
 }
 
-.new-guide__block, .groupe-item {
+.new-guide__block,
+.groupe-item {
   position: relative;
 }
 
@@ -29,9 +30,9 @@
 /* Configuration */
 
 .liste-champions {
-  display:flex; 
-  flex-wrap: wrap; 
-  height: 200px; 
+  display: flex;
+  flex-wrap: wrap;
+  height: 200px;
   overflow: auto;
 }
 
@@ -45,7 +46,6 @@
 }
 
 /* SIDEBAR : Configuration Guide */
-
 
 .new-guide-sidebar__header {
   background: #152034;
@@ -172,7 +172,8 @@
 }
 
 /* Titre des groupes */
-.new-guide__block .titre-groupe, .new-guide__block .titre-groupe-item {
+.new-guide__block .titre-groupe,
+.new-guide__block .titre-groupe-item {
   background-color: #0b1727;
   display: flex;
   align-items: center;
@@ -181,23 +182,31 @@
   color: white;
 }
 .new-guide__block .titre-groupe:hover {
-  background-color: #233148;
+  background-color: #030811;
 }
 
-.new-guide__block .titre-groupe-item {
+.new-guide__block .titre-groupe-item, .groupe-item {
   background-color: #182a41;
 }
 .new-guide__block .titre-groupe-item:hover {
-  background-color: #35455e;
+  background-color: #142036;
 }
 
 /* Contenu des groupes */
-.groupe-content, .groupe-content-item {
+.new-guide__block {
+  background-color: #0b1727;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+
+.groupe-content,
+.groupe-content-item {
   background-color: #233148;
   color: #afbbce;
 }
 
-.supprimer-groupe, .supprimer-itemsGroupe {
+.supprimer-groupe,
+.supprimer-itemsGroupe {
   position: absolute;
   top: 0;
   right: 0;
@@ -213,8 +222,7 @@
 
 /* Secion Items */
 .groupe-content {
-  padding: 0 10px;
-  margin-bottom: 3px;
+  margin: 0 3px;
 }
 
 .ensemble-content {
@@ -225,6 +233,11 @@
 .sortable-list {
   display: flex;
   flex-direction: column;
+  gap: 3px;
+}
+
+.groupe-item .groupe-content {
+  margin: 0 3px 3px 3px;
 }
 
 /* Section Compétences */
