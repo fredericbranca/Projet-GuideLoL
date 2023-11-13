@@ -162,7 +162,7 @@
 }
 
 /* Styles pour les écrans jusqu'à 480px (mobiles) */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 490px) {
   .navbar-nav {
     margin: 0 5%; /* Réduire davantage les marges */
   }
