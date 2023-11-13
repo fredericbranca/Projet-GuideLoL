@@ -7,11 +7,21 @@
   font-family: "Sarala";
 }
 
-.content {
+body {
   background-color: #c3d1ff;
+  min-height: 100vh;
 }
 
-.header {
+.content {
+  min-height: 100vh;
+  color: black
+}
+
+.content > :not(.header-home) {
+  margin: 0 15%;
+}
+
+.header-home {
   position: relative;
 }
 
