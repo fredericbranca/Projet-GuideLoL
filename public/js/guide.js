@@ -328,6 +328,13 @@ const updateGroupIds = (ensembleSelector) => {
             }
         });
 
+        // Met à jour la valeur de l'input ordre en fonction de l'index
+        let ordreInput = group.querySelector('.ordre');
+
+        if (ordreInput) {
+            ordreInput.value = index;
+        }
+
         updateItemsGroupIds(group);
     });
 };
@@ -371,6 +378,13 @@ const updateItemsGroupIds = (ensembleSelector) => {
                 }
             }
         });
+
+        // Met à jour la valeur de l'input ordre groupe items en fonction de l'index
+        let ordreInput = group.querySelector('.ordre-groupe-items');
+
+        if (ordreInput) {
+            ordreInput.value = indexGroupe;
+        }
     });
 };
 
