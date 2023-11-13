@@ -11,7 +11,6 @@
 					{{ form_widget(form.titre) }}
 				</div>
 				<div class="ensemble-content">
-					{{ form_label(form.ordre) }}
 					{{ form_widget(form.ordre) }}
 
 					<ul class="sortable-list">
@@ -26,7 +25,6 @@
 								{{ form_label(groupeItems.commentaire) }}
 								{{ form_widget(groupeItems.commentaire) }}
 
-								{{ form_label(groupeItems.ordre) }}
 								{{ form_widget(groupeItems.ordre) }}
 
 								<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
@@ -63,7 +61,6 @@
 				{{ form_widget(form.titre) }}
 			</div>
 			<div class="ensemble-content">
-				{{ form_label(form.ordre) }}
 				{{ form_widget(form.ordre) }}
 
 				<ul class="sortable-list">
@@ -77,8 +74,7 @@
 							<div class="groupe-content">
 								{{ form_label(groupeItems.commentaire) }}
 								{{ form_widget(groupeItems.commentaire) }}
-
-								{{ form_label(groupeItems.ordre) }}
+								
 								{{ form_widget(groupeItems.ordre) }}
 
 								<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">

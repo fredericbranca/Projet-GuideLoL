@@ -13,10 +13,7 @@
 					{{ form_widget(form.commentaire) }}
 				</div>
 
-				<div>
-					{{ form_label(form.ordre) }}
-					{{ form_widget(form.ordre) }}
-				</div>
+				{{ form_widget(form.ordre) }}
 
 				<div style="display:flex; flex-wrap: wrap">
 					{% for choice in form.choixSortInvocateur %}
@@ -48,10 +45,7 @@
 				{{ form_widget(form.commentaire) }}
 			</div>
 
-			<div>
-				{{ form_label(form.ordre) }}
-				{{ form_widget(form.ordre) }}
-			</div>
+			{{ form_widget(form.ordre) }}
 
 			<div style="display:flex; flex-wrap: wrap">
 				{% for choice in form.choixSortInvocateur %}

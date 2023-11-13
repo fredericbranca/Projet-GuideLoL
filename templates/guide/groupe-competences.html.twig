@@ -13,10 +13,7 @@
 					{{ form_widget(form.commentaire) }}
 				</div>
 
-				<div>
-					{{ form_label(form.ordre) }}
-					{{ form_widget(form.ordre) }}
-				</div>
+				{{ form_widget(form.ordre) }}
 
 				<div class="competence-passive">
 					<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
@@ -64,10 +61,7 @@
 				{{ form_widget(form.commentaire) }}
 			</div>
 
-			<div>
-				{{ form_label(form.ordre) }}
-				{{ form_widget(form.ordre) }}
-			</div>
+			{{ form_widget(form.ordre) }}
 
 			<div class="competence-passive">
 				<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
