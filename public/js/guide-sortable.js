@@ -5,7 +5,6 @@ function setupSortable() {
             group: 'group-containers',
             onEnd: function (event) {
                 updateGroupIds(container);
-                updateItemsGroupIds(container);
             },
         });
     });
@@ -13,16 +12,17 @@ function setupSortable() {
 
 function setupSortableItem() {
     const listes = document.querySelectorAll('.sortable-list');
+    let container = document.querySelector('.new-guide-builder__items-container');
+    let blocks = container.querySelectorAll('.new-guide__block');
     listes.forEach(liste => {
-        let container = liste.closest('.new-guide-builder__items-container');
         Sortable.create(liste, {
             group: 'group-lists',
             onEnd: function (event) {
                 updateGroupIds(container);
-                updateItemsGroupIds(container);
             },
         });
     });
+
 }
 
 // Fonction pour observer les changements dans le DOM
