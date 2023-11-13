@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ItemType extends AbstractType
 {
@@ -19,14 +19,19 @@ class ItemType extends AbstractType
         $builder
             ->add('titre')
             ->add('commentaire')
-            ->add('ordre', IntegerType::class, [
+            ->add('ordre', HiddenType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Une erreur s\'est produite.'
+                    ]),
+                    new Assert\Type([
+                        'type' => 'integer',
+                        'message' => 'La valeur doit être un entier.'
                     ])
                 ],
                 'invalid_message' => 'Une erreur s\'est produite.',
-                'required' => true
+                'required' => true,
+                'attr' => ['class' => 'ordre-groupe-items'],
             ])
             ->add('choixItems', EntityType::class, [
                 'class' => DataItem::class,

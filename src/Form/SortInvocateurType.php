@@ -7,10 +7,10 @@ use App\Entity\DataSortInvocateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class SortInvocateurType extends AbstractType
 {
@@ -19,14 +19,15 @@ class SortInvocateurType extends AbstractType
         $builder
             ->add('titre')
             ->add('commentaire')
-            ->add('ordre', IntegerType::class, [
+            ->add('ordre', HiddenType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Une erreur s\'est produite.'
                     ])
                 ],
                 'invalid_message' => 'Une erreur s\'est produite.',
-                'required' => true
+                'required' => true,
+                'attr' => ['class' => 'ordre'],
             ])
             ->add('choixSortInvocateur', EntityType::class, [
                 'class' => DataSortInvocateur::class,
