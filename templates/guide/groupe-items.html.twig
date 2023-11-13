@@ -1,23 +1,26 @@
 <li class="groupe-item">
-	<h2>Items</h2>
-	{{ form_label(form.titre) }}
-	{{ form_widget(form.titre) }}
 
-	{{ form_label(form.commentaire) }}
-	{{ form_widget(form.commentaire) }}
+	<div class="titre-groupe-item">
+		{{ form_label(form.titre) }}
+		{{ form_widget(form.titre) }}
+	</div>
+	<div class="groupe-content">
+		{{ form_label(form.commentaire) }}
+		{{ form_widget(form.commentaire) }}
 
-	{{ form_label(form.ordre) }}
-	{{ form_widget(form.ordre) }}
+		{{ form_label(form.ordre) }}
+		{{ form_widget(form.ordre) }}
 
-	<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-		{% for item in form.choixItems %}
-			<div class="item">
-				{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.parent.parent.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
-				<label for="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}]{{ item.vars.value }}">
-					<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-				</label>
-			</div>
-		{% endfor %}
+		<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+			{% for item in form.choixItems %}
+				<div class="item">
+					{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.parent.parent.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
+					<label for="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}]{{ item.vars.value }}">
+						<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+					</label>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 
 	<span class="flat-btn supprimer-itemsGroupe">Supprimer</span>

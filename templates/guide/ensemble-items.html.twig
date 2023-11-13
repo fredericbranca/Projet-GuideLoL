@@ -5,46 +5,51 @@
 		<div class="new-guide__block" id="{{ form.vars.id }}">
 			<span class="flat-btn supprimer-groupe">Supprimer l'ensemble</span>
 			<div class="ensemble">
-				<h2>Ensemble</h2>
-				Titre du groupe
-				{{ form_widget(form.titre) }}
 
-				{{ form_label(form.ordre) }}
-				{{ form_widget(form.ordre) }}
+				<div class="titre-groupe">
+					Titre de l'ensemble
+					{{ form_widget(form.titre) }}
+				</div>
+				<div class="ensemble-content">
+					{{ form_label(form.ordre) }}
+					{{ form_widget(form.ordre) }}
 
-				<ul class="sortable-list">
-					{% for groupeItems in form.associationsEnsemblesItemsGroups %}
-						<li class="groupe-item">
-							<h2>Items</h2>
-							{{ form_label(groupeItems.titre) }}
-							{{ form_widget(groupeItems.titre) }}
+					<ul class="sortable-list">
+						{% for groupeItems in form.associationsEnsemblesItemsGroups %}
+							<li class="groupe-item">
 
-							{{ form_label(groupeItems.commentaire) }}
-							{{ form_widget(groupeItems.commentaire) }}
+								<div class="titre-groupe-item">
+									{{ form_label(groupeItems.titre) }}
+									{{ form_widget(groupeItems.titre) }}
+								</div>
 
-							{{ form_label(groupeItems.ordre) }}
-							{{ form_widget(groupeItems.ordre) }}
+								{{ form_label(groupeItems.commentaire) }}
+								{{ form_widget(groupeItems.commentaire) }}
 
-							<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-								{% for item in groupeItems.choixItems %}
-									<div class="item">
-										{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
-										<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
-											<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-										</label>
-									</div>
-								{% endfor %}
-							</div>
+								{{ form_label(groupeItems.ordre) }}
+								{{ form_widget(groupeItems.ordre) }}
 
-							{% if loop.index0 > 0 %}
-							
-								<span class="flat-btn supprimer-itemsGroupe">Supprimer</span>
-							
-							{% endif %}
-							
-						</li>
-					{% endfor %}
-				</ul>
+								<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+									{% for item in groupeItems.choixItems %}
+										<div class="item">
+											{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
+											<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
+												<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+
+								{% if loop.index0 > 0 %}
+
+									<span class="flat-btn supprimer-itemsGroupe">Supprimer</span>
+
+								{% endif %}
+
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
 			</div>
 			<span class="flat-btn add-items">Ajouter d'un groupe d'Items</span>
 		</div>
@@ -56,39 +61,45 @@
 	<div class="new-guide__block" id="{{ form.vars.id }}">
 		<span class="flat-btn supprimer-groupe">Supprimer l'ensemble</span>
 		<div class="ensemble">
-			<h2>Ensemble</h2>
-			Titre du groupe
-			{{ form_widget(form.titre) }}
 
-			{{ form_label(form.ordre) }}
-			{{ form_widget(form.ordre) }}
+			<div class="titre-groupe">
+				Titre de l'ensemble
+				{{ form_widget(form.titre) }}
+			</div>
+			<div class="ensemble-content">
+				{{ form_label(form.ordre) }}
+				{{ form_widget(form.ordre) }}
 
-			<ul class="sortable-list">
-				<h2>Items</h2>
-				{% for groupeItems in form.associationsEnsemblesItemsGroups %}
-					<li class="groupe-item">
-						{{ form_label(groupeItems.titre) }}
-						{{ form_widget(groupeItems.titre) }}
+				<ul class="sortable-list">
+					{% for groupeItems in form.associationsEnsemblesItemsGroups %}
+						<li class="groupe-item">
 
-						{{ form_label(groupeItems.commentaire) }}
-						{{ form_widget(groupeItems.commentaire) }}
+							<div class="titre-groupe-item">
+								{{ form_label(groupeItems.titre) }}
+								{{ form_widget(groupeItems.titre) }}
+							</div>
+							<div class="groupe-content">
+								{{ form_label(groupeItems.commentaire) }}
+								{{ form_widget(groupeItems.commentaire) }}
 
-						{{ form_label(groupeItems.ordre) }}
-						{{ form_widget(groupeItems.ordre) }}
+								{{ form_label(groupeItems.ordre) }}
+								{{ form_widget(groupeItems.ordre) }}
 
-						<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
-							{% for item in groupeItems.choixItems %}
-								<div class="item">
-									{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
-									<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
-										<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-									</label>
+								<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+									{% for item in groupeItems.choixItems %}
+										<div class="item">
+											{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
+											<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
+												<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+											</label>
+										</div>
+									{% endfor %}
 								</div>
-							{% endfor %}
-						</div>
-					</li>
-				{% endfor %}
-			</ul>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 		<span class="flat-btn add-items">Ajouter d'un groupe d'Items</span>
 	</div>

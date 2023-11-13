@@ -3,11 +3,62 @@
 
 		<div class="new-guide__block" id="{{ form.vars.id }}">
 
-			<div>
+			<div class="titre-groupe">
 				{{ form_label(form.titre) }}
 				{{ form_widget(form.titre) }}
 			</div>
+			<div class="groupe-content">
+				<div>
+					{{ form_label(form.commentaire) }}
+					{{ form_widget(form.commentaire) }}
+				</div>
 
+				<div>
+					{{ form_label(form.ordre) }}
+					{{ form_widget(form.ordre) }}
+				</div>
+
+				<div class="competence-passive">
+					<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
+					Compétence passive :
+					{{ champ.passive.name }}
+				</div>
+
+				{% set letterMap = {'A': 'Q', 'Z': 'W', 'E': 'E', 'R': 'R'} %}
+				{% set spellIndex = 0 %}
+
+				{# Accédez au sous-formulaire competences #}
+				{% set competencesForm = form.competence %}
+
+				{# Boucle sur les champs des compétences #}
+				{% for competenceField in competencesForm %}
+					{# On vérifie si le champ est une instance de ChoiceType #}
+					{% if competenceField.vars.block_prefixes is defined and 'choice' in competenceField.vars.block_prefixes %}
+						<div class="competence">
+							<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
+							{{ form_label(competenceField) }}
+							{{ form_widget(competenceField) }}
+						</div>
+						{% set spellIndex = spellIndex + 1 %}
+					{% endif %}
+				{% endfor %}
+
+			</div>
+			<span class="flat-btn supprimer-groupe">Supprimer</span>
+		</div>
+
+
+	{% endfor %}
+
+{% else %}
+
+	<div class="new-guide__block" id="{{ form.vars.id }}">
+
+		<div class="titre-groupe">
+			{{ form_label(form.titre) }}
+			{{ form_widget(form.titre) }}
+		</div>
+		<div class="groupe-content">
 			<div>
 				{{ form_label(form.commentaire) }}
 				{{ form_widget(form.commentaire) }}
@@ -43,56 +94,7 @@
 				{% endif %}
 			{% endfor %}
 
-			<span class="flat-btn supprimer-groupe">Supprimer</span>
 		</div>
-
-
-	{% endfor %}
-
-{% else %}
-
-	<div class="new-guide__block" id="{{ form.vars.id }}">
-
-		<div>
-			{{ form_label(form.titre) }}
-			{{ form_widget(form.titre) }}
-		</div>
-
-		<div>
-			{{ form_label(form.commentaire) }}
-			{{ form_widget(form.commentaire) }}
-		</div>
-
-		<div>
-			{{ form_label(form.ordre) }}
-			{{ form_widget(form.ordre) }}
-		</div>
-
-		<div class="competence-passive">
-			<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
-			Compétence passive :
-			{{ champ.passive.name }}
-		</div>
-
-		{% set letterMap = {'A': 'Q', 'Z': 'W', 'E': 'E', 'R': 'R'} %}
-		{% set spellIndex = 0 %}
-
-		{# Accédez au sous-formulaire competences #}
-		{% set competencesForm = form.competence %}
-
-		{# Boucle sur les champs des compétences #}
-		{% for competenceField in competencesForm %}
-			{# On vérifie si le champ est une instance de ChoiceType #}
-			{% if competenceField.vars.block_prefixes is defined and 'choice' in competenceField.vars.block_prefixes %}
-				<div class="competence">
-					<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
-					{{ form_label(competenceField) }}
-					{{ form_widget(competenceField) }}
-				</div>
-				{% set spellIndex = spellIndex + 1 %}
-			{% endif %}
-		{% endfor %}
-
 		<span class="flat-btn supprimer-groupe">Supprimer</span>
 	</div>
 
