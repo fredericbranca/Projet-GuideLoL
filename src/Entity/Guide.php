@@ -32,21 +32,25 @@ class Guide
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $modified_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: SortInvocateur::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupeSortsInvocateur;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: RunesPage::class, orphanRemoval: true, cascade: ['remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupeRunes;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $GroupeEnsemblesItems;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupesCompetences;
+
+    #[ORM\ManyToOne(inversedBy: 'guides')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -238,6 +242,18 @@ class Guide
                 $groupesCompetence->setGuide(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
