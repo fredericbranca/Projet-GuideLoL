@@ -22,7 +22,6 @@ function setupSortableItem() {
             },
         });
     });
-
 }
 
 // Fonction pour observer les changements dans le DOM
