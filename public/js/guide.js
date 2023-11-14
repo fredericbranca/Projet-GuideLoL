@@ -332,7 +332,7 @@ const updateGroupIds = (ensembleSelector) => {
         let ordreInput = group.querySelector('.ordre');
 
         if (ordreInput) {
-            ordreInput.value = index;
+            ordreInput.value = parseInt(index, 10);
         }
 
         updateItemsGroupIds(group);
@@ -383,7 +383,7 @@ const updateItemsGroupIds = (ensembleSelector) => {
         let ordreInput = group.querySelector('.ordre-groupe-items');
 
         if (ordreInput) {
-            ordreInput.value = indexGroupe;
+            ordreInput.value = parseInt(indexGroupe, 10);
         }
     });
 };
