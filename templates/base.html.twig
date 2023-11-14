@@ -28,26 +28,42 @@
 							<a href="" class="nav-link">GUIDES</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('new_guide') }}" class="nav-link">CREATION</a>
+							{% if app.user %}
+								<a href="{{ path('new_guide') }}" class="nav-link">CREATION</a>
+							{% else %}
+								<a href="{{ path('app_login') }}" class="nav-link">CREATION</a>
+							{% endif %}
 						</li>
 						<li class="nav-item">
 							<a href="" class="nav-link">CHAMPIONS</a>
 						</li>
 					</div>
-					<div class="nav-auth">
-						<li class="nav-item">
-							<a href="{{ path('app_register') }}" class="nav-link">INSCRIPTION</a>
-						</li>
-						<a href="{{ path('app_login') }}" class="login-link wrapper">
-							LOGIN
-						</a>
-					</div>
+					{% if app.user %}
+						<div class="nav-auth">
+							<li class="nav-item">
+								<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
+							</li>
+							<a href="{{ path('app_logout') }}" class="login-link wrapper-logout">
+								DECONNEXION
+							</a>
+						</div>
+					{% else %}
+						<div class="nav-auth">
+							<li class="nav-item">
+								<a href="{{ path('app_register') }}" class="nav-link">INSCRIPTION</a>
+							</li>
+							<a href="{{ path('app_login') }}" class="login-link wrapper">
+								LOGIN
+							</a>
+						</div>
+					{% endif %}
 				</ul>
 				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
 			</nav>
 		</header>
 
-		<div class="content">{% block body %}{% endblock %}</div>
-		
-	</body>
-</html>
+		<div class="content"> {% block body %}{% endblock %}
+			</div>
+
+		</body>
+	</html>
