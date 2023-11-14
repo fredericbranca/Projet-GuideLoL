@@ -23,7 +23,7 @@ class AssociationsArbresRunes
     #[ORM\JoinTable(name: "choix_runes")]
     private Collection $choixRunes;
 
-    #[ORM\ManyToMany(targetEntity: AssociationsRunesBonus::class, mappedBy: 'choixArbres')]
+    #[ORM\ManyToMany(targetEntity: AssociationsRunesBonus::class, mappedBy: 'choixArbres', orphanRemoval: true, cascade: ['remove'])]
     private Collection $associationsRunesBonuses;
 
     public function __construct()

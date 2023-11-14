@@ -74,15 +74,20 @@ class GuideService
 
     public function competencesHelper($guide, $groupesCompetences, $groupesCompetencesData, $entityManager)
     {
-        // Récupère les RunesPages existants à partir de l'entité Guide
+        // Récupère les CompetencesGroupes existants à partir de l'entité Guide
         $existingCompetencesGroupes = $guide->getGroupesCompetences();
 
         $repository = $entityManager->getRepository(DataCompetence::class);
-
         foreach ($groupesCompetences as $key => $groupeCompetence) {
+            // Suppressions des niveaux déjà enregistré
+            $collection = $groupeCompetence->getChoixCompetencesNiveaux();
+            $elementSupr = $collection->first();
+            $collection->removeElement($elementSupr);
+            $entityManager->remove($elementSupr);
+
             $formCompetences = $existingCompetencesGroupes->get($key);
 
-            // Suppression des données des compétences actuelles
+            // Suppression des associations compétences et niveaux
             $choixCompetences = $formCompetences->getChoixCompetencesNiveaux();
             foreach ($choixCompetences as $competences) {
                 $formCompetences->removeChoixCompetencesNiveau($competences);

@@ -29,7 +29,7 @@ class RunesPage
     #[ORM\JoinColumn(nullable: false)]
     private ?Guide $guide = null;
 
-    #[ORM\ManyToMany(targetEntity: AssociationsRunesBonus::class, inversedBy: 'choixRunesPages', cascade: ['remove'])]
+    #[ORM\ManyToMany(targetEntity: AssociationsRunesBonus::class, inversedBy: 'choixRunesPages', orphanRemoval: true, cascade: ['remove'])]
     #[ORM\JoinTable(name: "choix_runes_pages")]
     private Collection $choixRunesPages;
 

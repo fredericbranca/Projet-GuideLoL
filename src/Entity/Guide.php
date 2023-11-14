@@ -40,11 +40,11 @@ class Guide
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupeRunes;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $GroupeEnsemblesItems;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $groupesCompetences;
 
