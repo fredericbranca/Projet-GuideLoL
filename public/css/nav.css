@@ -60,7 +60,8 @@
   color: #dac286;
 }
 
-.wrapper {
+.wrapper,
+.wrapper-logout {
   position: relative;
   overflow: hidden;
   padding: 5px 40px;
@@ -77,7 +78,6 @@
   height: 240px;
   opacity: 0;
   transform: rotate(25deg);
-  background: hsla(0, 0%, 100%, 0.13);
   background: linear-gradient(
     90deg,
     hsla(0, 0%, 100%, 0.13) 0,
@@ -86,10 +86,39 @@
     hsla(0, 0%, 100%, 0)
   );
 }
+.wrapper-logout::after {
+  content: "";
+  position: absolute;
+  top: -543%;
+  left: -130%;
+  width: 280px;
+  height: 203px;
+  opacity: 0;
+  transform: rotate(25deg);
+  background-color: hsla(0, 88%, 25%, 0.37);
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0.13) 0,
+    hsla(0, 0%, 100%, 0.13) 77%,
+    hsla(0, 0%, 100%, 0.5) 92%,
+    hsla(0, 0%, 100%, 0)
+  ),
+  hsla(0, 88%, 25%, 0.349);
+}
+
 .wrapper:hover::after {
   opacity: 1;
   top: -35%;
   left: -35%;
+  transition-property: left, top, opacity;
+  transition-duration: 0.7s, 0.7s, 0.15s;
+  transition-timing-function: ease;
+}
+
+.wrapper-logout:hover::after {
+  opacity: 1;
+  top: -150%;
+  left: 0%;
   transition-property: left, top, opacity;
   transition-duration: 0.7s, 0.7s, 0.15s;
   transition-timing-function: ease;
