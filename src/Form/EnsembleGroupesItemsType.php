@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EnsembleGroupesItemsType extends AbstractType
@@ -16,19 +16,18 @@ class EnsembleGroupesItemsType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('ordre', HiddenType::class, [
+            ->add('ordre', IntegerType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Une erreur s\'est produite.'
-                    ]),
-                    new Assert\Type([
-                        'type' => 'integer',
-                        'message' => 'La valeur doit être un entier.'
                     ])
                 ],
                 'invalid_message' => 'Une erreur s\'est produite.',
                 'required' => true,
-                'attr' => ['class' => 'ordre'],
+                'attr' => [
+                    'class' => 'ordre',
+                    'style' => 'display: none;'
+                ],
             ])
             ->add('associationsEnsemblesItemsGroups', CollectionType::class, [
                 'entry_type' => ItemType::class,

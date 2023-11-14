@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class RunesPageType extends AbstractType
 {
@@ -35,19 +36,18 @@ class RunesPageType extends AbstractType
         $builder
             ->add('titre')
             ->add('commentaire')
-            ->add('ordre', HiddenType::class, [
+            ->add('ordre', IntegerType::class, [
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Une erreur s\'est produite.'
-                    ]),
-                    new Assert\Type([
-                        'type' => 'integer',
-                        'message' => 'La valeur doit être un entier.'
                     ])
                 ],
                 'invalid_message' => 'Une erreur s\'est produite.',
                 'required' => true,
-                'attr' => ['class' => 'ordre'],
+                'attr' => [
+                    'class' => 'ordre',
+                    'style' => 'display: none;'
+                ],
             ]);
 
         // Sous formulaires pour chaque Arbre de runes
