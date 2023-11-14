@@ -25,7 +25,7 @@ class AssociationsRunesBonus
     #[ORM\JoinTable(name: "choix_statistiques_bonus")]
     private Collection $choixStatistiquesBonus;
 
-    #[ORM\ManyToMany(targetEntity: AssociationsArbresRunes::class, inversedBy: 'associationsRunesBonuses', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: AssociationsArbresRunes::class, inversedBy: 'associationsRunesBonuses', cascade: ['persist', 'remove'])]
     #[ORM\JoinTable(name: "choix_arbres")]
     private Collection $choixArbres;
 

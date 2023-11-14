@@ -21,7 +21,7 @@ class EnsembleItemsGroups
     #[ORM\Column]
     private ?int $ordre = null;
 
-    #[ORM\OneToMany(mappedBy: 'ensembleItemsGroups', targetEntity: ItemsGroup::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'ensembleItemsGroups', targetEntity: ItemsGroup::class, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
     private Collection $AssociationsEnsemblesItemsGroups;
 

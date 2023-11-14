@@ -19,7 +19,7 @@ class AssociationsCompetencesNiveaux
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $niveaux = [];
 
-    #[ORM\ManyToMany(targetEntity: CompetencesGroup::class, mappedBy: 'choixCompetencesNiveaux', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: CompetencesGroup::class, mappedBy: 'choixCompetencesNiveaux', cascade: ['persist', 'remove'])]
     private Collection $competencesGroups;
 
     #[ORM\ManyToMany(targetEntity: DataCompetence::class)]
