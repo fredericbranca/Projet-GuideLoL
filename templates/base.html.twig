@@ -14,9 +14,12 @@
 		{% endblock %}
 		{% block additional_css %}{% endblock %}
 
-		{% block javascripts %}{% endblock %}
+		{% block javascripts %}
+			<script src="{{ asset('js/main.js') }}"></script>
+		{% endblock %}
 	</head>
 	<body>
+
 		<header>
 			<nav class="navbar">
 				<ul class="navbar-nav">
@@ -57,6 +60,24 @@
 				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
 			</nav>
 		</header>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success flash-message">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('note') %}
+			<div class="alert alert-note flash-message">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-error flash-message">
+				{{ message }}
+			</div>
+		{% endfor %}
 
 		<div class="content"> {% block body %}{% endblock %}
 			</div>
