@@ -10,6 +10,7 @@
 {% block body %}
 	<div>
 		<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
+		<a href="{{ path('app_change_avatar') }}">Change l'avatar</a>
 		<h2>{{ user.pseudo }}</h2>
 	</div>
 
