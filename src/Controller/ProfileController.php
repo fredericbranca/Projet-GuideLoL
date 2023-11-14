@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use Imagick;
+use AvatarType;
 use App\Form\ChangePseudoType;
 use App\Repository\UserRepository;
+use Google\Cloud\Storage\StorageClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProfileController extends AbstractController
 {
@@ -22,6 +24,7 @@ class ProfileController extends AbstractController
         $this->security = $security;
     }
 
+    // Route pour afficher le profile de l'utilisateur et insertion du formulaire de changement de Pseudo
     #[Route('/profile', name: 'app_profile')]
     public function index(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
@@ -67,6 +70,56 @@ class ProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'changePseudoForm' => $changePseudoForm
+        ]);
+    }
+
+    #[Route('/profile/change-avatar', name: 'app_change_avatar')]
+    public function changeAvatar(Request $request, EntityManagerInterface $entityManager)
+    {
+        $user = $this->security->getUser();
+
+        $form = $this->createForm(AvatarType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['avatar']->getData();
+
+            // Nom de fichier unique
+            $uniqueFileName = 'avatar_' . $user->getId() . '_' . time() . '.webp';
+
+            // Chemin temporaire pour l'image téléchargée
+            $tempFilePath = $file->getRealPath();
+
+            // Convertir l'image en .webp
+            $image = new Imagick($tempFilePath);
+            $image->setImageFormat('webp');
+            $newFilePath = sys_get_temp_dir() . '/' . $uniqueFileName;
+            $image->writeImage($newFilePath);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Enregistre l'image sur Google Cloud Storage
+            $storage = new StorageClient(['keyFilePath' => $_ENV['GOOGLE_APPLICATION_CREDENTIALS']]);
+            $bucket = $storage->bucket('lol_guides');
+
+            $bucket->upload(fopen($newFilePath, 'r'), [
+                'name' => 'lol_guides_user_avatar/' . $uniqueFileName
+            ]);
+
+            // Mise à jour du nom de l'avatar dans la base de données
+            $user->setAvatar($uniqueFileName);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Redirection + message
+            $this->addFlash('success', 'Avatar mis à jour avec succès.');
+            return $this->redirectToRoute('app_profile');
+        }
+
+        return $this->render('profile/change_avatar.html.twig', [
+            'formAvatar' => $form->createView(),
+            'user' => $user
         ]);
     }
 }
