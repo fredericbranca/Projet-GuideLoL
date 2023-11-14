@@ -13,6 +13,7 @@ use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Service\ChampionService;
 use App\Entity\EnsembleItemsGroups;
+use App\Repository\GuideRepository;
 use App\Service\CompetenceService;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class GuideController extends AbstractController
 {
@@ -28,19 +30,22 @@ class GuideController extends AbstractController
     private $itemService;
     private $runeService;
     private $entityManager;
+    private $security;
 
     public function __construct(
         SortInvocateurService $sortInvocateurService,
         ChampionService $championService,
         ItemService $itemService,
         RuneService $runeService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Security $security
     ) {
         $this->sortInvocateurService = $sortInvocateurService;
         $this->championService = $championService;
         $this->itemService = $itemService;
         $this->entityManager = $entityManager;
         $this->runeService = $runeService;
+        $this->security = $security;
     }
 
 
@@ -56,13 +61,23 @@ class GuideController extends AbstractController
         CompetenceService $competenceService,
         int $idGuide = null
     ): Response {
+        $user = $this->security->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupère le guide avec l'id ou en créé un s'il n'existe pas
+        $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
+
+        if ($idGuide && $guide->getUser() !== $user) {
+            throw $this->createNotFoundException('Vous ne pouvez pas éditer le guide des autres utilisateurs.');
+        }
+
         // Récupère la liste d'id des champions
         $championsData = $championService->getChampions();
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
-
-        // Récupère le guide avec l'id ou en créé un s'il n'existe pas
-        $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
@@ -84,6 +99,12 @@ class GuideController extends AbstractController
                 $groupesCompetencesData = $guideData['guide']['groupesCompetences'];
                 // Persist les compétences
                 $guideService->competencesHelper($guide, $groupesCompetences, $groupesCompetencesData, $entityManager);
+            }
+
+            $guide->setUser($user);
+
+            if ($idGuide) {
+                $guide->setModifiedAt(new \DateTimeImmutable());
             }
 
             $entityManager->persist($guide);
@@ -344,10 +365,50 @@ class GuideController extends AbstractController
         }
     }
 
-    #[Route('/guide', name: 'app_guide')]
-    public function index(): Response
-    {
+    #[Route('/guides', name: 'app_guide')]
+    public function index(
+        GuideRepository $guideRepository
+    ): Response {
+        $guides = $guideRepository->findAll();
+
         return $this->render('guide/index.html.twig', [
+            'guides' => $guides,
+        ]);
+    }
+
+    #[Route('/guide/{idGuide}/delete', name: 'delete_guide')]
+    public function deleteGuide(
+        EntityManagerInterface $em,
+        int $idGuide
+    ): Response {
+        $user = $this->security->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $guide = $em->getRepository(Guide::class)->find($idGuide);
+
+        if (!$guide) {
+            throw $this->createNotFoundException('Ce guide n\'existe pas.');
+        }
+
+        if ($guide->getUser() !== $user) {
+            throw $this->createNotFoundException('Action non autorisé.');
+        }
+
+        $em->remove($guide);
+        $em->flush();
+
+        return $this->redirectToRoute('app_guide');
+    }
+
+
+
+    #[Route('/champions', name: 'app_champions')]
+    public function getChampions(): Response
+    {
+        return $this->render('guide/champions.html.twig', [
             'controller_name' => 'GuideController',
         ]);
     }
