@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\CompetencesGroup;
 use App\Entity\Guide;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
@@ -11,17 +10,19 @@ use App\Service\ItemService;
 use App\Service\RuneService;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
+use App\Entity\CompetencesGroup;
 use App\Service\ChampionService;
+use App\Service\CompetenceService;
 use App\Entity\EnsembleItemsGroups;
 use App\Repository\GuideRepository;
-use App\Service\CompetenceService;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GuideController extends AbstractController
 {
@@ -71,7 +72,7 @@ class GuideController extends AbstractController
         $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
         if ($idGuide && $guide->getUser() !== $user) {
-            throw $this->createNotFoundException('Vous ne pouvez pas éditer le guide des autres utilisateurs.');
+            throw new AccessDeniedException('Vous ne pouvez pas éditer le guide des autres utilisateurs.');
         }
 
         // Récupère la liste d'id des champions
@@ -384,7 +385,7 @@ class GuideController extends AbstractController
         $user = $this->security->getUser();
 
         if (!$user) {
-            return $this->redirectToRoute('app_login');
+            return new Response('Non autorisé', Response::HTTP_UNAUTHORIZED);
         }
 
         $guide = $em->getRepository(Guide::class)->find($idGuide);
@@ -394,7 +395,7 @@ class GuideController extends AbstractController
         }
 
         if ($guide->getUser() !== $user) {
-            throw $this->createNotFoundException('Action non autorisé.');
+            throw new AccessDeniedException('Action non autorisé.');
         }
 
         $em->remove($guide);
