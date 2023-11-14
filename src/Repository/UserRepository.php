@@ -62,6 +62,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return 1; // Si aucun pseudo n'est trouvé
     }
 
+    // Recherche en ignorant la casse du pseudo
+    public function findOneByLowercasePseudo(string $pseudoLower): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('LOWER(u.pseudo) = :pseudoLower')
+            ->setParameter('pseudoLower', $pseudoLower)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
