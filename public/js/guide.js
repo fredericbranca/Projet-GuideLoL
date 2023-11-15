@@ -294,14 +294,16 @@ blockBuilder.addEventListener('click', function (event) {
 
 
     // Vérifie si l'élément cliqué a la classe .titre-groupe ou .titre-groupe-item
-    if (event.target.classList.contains('titre-groupe') || event.target.classList.contains('titre-groupe-item')) {
+    if (event.target.classList.contains('baniere-groupe') || event.target.classList.contains('baniere-groupe-items')) {
         // Trouve la div suivante la plus proche
         var nextDiv = event.target.nextElementSibling;
+        console.log(event.tard, nextDiv)
+
 
         // Vérifie si la div suivante est .groupe-content
         if (nextDiv && nextDiv.classList.contains('groupe-content')) {
             // Basculer entre display: none et display: block
-            nextDiv.style.display = (nextDiv.style.display === 'none' ? 'block' : 'none');
+            nextDiv.style.display = (nextDiv.style.display === 'none' ? 'flex' : 'none');
         }
     }
 
