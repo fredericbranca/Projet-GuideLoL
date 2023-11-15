@@ -3,6 +3,8 @@ function setupSortable() {
     containers.forEach(container => {
         Sortable.create(container, {
             group: 'group-containers',
+            handle: '.handle',
+            animation: 200,
             onEnd: function (event) {
                 updateGroupIds(container);
             },
@@ -13,10 +15,11 @@ function setupSortable() {
 function setupSortableItem() {
     const listes = document.querySelectorAll('.sortable-list');
     let container = document.querySelector('.new-guide-builder__items-container');
-    let blocks = container.querySelectorAll('.new-guide__block');
     listes.forEach(liste => {
         Sortable.create(liste, {
             group: 'group-lists',
+            handle: '.handle',
+            animation: 200,
             onEnd: function (event) {
                 updateGroupIds(container);
             },
