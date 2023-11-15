@@ -27,6 +27,10 @@
   margin-bottom: 20px;
 }
 
+.new-guide-builder__items-container .new-guide-builder_container {
+  margin-bottom: 30px;
+}
+
 /* Configuration */
 
 .liste-champions {
@@ -108,6 +112,12 @@
   background: #326bbd;
 }
 
+.btn-absolute {
+  position: absolute;
+  bottom: -50px;
+  left: 2px;
+}
+
 .full {
   width: 100%;
 }
@@ -138,24 +148,29 @@
 .new-guide-builder__menu span {
   display: block;
   text-align: center;
-  background-color: #0b1727;
   padding: 15px;
   border-left: 5px solid transparent;
   cursor: pointer;
   color: white;
   width: 25%;
+  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
 }
 
 .new-guide-builder__menu span.current {
-  background-color: #275495;
+  background: radial-gradient(#fff2 30%, #fff4);
+  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
+  backdrop-filter: blur(5px);
 }
 
 .new-guide-builder__menu span.current:hover {
-  background-color: #275495;
+  background: radial-gradient(#fff2 30%, #fff4);
+  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
+  backdrop-filter: blur(5px);
 }
 
 .new-guide-builder__menu span:hover {
-  background-color: #224981;
+  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
+  backdrop-filter: blur(20px);
 }
 
 /* Affichage des new-guide-builder Container */
@@ -171,25 +186,64 @@
   display: none;
 }
 
-/* Titre des groupes */
-.new-guide__block .titre-groupe,
-.new-guide__block .titre-groupe-item {
+
+/* Banière groupe */
+.new-guide__block .baniere-groupe {
+  position: relative;
   background-color: #0b1727;
   display: flex;
   align-items: center;
   height: 50px;
   cursor: pointer;
-  color: white;
-}
-.new-guide__block .titre-groupe:hover {
-  background-color: #030811;
+  padding-left: 10px;
 }
 
-.new-guide__block .titre-groupe-item, .groupe-item {
+.new-guide__block .baniere-groupe-items {
+  position: relative;
+  background-color: #233853;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.new-guide__block .baniere-groupe:hover {
+  background-color: #030811;
+}
+.new-guide__block .baniere-groupe-items:hover {
+  background-color: #1d3351;
+}
+
+/* Titre des groupes */
+.new-guide__block .titre-groupe,
+.new-guide__block .titre-groupe-item {
+  position: absolute;
+  display: flex;
+  top: 13px;
+  left: 40px;
+}
+
+.new-guide__block .titre-groupe input,
+.new-guide__block .titre-groupe-item input {
+  background-color: #1b2537;
+  color: white;
+  border: 1px solid #bbc2db;
+  padding-left: 6px;
+}
+
+.new-guide__block .titre-groupe-item,
+.groupe-item {
   background-color: #182a41;
 }
+
 .new-guide__block .titre-groupe-item:hover {
   background-color: #142036;
+}
+
+.fa-arrows-up-down-left-right {
+  font-size: 17px;
+  cursor: pointer;
 }
 
 /* Contenu des groupes */
@@ -207,9 +261,23 @@
 
 .supprimer-groupe,
 .supprimer-itemsGroupe {
+  color: #a8eef5;
+  cursor: pointer;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 15px;
+  right: 20px;
+  transition: 0.3s;
+  font-size: 20px;
+  z-index: 1;
+}
+
+.supprimer-itemsGroupe {
+  color: #a8eff5be;
+}
+
+.supprimer-groupe:hover,
+.supprimer-itemsGroupe:hover {
+  transform: rotate(20deg);
 }
 
 .ensemble {
@@ -223,17 +291,21 @@
 /* Secion Items */
 .groupe-content {
   margin: 0 3px;
+  display: flex;
+  flex-direction: wrap;
+  padding: 15px;
+  justify-content: space-between;
 }
 
 .ensemble-content {
   padding: 0 3px;
-  margin-bottom: 20px;
 }
 
 .sortable-list {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  list-style: none;
 }
 
 .groupe-item .groupe-content {
@@ -258,4 +330,51 @@
   width: 20px;
   height: 20px;
   border: 1px solid black;
+}
+
+/* Image checkbox */
+.checkbox label {
+  cursor: pointer;
+}
+
+.checkbox label img {
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 48px -61px #dac286, 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox input[type=checkbox] {
+  display: none
+}
+
+.checkbox input[type=checkbox]:checked+label img {
+  box-shadow: 0px 0px 9px 5px #dac286;
+}
+
+.checkbox-sorts {
+  display: flex;
+  flex-wrap: wrap;
+  width: 40%;
+  margin: 10px;
+  height: fit-content;
+}
+
+.checkbox-sorts>* {
+  flex: 1 1 10%;
+}
+
+.commentaire textarea {
+  color: white;
+  background-color: #1b2537;
+  max-width: 300px;
+  min-width: 300px;
+  min-height: 150px;
+  padding: 10px;
+}
+
+.checkbox-items {
+  width: 50%;
+  overflow: auto;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
 }
