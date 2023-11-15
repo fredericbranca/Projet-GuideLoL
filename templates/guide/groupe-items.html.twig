@@ -1,26 +1,32 @@
 <li class="groupe-item">
-
-	<div class="titre-groupe-item">
-		{{ form_label(form.titre) }}
-		{{ form_widget(form.titre) }}
+	<div class="baniere-groupe-items handle">
+		<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 	</div>
+
 	<div class="groupe-content">
-		{{ form_label(form.commentaire) }}
-		{{ form_widget(form.commentaire) }}
 
 		{{ form_widget(form.ordre) }}
 
-		<div style="display:flex; flex-wrap: wrap; width: 60%; height: 200px; overflow: auto;">
+		<div class="checkbox checkbox-items">
 			{% for item in form.choixItems %}
 				<div class="item">
-					{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.parent.parent.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
-					<label for="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}]{{ item.vars.value }}">
+					{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
+					<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{form.vars.name}}]{{ item.vars.value }}">
 						<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
 					</label>
 				</div>
 			{% endfor %}
 		</div>
+
+		<div class="commentaire">
+			{{ form_widget(form.commentaire) }}
+		</div>
 	</div>
 
-	<span class="flat-btn supprimer-itemsGroupe">Supprimer</span>
+	<div class="titre-groupe-item">
+		{{ form_widget(form.titre) }}
+	</div>
+
+	<i class="fa-regular fa-trash-can supprimer-itemsGroupe"></i>
+
 </li>

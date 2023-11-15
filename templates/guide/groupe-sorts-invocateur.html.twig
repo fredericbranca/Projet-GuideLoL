@@ -2,52 +2,15 @@
 
 	{% for form in forms %}
 
-		<div class="new-guide__block" id="{{ form.vars.id }}">
-			<div class="titre-groupe">
-				{{ form_label(form.titre) }}
-				{{ form_widget(form.titre) }}
-			</div>
-			<div class="groupe-content">
-				<div>
-					{{ form_label(form.commentaire) }}
-					{{ form_widget(form.commentaire) }}
-				</div>
-
-				{{ form_widget(form.ordre) }}
-
-				<div style="display:flex; flex-wrap: wrap">
-					{% for choice in form.choixSortInvocateur %}
-						<div>
-							{{ form_widget(choice, {'id': 'guide[groupeSortsInvocateur][' ~ form.vars.name ~ ']' ~ choice.vars.value }) }}
-							<label for="guide[groupeSortsInvocateur][{{ form.vars.name }}]{{ choice.vars.value }}">
-								<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}.webp" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
-							</label>
-						</div>
-					{% endfor %}
-				</div>
-
-			</div>
-			<span class="flat-btn supprimer-groupe">Supprimer</span>
-		</div>
-
-	{% endfor %}
-
-{% else %}
-
 	<div class="new-guide__block" id="{{ form.vars.id }}">
-		<div class="titre-groupe">
-			{{ form_label(form.titre) }}
-			{{ form_widget(form.titre) }}
+		<div class="baniere-groupe handle">
+			<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 		</div>
 		<div class="groupe-content">
-			<div>
-				{{ form_label(form.commentaire) }}
-				{{ form_widget(form.commentaire) }}
-			</div>
 
 			{{ form_widget(form.ordre) }}
 
-			<div style="display:flex; flex-wrap: wrap">
+			<div class="checkbox checkbox-sorts">
 				{% for choice in form.choixSortInvocateur %}
 					<div>
 						{{ form_widget(choice, {'id': 'guide[groupeSortsInvocateur][' ~ form.vars.name ~ ']' ~ choice.vars.value }) }}
@@ -58,8 +21,49 @@
 				{% endfor %}
 			</div>
 
+			<div class="commentaire">
+				{{ form_widget(form.commentaire) }}
+			</div>
+
 		</div>
-		<span class="flat-btn supprimer-groupe">Supprimer</span>
+		<div class="titre-groupe">
+			{{ form_widget(form.titre) }}
+		</div>
+		<i class="fa-regular fa-trash-can supprimer-groupe"></i>
+	</div>
+
+	{% endfor %}
+
+{% else %}
+
+	<div class="new-guide__block" id="{{ form.vars.id }}">
+		<div class="baniere-groupe handle">
+			<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
+		</div>
+		<div class="groupe-content">
+
+			{{ form_widget(form.ordre) }}
+
+			<div class="checkbox checkbox-sorts">
+				{% for choice in form.choixSortInvocateur %}
+					<div>
+						{{ form_widget(choice, {'id': 'guide[groupeSortsInvocateur][' ~ form.vars.name ~ ']' ~ choice.vars.value }) }}
+						<label for="guide[groupeSortsInvocateur][{{ form.vars.name }}]{{ choice.vars.value }}">
+							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choice.vars.value].image }}.webp" alt="{{ list_sorts_invocateur[choice.vars.value].name }}">
+						</label>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="commentaire">
+				{{ form_widget(form.commentaire) }}
+			</div>
+
+		</div>
+		<div class="titre-groupe">
+			{{ form_widget(form.titre) }}
+		</div>
+		<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 	</div>
 
 
