@@ -115,7 +115,7 @@
 .btn-absolute {
   position: absolute;
   bottom: -50px;
-  left: 2px;
+  right: 2px;
 }
 
 .full {
@@ -157,20 +157,15 @@
 }
 
 .new-guide-builder__menu span.current {
-  background: radial-gradient(#fff2 30%, #fff4);
-  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
-  backdrop-filter: blur(5px);
+  background: #233148;
 }
 
 .new-guide-builder__menu span.current:hover {
-  background: radial-gradient(#fff2 30%, #fff4);
-  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
-  backdrop-filter: blur(5px);
+  background: #233148;
 }
 
 .new-guide-builder__menu span:hover {
-  box-shadow: 5px 5px 10px #0007, -1px -1px 2px #fff, 1px 1px 2px #555;
-  backdrop-filter: blur(20px);
+  background: rgb(6, 14, 31);
 }
 
 /* Affichage des new-guide-builder Container */
@@ -185,7 +180,6 @@
 .new-guide-builder__synergies-container {
   display: none;
 }
-
 
 /* Banière groupe */
 .new-guide__block .baniere-groupe {
@@ -261,7 +255,7 @@
 
 .supprimer-groupe,
 .supprimer-itemsGroupe {
-  color: #a8eef5;
+  color: #b4b1c1;
   cursor: pointer;
   position: absolute;
   top: 15px;
@@ -269,10 +263,6 @@
   transition: 0.3s;
   font-size: 20px;
   z-index: 1;
-}
-
-.supprimer-itemsGroupe {
-  color: #a8eff5be;
 }
 
 .supprimer-groupe:hover,
@@ -337,16 +327,17 @@
   cursor: pointer;
 }
 
-.checkbox label img {
+.checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-sorts label img {
   border-radius: 50%;
-  box-shadow: inset 0px 0px 48px -61px #dac286, 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 0px 48px -61px #dac286,
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox input[type=checkbox] {
-  display: none
-}
-
-.checkbox input[type=checkbox]:checked+label img {
+.checkbox-sorts input[type="checkbox"]:checked + label img {
   box-shadow: 0px 0px 9px 5px #dac286;
 }
 
@@ -358,7 +349,7 @@
   height: fit-content;
 }
 
-.checkbox-sorts>* {
+.checkbox-sorts > * {
   flex: 1 1 10%;
 }
 
@@ -371,10 +362,55 @@
   padding: 10px;
 }
 
+/* Checkbox des items */
 .checkbox-items {
   width: 50%;
   overflow: auto;
   height: 200px;
   display: flex;
   flex-wrap: wrap;
+}
+
+.checkbox-items .item:hover {
+  background: #34486a;
+}
+
+.checkbox-items .item {
+  flex: 0 1 84px;
+  text-align: center;
+  padding: 7px 7px 2px 7px;
+  cursor: pointer;
+  transition: 300ms;
+  margin-right: -6px;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.checkbox-items img {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #152034;
+  background: #152034;
+  border-radius: 2px;
+}
+
+.checkbox-items span {
+  display: block;
+  color: #7c8ca5;
+  font-size: 11px;
+  line-height: 1.1;
+  padding: 5px 0 0 0;
+}
+
+.checkbox-items p {
+  position: absolute;
+  left: 50%;
+  top: 49px;
+  border-radius: 5px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 10px;
+  line-height: 10px;
+  padding: 3px 10px;
 }
