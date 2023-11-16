@@ -9,12 +9,16 @@
 
 		<div class="checkbox checkbox-items">
 			{% for item in form.choixItems %}
-				<div class="item">
-					{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
-					<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{form.vars.name}}]{{ item.vars.value }}">
-						<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-					</label>
-				</div>
+				{% if list_items[item.vars.value].inStore %}
+					<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
+						{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
+						<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{form.vars.name}}]{{ item.vars.value }}">
+							<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+						</label>
+						<span>{{ list_items[item.vars.value].name }}</span>
+						<p>{{ list_items[item.vars.value].gold['total'] }}</p>
+					</div>
+				{% endif %}
 			{% endfor %}
 		</div>
 
