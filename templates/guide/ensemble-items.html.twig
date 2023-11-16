@@ -4,6 +4,7 @@
 
 		<div class="new-guide__block" id="{{ form.vars.id }}">
 			<i class="fa-regular fa-trash-can supprimer-groupe"></i>
+			{# supprime l'ensemble #}
 			<div class="baniere-groupe handle">
 				<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 			</div>
@@ -19,27 +20,36 @@
 					<ul class="sortable-list">
 						{% for groupeItems in form.associationsEnsemblesItemsGroups %}
 							<li class="groupe-item">
+								<div class="baniere-groupe-items handle">
+									<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
+								</div>
+
+								<div class="groupe-content">
+
+									{{ form_widget(groupeItems.ordre) }}
+
+									<div class="checkbox checkbox-items">
+										{% for item in groupeItems.choixItems %}
+											{% if list_items[item.vars.value].inStore %}
+												<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
+													{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
+													<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
+														<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+													</label>
+													<span>{{ list_items[item.vars.value].name }}</span>
+													<p>{{ list_items[item.vars.value].gold['total'] }}</p>
+												</div>
+											{% endif %}
+										{% endfor %}
+									</div>
+
+									<div class="commentaire">
+										{{ form_widget(groupeItems.commentaire) }}
+									</div>
+								</div>
 
 								<div class="titre-groupe-item">
-									{{ form_label(groupeItems.titre) }}
 									{{ form_widget(groupeItems.titre) }}
-								</div>
-
-								{{ form_widget(groupeItems.ordre) }}
-
-								<div class="checkbox checkbox-items">
-									{% for item in groupeItems.choixItems %}
-										<div class="item">
-											{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
-											<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
-												<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-											</label>
-										</div>
-									{% endfor %}
-								</div>
-
-								<div class="commentaire">
-									{{ form_widget(groupeItems.commentaire) }}
 								</div>
 
 								<i class="fa-regular fa-trash-can supprimer-itemsGroupe"></i>
@@ -49,7 +59,7 @@
 					</ul>
 				</div>
 			</div>
-			<span class="flat-btn add-items">Ajouter d'un groupe d'Items</span>
+			<span class="flat-btn add-items btn-absolute">Ajouter d'un groupe d'Items</span>
 		</div>
 
 	{% endfor %}
@@ -84,12 +94,16 @@
 
 								<div class="checkbox checkbox-items">
 									{% for item in groupeItems.choixItems %}
-										<div class="item">
-											{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
-											<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
-												<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-											</label>
-										</div>
+										{% if list_items[item.vars.value].inStore %}
+											<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
+												{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ groupeItems.vars.name ~ ']' ~ item.vars.value}) }}
+												<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{groupeItems.vars.name}}]{{ item.vars.value }}">
+													<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+												</label>
+												<span>{{ list_items[item.vars.value].name }}</span>
+												<p>{{ list_items[item.vars.value].gold['total'] }}</p>
+											</div>
+										{% endif %}
 									{% endfor %}
 								</div>
 
