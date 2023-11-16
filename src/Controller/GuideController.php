@@ -64,10 +64,6 @@ class GuideController extends AbstractController
     ): Response {
         $user = $this->security->getUser();
 
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
-
         // Récupère le guide avec l'id ou en créé un s'il n'existe pas
         $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
 
