@@ -30,6 +30,7 @@ class RegistrationFormType extends AbstractType
                         'mode' => 'strict' // conforme aux standards RFC (Request for Comments)
                     ]),
                 ],
+                'required' => true
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -38,6 +39,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Vous devez accepter nos conditions.',
                     ]),
                 ],
+                'required' => true
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
