@@ -31,7 +31,8 @@ class ChangePseudoType extends AbstractType
                         'pattern' => '/^(?!user\d+$).*/i',
                         'message' => 'Votre pseudo ne peut pas être sous la forme "user" suivi de chiffres.'
                     ])
-                ]
+                    ],
+                    'required' => true
             ])
             ->add('Valider', SubmitType::class, [
                 'label' => 'Changer le pseudo'
