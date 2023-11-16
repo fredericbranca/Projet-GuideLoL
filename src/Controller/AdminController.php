@@ -169,6 +169,8 @@ class AdminController extends AbstractController
                 $itemEntity->setId($id);
             }
 
+            isset($itemData['gold']['total']) && $itemData['gold']['total'] > -1 ? $itemEntity->setPrix($itemData['gold']['total']) : $itemEntity->setPrix(0);
+            
             // Persister l'entité
             $em->persist($itemEntity);
         }
