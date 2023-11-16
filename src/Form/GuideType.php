@@ -9,6 +9,8 @@ use App\Form\SortInvocateurType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -21,10 +23,21 @@ class GuideType extends AbstractType
     {
         $builder
             ->add('titre', TextType::class, [
-                'required' => true,
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                    ]),
+                    new Length([
+                        'max' => 50,
+                        'maxMessage' => '{{ limit }} caractères maximal'
+                    ]),
+                ],
                 'attr' => [
+                    'placeholder' => 'Titre',
                     'autocomplete' => 'off'
-                ]
+                ],
+                'required' => true
             ])
             ->add('voie', ChoiceType::class, [
                 'required' => true,
@@ -99,6 +112,5 @@ class GuideType extends AbstractType
 
         // Option champion_id
         $resolver->setDefined('champion_id');
-
     }
 }
