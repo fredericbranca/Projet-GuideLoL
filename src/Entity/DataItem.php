@@ -12,6 +12,9 @@ class DataItem
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private ?int $prix = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -24,8 +27,21 @@ class DataItem
         return $this;
     }
 
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->id;
     }
+
 }
