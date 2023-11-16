@@ -3,16 +3,11 @@
 	{% for form in forms %}
 
 		<div class="new-guide__block" id="{{ form.vars.id }}">
-
-			<div class="titre-groupe">
-				{{ form_label(form.titre) }}
-				{{ form_widget(form.titre) }}
+			<div class="baniere-groupe handle">
+				<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 			</div>
+
 			<div class="groupe-content">
-				<div>
-					{{ form_label(form.commentaire) }}
-					{{ form_widget(form.commentaire) }}
-				</div>
 
 				{{ form_widget(form.ordre) }}
 
@@ -58,6 +53,13 @@
 					{% endfor %}
 				</div>
 
+				<div class="commentaire">
+					{{ form_widget(form.commentaire) }}
+				</div>
+
+			</div>
+			<div class="titre-groupe">
+				{{ form_widget(form.titre) }}
 			</div>
 			<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 		</div>
@@ -69,16 +71,11 @@
 
 
 	<div class="new-guide__block" id="{{ form.vars.id }}">
-
-		<div class="titre-groupe">
-			{{ form_label(form.titre) }}
-			{{ form_widget(form.titre) }}
+		<div class="baniere-groupe handle">
+			<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 		</div>
+
 		<div class="groupe-content">
-			<div>
-				{{ form_label(form.commentaire) }}
-				{{ form_widget(form.commentaire) }}
-			</div>
 
 			{{ form_widget(form.ordre) }}
 
@@ -124,6 +121,13 @@
 				{% endfor %}
 			</div>
 
+			<div class="commentaire">
+				{{ form_widget(form.commentaire) }}
+			</div>
+
+		</div>
+		<div class="titre-groupe">
+			{{ form_widget(form.titre) }}
 		</div>
 		<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 	</div>
