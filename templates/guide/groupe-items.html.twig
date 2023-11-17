@@ -3,27 +3,39 @@
 		<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 	</div>
 
-	<div class="groupe-content">
+	<div class="groupe-content-liste-items">
 
 		{{ form_widget(form.ordre) }}
-
-		<div class="checkbox checkbox-items">
-			{% for item in form.choixItems %}
-				{% if list_items[item.vars.value].inStore %}
-					<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
-						{{ form_widget(item, {'id': 'guide[groupeEnsemblesItems][' ~ form.vars.name ~ '][associationsEnsemblesItemsGroups][' ~ form.vars.name ~ ']' ~ item.vars.value}) }}
-						<label for="guide[groupeEnsemblesItems][{{ form.vars.name }}][associationsEnsemblesItemsGroups][{{form.vars.name}}]{{ item.vars.value }}">
-							<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-						</label>
-						<span>{{ list_items[item.vars.value].name }}</span>
-						<p>{{ list_items[item.vars.value].gold['total'] }}</p>
-					</div>
-				{% endif %}
-			{% endfor %}
+		<div id="selectedItem">
+			<div class="copie-item"></div>
+			<div class="copie-item"></div>
+			<div class="copie-item"></div>
 		</div>
 
-		<div class="commentaire">
-			{{ form_widget(form.commentaire) }}
+		<div class="groupe-content">
+			<div class="checkbox checkbox-items">
+				{% for choixItems in form.choixItems %}
+					{% for item in choixItems.dataItem %}
+
+						{% if list_items[item.vars.value].inStore %}
+							<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
+								{{ form_widget(item, {'id': 'guide_groupeEnsemblesItems_' ~ form.parent.parent.vars.name ~ '_associationsEnsemblesItemsGroups_' ~ form.vars.name ~ '_choixItems_' ~ choixItems.vars.name ~ '_dataItem_' ~ item.vars.value}) }}
+								<label for="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{form.vars.name}}_choixItems_{{ choixItems.vars.name }}_dataItem_{{ item.vars.value }}">
+									<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+								</label>
+								<span>{{ list_items[item.vars.value].name }}</span>
+								<p>{{ list_items[item.vars.value].gold['total'] }}</p>
+								<input type="number" id="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{ form.vars.name }}_choixItems_{{ choixItems.vars.name }}_ordre_{{ item.vars.value }}" name="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}][choixItems][{{ choixItems.vars.name }}][ordre][{{ item.vars.value }}]" class="ordre-item">
+							</div>
+						{% endif %}
+
+					{% endfor %}
+				{% endfor %}
+			</div>
+
+			<div class="commentaire">
+				{{ form_widget(form.commentaire) }}
+			</div>
 		</div>
 	</div>
 
