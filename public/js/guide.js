@@ -300,8 +300,8 @@ blockBuilder.addEventListener('click', function (event) {
         console.log(event.tard, nextDiv)
 
 
-        // Vérifie si la div suivante est .groupe-content
-        if (nextDiv && nextDiv.classList.contains('groupe-content')) {
+        // Vérifie si la div suivante est .groupe-content ou .groupe-content-liste-items
+        if (nextDiv && (nextDiv.classList.contains('groupe-content') || nextDiv.classList.contains('groupe-content-liste-items'))) {
             // Basculer entre display: none et display: block
             nextDiv.style.display = (nextDiv.style.display === 'none' ? 'flex' : 'none');
         }
@@ -317,7 +317,7 @@ const updateGroupIds = (ensembleSelector) => {
         group.id = group.id.replace(/\d+$/, index.toString());
 
         // Mettre à jour les IDs et noms des éléments enfants
-        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"]');
+        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"], [data-id^="guide_groupe"]');
         childElements.forEach(el => {
             if (el.id) {
                 el.id = el.id.replace(/\d+/, index.toString());
@@ -327,6 +327,10 @@ const updateGroupIds = (ensembleSelector) => {
             }
             if (el.htmlFor) {
                 el.htmlFor = el.htmlFor.replace(/\d+/, index.toString());
+            }
+            if (el.getAttribute('data-id')) {
+                let dataIdValue = el.getAttribute('data-id');
+                el.setAttribute('data-id', dataIdValue.replace(/\d+/, index.toString()));
             }
         });
 
@@ -353,7 +357,7 @@ const updateItemsGroupIds = (ensembleSelector) => {
         }
 
         // Mettre à jour les IDs et noms des éléments enfants
-        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"]');
+        let childElements = group.querySelectorAll('[id^="guide_groupe"], [for^="guide_groupe"], [name^="guide[groupe"], [for^="guide[groupe"], [data-id^="guide_groupe"]');
         childElements.forEach(el => {
             if (el.id) {
                 let idParts = el.id.split(/(\d+)/);
@@ -377,6 +381,15 @@ const updateItemsGroupIds = (ensembleSelector) => {
                 if (htmlForParts.length > 3) {
                     htmlForParts[3] = indexGroupe.toString();
                     el.htmlFor = htmlForParts.join('');
+                }
+            }
+
+            if (el.getAttribute('data-id')) {
+                let dataIdValue = el.getAttribute('data-id');
+                let dataIdParts = dataIdValue.split(/(\d+)/);
+                if (dataIdParts.length > 3) {
+                    dataIdParts[3] = indexGroupe.toString();
+                    el.setAttribute('data-id', dataIdParts.join(''));
                 }
             }
         });
