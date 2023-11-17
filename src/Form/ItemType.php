@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\DataItem;
 use App\Entity\ItemsGroup;
+use App\Form\ChoixItemsType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ItemType extends AbstractType
 {
@@ -64,28 +66,20 @@ class ItemType extends AbstractType
                     'style' => 'display: none;'
                 ],
             ])
-            ->add('choixItems', EntityType::class, [
-                'class' => DataItem::class,
-                'multiple' => true,
-                'expanded' => true,
-                'invalid_message' => 'Item invalide',
-                'constraints' => [
-                    new Count([
-                        'max' => 10,
-                        'maxMessage' => 'Vous pouvez sélectionner au maximum 10 items.'
-                    ])
-                ],
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.prix', 'ASC');
-                },
+            ->add('choixItems', CollectionType::class, [
+                'entry_type' => ChoixItemsType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'attr' => ['class' => 'groupe-items'],
+                'required' => true,
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ItemsGroup::class,
+            'data_class' => ItemsGroup::class
         ]);
     }
 }
