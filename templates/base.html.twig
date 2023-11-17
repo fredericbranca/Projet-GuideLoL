@@ -2,7 +2,7 @@
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
@@ -20,7 +20,6 @@
 		{% endblock %}
 	</head>
 	<body>
-
 		<header>
 			<nav class="navbar">
 				<ul class="navbar-nav">
@@ -82,6 +81,5 @@
 
 		<div class="content"> {% block body %}{% endblock %}
 			</div>
-
 		</body>
 	</html>
