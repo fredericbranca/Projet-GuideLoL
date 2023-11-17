@@ -12,9 +12,14 @@ body {
   min-height: 100vh;
 }
 
+/* #scale-container {
+  transform-origin: top left;
+  width: 1920px;
+} */
+
 .content {
   min-height: 100vh;
-  color: black
+  color: black;
 }
 
 .content > :not(.header-home) {
@@ -40,8 +45,8 @@ body {
     rgba(195, 209, 255, 0.95) 15%,
     rgba(195, 209, 255, 0.85) 25%,
     rgba(195, 209, 255, 0.49) 50%,
-    rgba(195, 209, 255, 0.40) 60%,
-    rgba(195, 209, 255, 0.10) 90%,
+    rgba(195, 209, 255, 0.4) 60%,
+    rgba(195, 209, 255, 0.1) 90%,
     rgba(195, 209, 255, 0) 100%
   );
 }
