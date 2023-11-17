@@ -42,7 +42,7 @@ class Guide
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: EnsembleItemsGroups::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
-    private Collection $GroupeEnsemblesItems;
+    private Collection $groupeEnsemblesItems;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: CompetencesGroup::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(["ordre" => "ASC"])]
@@ -57,7 +57,7 @@ class Guide
         $this->groupeSortsInvocateur = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
         $this->groupeRunes = new ArrayCollection();
-        $this->GroupeEnsemblesItems = new ArrayCollection();
+        $this->groupeEnsemblesItems = new ArrayCollection();
         $this->groupesCompetences = new ArrayCollection();
     }
 
@@ -191,13 +191,13 @@ class Guide
      */
     public function getGroupeEnsemblesItems(): Collection
     {
-        return $this->GroupeEnsemblesItems;
+        return $this->groupeEnsemblesItems;
     }
 
     public function addGroupeEnsemblesItem(EnsembleItemsGroups $groupeEnsemblesItem): static
     {
-        if (!$this->GroupeEnsemblesItems->contains($groupeEnsemblesItem)) {
-            $this->GroupeEnsemblesItems->add($groupeEnsemblesItem);
+        if (!$this->groupeEnsemblesItems->contains($groupeEnsemblesItem)) {
+            $this->groupeEnsemblesItems->add($groupeEnsemblesItem);
             $groupeEnsemblesItem->setGuide($this);
         }
 
@@ -206,7 +206,7 @@ class Guide
 
     public function removeGroupeEnsemblesItem(EnsembleItemsGroups $groupeEnsemblesItem): static
     {
-        if ($this->GroupeEnsemblesItems->removeElement($groupeEnsemblesItem)) {
+        if ($this->groupeEnsemblesItems->removeElement($groupeEnsemblesItem)) {
             // set the owning side to null (unless already changed)
             if ($groupeEnsemblesItem->getGuide() === $this) {
                 $groupeEnsemblesItem->setGuide(null);
