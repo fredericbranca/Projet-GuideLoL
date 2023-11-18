@@ -144,7 +144,17 @@
 							<div>Commentaire :
 								{{ itemsGroups.commentaire }}</div>
 
-							{% for choixItems in itemsGroups.choixItems %}
+							{% set ordreItems = itemsGroups.ordreItems|sort %}
+							{% set trieItems = {} %}
+							{% for id in ordreItems|keys %}
+								{% for choixItems in itemsGroups.choixItems %}
+									{% if choixItems.id is same as(id) %}
+										{% set trieItems = trieItems|merge([choixItems]) %}
+									{% endif %}
+								{% endfor %}
+							{% endfor %}
+
+							{% for choixItems in trieItems %}
 								<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[choixItems.id].image }}.webp" alt="{{ list_items[choixItems.id].name }}">
 							{% endfor %}
 
