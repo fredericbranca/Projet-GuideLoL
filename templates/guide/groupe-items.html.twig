@@ -14,22 +14,18 @@
 
 		<div class="groupe-content">
 			<div class="checkbox checkbox-items">
-				{% for choixItems in form.choixItems %}
-					{% for item in choixItems.dataItem %}
-
-						{% if list_items[item.vars.value].inStore %}
-							<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
-								{{ form_widget(item, {'id': 'guide_groupeEnsemblesItems_' ~ form.parent.parent.vars.name ~ '_associationsEnsemblesItemsGroups_' ~ form.vars.name ~ '_choixItems_' ~ choixItems.vars.name ~ '_dataItem_' ~ item.vars.value}) }}
-								<label for="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{form.vars.name}}_choixItems_{{ choixItems.vars.name }}_dataItem_{{ item.vars.value }}">
-									<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
-								</label>
-								<span>{{ list_items[item.vars.value].name }}</span>
-								<p>{{ list_items[item.vars.value].gold['total'] }}</p>
-								<input type="number" id="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{ form.vars.name }}_choixItems_{{ choixItems.vars.name }}_ordre_{{ item.vars.value }}" name="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}][choixItems][{{ choixItems.vars.name }}][ordre][{{ item.vars.value }}]" class="ordre-item">
-							</div>
-						{% endif %}
-
-					{% endfor %}
+				{% for item in form.choixItems %}
+					{% if list_items[item.vars.value].inStore %}
+						<div class="item" data-tags="{{ list_items[item.vars.value].tags|join(',') }}">
+							{{ form_widget(item, {'id': 'guide_groupeEnsemblesItems_' ~ form.parent.parent.vars.name ~ '_associationsEnsemblesItemsGroups_' ~ form.vars.name ~ '_choixItems_' ~ item.vars.value}) }}
+							<label for="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{form.vars.name}}_choixItems_{{ item.vars.value }}">
+								<img src="{{ img_url }}/item/{{ list_items[item.vars.value].image }}.webp" alt="{{ list_items[item.vars.value].name }}">
+							</label>
+							<span>{{ list_items[item.vars.value].name }}</span>
+							<p>{{ list_items[item.vars.value].gold['total'] }}</p>
+							<input type="number" id="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{ form.vars.name }}_ordreItem_{{ item.vars.value }}" name="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}][ordreItem][{{ item.vars.value }}]" class="ordre-item">
+						</div>
+					{% endif %}
 				{% endfor %}
 			</div>
 
