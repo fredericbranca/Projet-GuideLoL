@@ -295,15 +295,22 @@ blockBuilder.addEventListener('click', function (event) {
 
     // Vérifie si l'élément cliqué a la classe .titre-groupe ou .titre-groupe-item
     if (event.target.classList.contains('baniere-groupe') || event.target.classList.contains('baniere-groupe-items')) {
-        // Trouve la div suivante la plus proche
         var nextDiv = event.target.nextElementSibling;
-        console.log(event.tard, nextDiv)
 
-
-        // Vérifie si la div suivante est .groupe-content ou .groupe-content-liste-items
         if (nextDiv && (nextDiv.classList.contains('groupe-content') || nextDiv.classList.contains('groupe-content-liste-items'))) {
-            // Basculer entre display: none et display: block
-            nextDiv.style.display = (nextDiv.style.display === 'none' ? 'flex' : 'none');
+            if (nextDiv.classList.contains('open')) {
+                nextDiv.classList.remove('open');
+
+                // Temps avant de display none
+                setTimeout(function () {
+                    nextDiv.style.display = 'none';
+                }, 200);
+            } else {
+                nextDiv.style.display = 'flex';
+                setTimeout(function () {
+                    nextDiv.classList.add('open');
+                }, 10);
+            }
         }
     }
 

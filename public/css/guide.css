@@ -102,7 +102,7 @@
   background: #275495;
   text-align: center;
   padding: 11px 20px;
-  font: 14px/14px "Open Sans Mobafire", "Open Sans", sans-serif, sans-serif;
+  font: 14px/14px "Sarala, Open Sans", sans-serif, sans-serif;
   border: none;
   cursor: pointer;
   transition: 250ms;
@@ -244,7 +244,11 @@
 .new-guide__block {
   background-color: #0b1727;
   padding-bottom: 3px;
-  margin-bottom: 3px;
+  margin-bottom: 0px;
+}
+
+.new-guide-builder__items-container .new-guide__block {
+  margin-bottom: 60px;
 }
 
 .groupe-content,
@@ -252,6 +256,18 @@
 .groupe-content-liste-items {
   background-color: #233148;
   color: #afbbce;
+
+  overflow: hidden;
+  transition: opacity 0.2s ease-out, max-height 0.2s ease-out;
+  max-height: 0;
+  opacity: 0;
+}
+
+.open {
+  display: flex;
+  opacity: 1;
+  max-height: 1000px;
+  transition-delay: 0s;
 }
 
 .supprimer-groupe,

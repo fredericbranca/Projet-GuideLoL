@@ -24,7 +24,7 @@
 									<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 								</div>
 
-								<div class="groupe-content-liste-items">
+								<div class="groupe-content-liste-items open">
 
 									{{ form_widget(groupeItems.ordre) }}
 									<div id="selectedItem">
@@ -33,7 +33,7 @@
 										<div class="copie-item"></div>
 									</div>
 
-									<div class="groupe-content">
+									<div class="groupe-content open">
 										<div class="checkbox checkbox-items">
 											{% for item in groupeItems.choixItems %}
 												{% if list_items[item.vars.value].inStore %}
@@ -96,7 +96,7 @@
 								<i class="fa-solid fa-arrows-up-down-left-right" style="color: #9ca7ba;"></i>
 							</div>
 
-							<div class="groupe-content-liste-items">
+							<div class="groupe-content-liste-items open">
 
 								{{ form_widget(groupeItems.ordre) }}
 								<div id="selectedItem">
@@ -105,7 +105,7 @@
 									<div class="copie-item"></div>
 								</div>
 
-								<div class="groupe-content">
+								<div class="groupe-content open">
 									<div class="checkbox checkbox-items">
 										{% for item in groupeItems.choixItems %}
 											{% if list_items[item.vars.value].inStore %}
