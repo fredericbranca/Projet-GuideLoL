@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\DataItem;
 use App\Entity\ItemsGroup;
-use App\Form\ChoixItemsType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Count;
@@ -66,20 +68,48 @@ class ItemType extends AbstractType
                     'style' => 'display: none;'
                 ],
             ])
-            ->add('choixItems', CollectionType::class, [
-                'entry_type' => ChoixItemsType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'attr' => ['class' => 'groupe-items'],
-                'required' => true,
+            ->add('choixItems', EntityType::class, [
+                'class' => DataItem::class,
+                'multiple' => true,
+                'expanded' => true,
+                'invalid_message' => 'Item invalide',
+                'constraints' => [
+                    new Count([
+                        'max' => 10,
+                        'maxMessage' => 'Vous pouvez sélectionner au maximum 10 items.'
+                    ])
+                ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('d')
+                        ->orderBy('d.prix', 'ASC');
+                },
+                'choice_attr' => function ($choice, $key, $value) {
+                    // Applique la classe 'item-checkbox' à chaque checkbox
+                    return ['class' => 'item-checkbox'];
+                },
             ]);
+
+        $ordreItems = [];
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (&$ordreItems) {
+            $data = $event->getData();
+
+            $ordreItems = $data['ordreItem'];
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use (&$ordreItems) {
+            $itemsGroup = $event->getData();
+
+            // Ajoute l'ordre d'items au groupe d'items
+            $itemsGroup->setOrdreItems($ordreItems);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ItemsGroup::class
+            'data_class' => ItemsGroup::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }
