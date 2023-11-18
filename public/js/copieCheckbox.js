@@ -118,12 +118,20 @@ function updateSelectedItem(groupe) {
         // Ajout de data-id à la div copie-item ou à l'img
         copieItemDiv.setAttribute('data-id', checkbox.id);
 
+
         var newImg = document.createElement('img');
         newImg.src = img.src;
         newImg.alt = img.alt;
+        newImg.classList = 'handleItem'
+
+        // Ajout data-ordre à copieItemDiv
+        let itemDiv = checkbox.closest('.item');
+        let ordreInput = itemDiv.querySelector('.ordre-item');
+        copieItemDiv.setAttribute('data-ordre', ordreInput.id);
 
         copieItemDiv.appendChild(newImg);
         selectedItemDiv.appendChild(copieItemDiv);
+
     });
 
     // Ajoute des divs vides pour maintenir 3 divs 'copie-item'

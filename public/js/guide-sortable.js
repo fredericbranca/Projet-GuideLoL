@@ -5,7 +5,7 @@ function setupSortable() {
             group: 'group-containers',
             handle: '.handle',
             animation: 200,
-            onEnd: function (event) {
+            onEnd: function () {
                 updateGroupIds(container);
             },
         });
@@ -20,8 +20,34 @@ function setupSortableItem() {
             group: 'group-lists',
             handle: '.handle',
             animation: 200,
-            onEnd: function (event) {
+            onEnd: function () {
                 updateGroupIds(container);
+            },
+        });
+    });
+}
+
+function setupSortableOrdreItems() {
+    let container = document.querySelector('.new-guide-builder__items-container');
+    const itemsList = container.querySelectorAll('#selectedItem');
+    itemsList.forEach(item => {
+        Sortable.create(item, {
+            group: {
+                name: 'group-items',
+                put: false
+            },
+            handle: '.handleItem',
+            animation: 200,
+            onEnd: function () {
+                const groupe = item.closest('.groupe-item');
+                let inputOrdre = item.querySelectorAll('.copie-item');
+                inputOrdre.forEach((el, index) => {
+                    let id = el.dataset.ordre;
+            
+                    if (groupe.querySelector(`#${id}`)) {
+                        groupe.querySelector(`#${id}`).value = index;
+                    }
+                });
             },
         });
     });
@@ -32,8 +58,9 @@ function observerLesChangements() {
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             mutation.addedNodes.forEach(function (node) {
-                if (node.classList && node.classList.contains('new-guide__block')) {
+                if (node.classList && (node.classList.contains('new-guide__block') || node.classList.contains('groupe-item'))) {
                     setupSortableItem();
+                    setupSortableOrdreItems();
                 }
             });
         });
@@ -54,4 +81,5 @@ window.addEventListener('DOMContentLoaded', () => {
     setupSortable();
     setupSortableItem();
     observerLesChangements();
+    setupSortableOrdreItems();
 });
