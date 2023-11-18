@@ -28,22 +28,17 @@ class ItemsGroup
     #[ORM\ManyToOne(inversedBy: 'AssociationsEnsemblesItemsGroups', cascade: ['persist'])]
     private ?EnsembleItemsGroups $ensembleItemsGroups = null;
 
-    #[ORM\OneToMany(mappedBy: 'itemsGroup', targetEntity: ChoixItems::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: DataItem::class)]
+    #[ORM\JoinTable(name: "choix_items")]
     private Collection $choixItems;
+
+    #[ORM\Column]
+    private array $ordreItems = [];
 
     public function __construct()
     {
         $this->choixItems = new ArrayCollection();
     }
-
-    // #[ORM\ManyToMany(targetEntity: DataItem::class)]
-    // #[ORM\JoinTable(name: "choix_items")]
-    // private Collection $choixItems;
-
-    // public function __construct()
-    // {
-    //     $this->choixItems = new ArrayCollection();
-    // }
 
     public function getId(): ?int
     {
@@ -98,56 +93,38 @@ class ItemsGroup
         return $this;
     }
 
-    // /**
-    //  * @return Collection<int, DataItem>
-    //  */
-    // public function getChoixItems(): Collection
-    // {
-    //     return $this->choixItems;
-    // }
-
-    // public function addChoixItem(DataItem $choixItem): static
-    // {
-    //     if (!$this->choixItems->contains($choixItem)) {
-    //         $this->choixItems->add($choixItem);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeChoixItem(DataItem $choixItem): static
-    // {
-    //     $this->choixItems->removeElement($choixItem);
-
-    //     return $this;
-    // }
-
     /**
-     * @return Collection<int, ChoixItems>
+     * @return Collection<int, DataItem>
      */
     public function getChoixItems(): Collection
     {
         return $this->choixItems;
     }
 
-    public function addChoixItems(ChoixItems $choixItems): static
+    public function addChoixItem(DataItem $choixItem): static
     {
-        if (!$this->choixItems->contains($choixItems)) {
-            $this->choixItems->add($choixItems);
-            $choixItems->setItemsGroup($this);
+        if (!$this->choixItems->contains($choixItem)) {
+            $this->choixItems->add($choixItem);
         }
 
         return $this;
     }
 
-    public function removeChoixItems(ChoixItems $choixItems): static
+    public function removeChoixItem(DataItem $choixItem): static
     {
-        if ($this->choixItems->removeElement($choixItems)) {
-            // set the owning side to null (unless already changed)
-            if ($choixItems->getItemsGroup() === $this) {
-                $choixItems->setItemsGroup(null);
-            }
-        }
+        $this->choixItems->removeElement($choixItem);
+
+        return $this;
+    }
+
+    public function getOrdreItems(): array
+    {
+        return $this->ordreItems;
+    }
+
+    public function setOrdreItems(array $ordreItems): static
+    {
+        $this->ordreItems = $ordreItems;
 
         return $this;
     }
