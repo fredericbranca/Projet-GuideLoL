@@ -77,14 +77,12 @@ class GuideController extends AbstractController
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
         
-        // dump($request->request->All());die;
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $guideData = $request->request->All();
-            dump($guideData); die;
             $groupesRunes = $form->get('groupeRunes')->getData();
 
             if (!$groupesRunes->isEmpty()) {
@@ -229,16 +227,13 @@ class GuideController extends AbstractController
 
         // Initialisation ou récupération du Guide
         $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
-
         if (!$idGuide) {
             $ensemble = new EnsembleItemsGroups();
-            $itemsGroup = new ItemsGroup();
-            $itemsGroup->addChoixItems(new ChoixItems());
-            $ensemble->addAssociationsEnsemblesItemsGroup($itemsGroup);
+            $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
             $guide->addGroupeEnsemblesItem($ensemble);
             $index = 0;
         }
-
+        
         // Appel de la méthode globale pour créer le formulaire
         $formInfo = $this->createGuideForm($guide, 'ensembleItems', $index, null);
 
@@ -273,11 +268,8 @@ class GuideController extends AbstractController
 
         // Création du groupe d'items
         $ensemble = new EnsembleItemsGroups();
-        $itemsGroup = new ItemsGroup();
-        $itemsGroup->addChoixItems(new ChoixItems());
-        $ensemble->addAssociationsEnsemblesItemsGroup($itemsGroup);
+        $ensemble->addAssociationsEnsemblesItemsGroup(new ItemsGroup());
         $guide->addGroupeEnsemblesItem($ensemble);
-
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
         $formView = $form->createView();
