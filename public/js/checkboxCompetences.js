@@ -23,14 +23,15 @@ function cocherCases() {
             });
         });
     });
+
 }
 
 // Fonction pour observer les changements dans le DOM
 function observerLesChangementsCompetence() {
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             if (!scriptDejaExecute) {
-                mutation.addedNodes.forEach(function(node) {
+                mutation.addedNodes.forEach(function (node) {
                     if (node.classList && node.classList.contains('new-guide__block')) {
                         cocherCases();
                     }

@@ -124,7 +124,7 @@ async function fetchContainer(spanId) {
 
     let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/create/${championId}` : `${mappingFetchURLs[spanId]}/create`;
 
-    if (guideId && fetchUpdate[spanId].fetchUpdate === false) {
+    if (guideId && fetchUpdate[spanId].fetchUpdate === false && formData.length < 1) {
         await fetchUpdatedContainer(spanId, championId);
         fetchUpdate[spanId].fetchUpdate = true;
     }
@@ -136,17 +136,33 @@ async function fetchContainer(spanId) {
     if (!container.querySelector('.new-guide__block')) {
         try {
             let html;
+            let continu = false;
 
             if (savedForm[ensemble.className]) {
                 html = savedForm[ensemble.className].html;
             } else {
-                let response = await fetch(fetchURL);
+                let response;
+                if (formData && Object.keys(formData).length > 0) {
+                    response = await fetch(fetchURL, {
+                        method: 'POST',
+                        body: JSON.stringify(formData),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    continu = false;
+                } else {
+                    response = await fetch(fetchURL);
+                    continu = true;
+                }
+
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
                 }
                 html = await response.text();
-
-                saveForm(ensemble.className, html)
+                if (continu == true) {
+                    saveForm(ensemble.className, html)
+                }
             }
 
             container.insertAdjacentHTML('afterbegin', html);
