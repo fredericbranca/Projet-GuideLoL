@@ -14,7 +14,7 @@ function cocherCases() {
 
             // Parcourir chaque niveau et cocher la case correspondante
             competence.niveaux.forEach(niveau => {
-                var checkboxId = `${baseId}_${niveau - 1}`; // -1 si vos niveaux commencent à 1 mais les ID de checkbox à 0
+                var checkboxId = `${baseId}_${niveau - 1}`;
                 var checkbox = document.getElementById(checkboxId);
                 if (checkbox) {
                     checkbox.checked = true;
@@ -26,7 +26,7 @@ function cocherCases() {
 }
 
 // Fonction pour observer les changements dans le DOM
-function observerLesChangements() {
+function observerLesChangementsCompetence() {
     var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (!scriptDejaExecute) {
@@ -50,4 +50,4 @@ function observerLesChangements() {
 }
 
 // Démarrer l'observation lors du chargement de la page
-window.addEventListener('DOMContentLoaded', observerLesChangements);
+window.addEventListener('DOMContentLoaded', observerLesChangementsCompetence);
