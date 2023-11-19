@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\DataCompetence;
 use App\Entity\CompetencesGroup;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,8 +35,8 @@ class CompetenceType extends AbstractType
             ->add('titre', TextType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ]),
                     new Length([
                         'max' => 50,
@@ -50,8 +52,8 @@ class CompetenceType extends AbstractType
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ])
                 ],
                 'attr' => [

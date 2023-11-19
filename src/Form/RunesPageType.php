@@ -41,8 +41,8 @@ class RunesPageType extends AbstractType
             ->add('titre', TextType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ]),
                     new Length([
                         'max' => 50,
@@ -58,8 +58,8 @@ class RunesPageType extends AbstractType
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ])
                 ],
                 'attr' => [

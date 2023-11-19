@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,12 +26,15 @@ class GuideType extends AbstractType
             ->add('titre', TextType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ]),
                     new Length([
                         'max' => 50,
                         'maxMessage' => '{{ limit }} caractères maximal'
+                    ]),
+                    new NotBlank([
+                        'message' => 'Le titre ne peut pas être vide.',
                     ]),
                 ],
                 'attr' => [
@@ -53,6 +57,12 @@ class GuideType extends AbstractType
                 'attr' => [
                     'autocomplete' => 'off'
                 ],
+                'invalid_message' => 'Choix invalide',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez choisir une voie.',
+                    ]),
+                ]
             ])
 
             ->add('champion', EntityType::class, [
