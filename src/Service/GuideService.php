@@ -82,8 +82,10 @@ class GuideService
             // Suppressions des niveaux déjà enregistré
             $collection = $groupeCompetence->getChoixCompetencesNiveaux();
             $elementSupr = $collection->first();
-            $collection->removeElement($elementSupr);
-            $entityManager->remove($elementSupr);
+            if ($elementSupr) {
+                $collection->removeElement($elementSupr);
+                $entityManager->remove($elementSupr);
+            }
 
             $formCompetences = $existingCompetencesGroupes->get($key);
 
