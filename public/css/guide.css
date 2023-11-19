@@ -327,9 +327,75 @@
 }
 
 /* Section Compétences */
+.new-guide-builder__competences-container .groupe-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.new-guide-builder__competences-container .commentaire textarea {
+  max-width: 500px;
+}
+
 .competence {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.competence>label {
+  position: absolute;
+  color: #6d86ac;
+  text-align: center;
+  height: 22px;
+  width: 22px;
+  bottom: 4px;
+  left: 0;
+  font-size: 14px;
+  background: #1a2233;
+}
+
+.competence-titre-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.competence-choix-checkbox {
+  text-align: center;
+}
+
+.competence-choix-checkbox [id^="guide_groupesCompetences"] {
+  display: flex; 
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.competence-choix-checkbox [id^="guide_groupesCompetences"] label {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  background: #2c3d5d;
+  position: relative;
+  cursor: pointer;
+  transition: 250ms;
+}
+
+.competence-choix-checkbox [id^="guide_groupesCompetences"] label:hover {
+  color: #fff;
+}
+
+.competence-choix-checkbox [id^="guide_groupesCompetences"] input:checked + label {
+  background: #0f1f3d;
+  color: #fff;
+}
+
+.competence-choix-checkbox input[type="checkbox"]  {
+  display: none;
 }
 
 .niveaux {
@@ -344,6 +410,12 @@
   width: 20px;
   height: 20px;
   border: 1px solid black;
+}
+
+.liste-competences {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* Image checkbox */

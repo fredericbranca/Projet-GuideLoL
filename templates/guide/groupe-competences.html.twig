@@ -9,7 +9,7 @@
 
 				{{ form_widget(form.ordre) }}
 
-				<div>
+				<div class="liste-competences">
 					<div class="competence-passive">
 						<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
 						Compétence passive :
@@ -63,7 +63,7 @@
 
 			{{ form_widget(form.ordre) }}
 
-			<div>
+			<div class="liste-competences">
 				<div class="competence-passive">
 					<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
 					Compétence passive :
@@ -83,7 +83,14 @@
 						<div class="competence">
 							<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
 							{{ form_label(competenceField) }}
-							{{ form_widget(competenceField) }}
+							<div class="competence-titre-checkbox">
+								<div class="competence-titre">
+									<h3>{{ champ.spells[spellIndex].name }}</h3>
+								</div>
+								<div class="competence-choix-checkbox">
+									{{ form_widget(competenceField) }}
+								</div>
+							</div>
 						</div>
 						{% set spellIndex = spellIndex + 1 %}
 					{% endif %}
