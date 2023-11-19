@@ -29,8 +29,14 @@
 							<div class="competence">
 								<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
 								{{ form_label(competenceField) }}
-								{{ form_widget(competenceField) }}
-								{{ form_errors(competenceField) }}
+								<div class="competence-titre-checkbox">
+									<div class="competence-titre">
+										<h3>{{ champ.spells[spellIndex].name }}</h3>
+									</div>
+									<div class="competence-choix-checkbox">
+										{{ form_widget(competenceField) }}
+									</div>
+								</div>
 							</div>
 							{% set spellIndex = spellIndex + 1 %}
 						{% endif %}
@@ -39,13 +45,11 @@
 
 				<div class="commentaire">
 					{{ form_widget(form.commentaire) }}
-					{{ form_errors(form.commentaire) }}
 				</div>
 
 			</div>
 			<div class="titre-groupe">
 				{{ form_widget(form.titre) }}
-				{{ form_errors(form.titre) }}
 			</div>
 			<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 		</div>
