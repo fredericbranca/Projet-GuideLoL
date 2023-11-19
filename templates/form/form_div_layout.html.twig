@@ -1,0 +1,8 @@
+{% block form_errors %}
+	{% if errors|length > 0 %}
+		{% for error in errors %}
+			<div class="error-message">{{ error.message }}</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+{# <i class="error-message-logo fa-solid fa-circle-exclamation" style="color: #800000;"></i> #}
