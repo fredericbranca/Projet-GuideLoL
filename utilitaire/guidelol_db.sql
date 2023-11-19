@@ -24,27 +24,53 @@ CREATE TABLE IF NOT EXISTS `associations_arbres_runes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=452 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_arbres_runes : ~0 rows (environ)
+-- Listage des données de la table guidelol.associations_arbres_runes : ~6 rows (environ)
+INSERT INTO `associations_arbres_runes` (`id`, `type`) VALUES
+	(446, 'Primaire'),
+	(447, 'Primaire'),
+	(448, 'Primaire'),
+	(449, 'Primaire'),
+	(450, 'Secondaire'),
+	(451, 'Secondaire');
 
 -- Listage de la structure de table guidelol. associations_competences_niveaux
 CREATE TABLE IF NOT EXISTS `associations_competences_niveaux` (
   `id` int NOT NULL AUTO_INCREMENT,
   `niveaux` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=203 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_competences_niveaux : ~0 rows (environ)
+-- Listage des données de la table guidelol.associations_competences_niveaux : ~12 rows (environ)
+INSERT INTO `associations_competences_niveaux` (`id`, `niveaux`) VALUES
+	(239, '1,7,13,17,18'),
+	(240, '2,6,8,12,14'),
+	(241, '3,5,9,11,15'),
+	(242, '4,10,16'),
+	(243, '1,2,3,4,5'),
+	(244, '6,7,8,9,10'),
+	(245, '11,12,13,14,15'),
+	(246, '16,17,18');
 
 -- Listage de la structure de table guidelol. associations_runes_bonus
 CREATE TABLE IF NOT EXISTS `associations_runes_bonus` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=597 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=647 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_runes_bonus : ~0 rows (environ)
+-- Listage des données de la table guidelol.associations_runes_bonus : ~9 rows (environ)
+INSERT INTO `associations_runes_bonus` (`id`, `type`) VALUES
+	(638, 'Rune'),
+	(639, 'Rune'),
+	(640, 'Rune'),
+	(641, 'Rune'),
+	(642, 'Rune'),
+	(643, 'Rune'),
+	(644, 'Bonus'),
+	(645, 'Bonus'),
+	(646, 'Bonus');
 
 -- Listage de la structure de table guidelol. choix_arbres
 CREATE TABLE IF NOT EXISTS `choix_arbres` (
@@ -57,7 +83,14 @@ CREATE TABLE IF NOT EXISTS `choix_arbres` (
   CONSTRAINT `FK_E36C2711C49E7A84` FOREIGN KEY (`associations_arbres_runes_id`) REFERENCES `associations_arbres_runes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_arbres : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_arbres : ~6 rows (environ)
+INSERT INTO `choix_arbres` (`associations_runes_bonus_id`, `associations_arbres_runes_id`) VALUES
+	(638, 446),
+	(639, 447),
+	(640, 448),
+	(641, 449),
+	(642, 450),
+	(643, 451);
 
 -- Listage de la structure de table guidelol. choix_competences_niveaux
 CREATE TABLE IF NOT EXISTS `choix_competences_niveaux` (
@@ -70,32 +103,46 @@ CREATE TABLE IF NOT EXISTS `choix_competences_niveaux` (
   CONSTRAINT `FK_A3F0C9A1B1400904` FOREIGN KEY (`competences_group_id`) REFERENCES `competences_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_competences_niveaux : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_competences_niveaux : ~12 rows (environ)
+INSERT INTO `choix_competences_niveaux` (`competences_group_id`, `associations_competences_niveaux_id`) VALUES
+	(27, 239),
+	(27, 240),
+	(27, 241),
+	(27, 242),
+	(28, 243),
+	(28, 244),
+	(28, 245),
+	(28, 246);
 
 -- Listage de la structure de table guidelol. choix_items
 CREATE TABLE IF NOT EXISTS `choix_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
   `items_group_id` int NOT NULL,
-  `ordre` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_299CCA8A892F6989` (`items_group_id`),
-  CONSTRAINT `FK_299CCA8A892F6989` FOREIGN KEY (`items_group_id`) REFERENCES `items_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Listage des données de la table guidelol.choix_items : ~0 rows (environ)
-
--- Listage de la structure de table guidelol. choix_items_data_item
-CREATE TABLE IF NOT EXISTS `choix_items_data_item` (
-  `choix_items_id` int NOT NULL,
   `data_item_id` int NOT NULL,
-  PRIMARY KEY (`choix_items_id`,`data_item_id`),
-  KEY `IDX_170C820E424FBBE4` (`choix_items_id`),
-  KEY `IDX_170C820E766404AF` (`data_item_id`),
-  CONSTRAINT `FK_170C820E424FBBE4` FOREIGN KEY (`choix_items_id`) REFERENCES `choix_items` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_170C820E766404AF` FOREIGN KEY (`data_item_id`) REFERENCES `data_item` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`items_group_id`,`data_item_id`),
+  KEY `IDX_299CCA8A892F6989` (`items_group_id`),
+  KEY `IDX_299CCA8A766404AF` (`data_item_id`),
+  CONSTRAINT `FK_299CCA8A766404AF` FOREIGN KEY (`data_item_id`) REFERENCES `data_item` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_299CCA8A892F6989` FOREIGN KEY (`items_group_id`) REFERENCES `items_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_items_data_item : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_items : ~5 rows (environ)
+INSERT INTO `choix_items` (`items_group_id`, `data_item_id`) VALUES
+	(91, 1103),
+	(91, 2031),
+	(91, 3222),
+	(91, 3340),
+	(91, 6660),
+	(92, 1001),
+	(92, 1004),
+	(92, 2031),
+	(92, 3340),
+	(92, 3363),
+	(92, 3364),
+	(93, 2003),
+	(93, 2055),
+	(93, 3363),
+	(93, 3364),
+	(93, 3599);
 
 -- Listage de la structure de table guidelol. choix_runes
 CREATE TABLE IF NOT EXISTS `choix_runes` (
@@ -108,7 +155,14 @@ CREATE TABLE IF NOT EXISTS `choix_runes` (
   CONSTRAINT `FK_429C6E95C49E7A84` FOREIGN KEY (`associations_arbres_runes_id`) REFERENCES `associations_arbres_runes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_runes : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_runes : ~6 rows (environ)
+INSERT INTO `choix_runes` (`associations_arbres_runes_id`, `data_rune_id`) VALUES
+	(446, 8112),
+	(447, 8126),
+	(448, 8136),
+	(449, 8106),
+	(450, 9101),
+	(451, 8017);
 
 -- Listage de la structure de table guidelol. choix_runes_pages
 CREATE TABLE IF NOT EXISTS `choix_runes_pages` (
@@ -121,7 +175,17 @@ CREATE TABLE IF NOT EXISTS `choix_runes_pages` (
   CONSTRAINT `FK_456D40878E20FAE3` FOREIGN KEY (`associations_runes_bonus_id`) REFERENCES `associations_runes_bonus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_runes_pages : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_runes_pages : ~9 rows (environ)
+INSERT INTO `choix_runes_pages` (`runes_page_id`, `associations_runes_bonus_id`) VALUES
+	(39, 638),
+	(39, 639),
+	(39, 640),
+	(39, 641),
+	(39, 642),
+	(39, 643),
+	(39, 644),
+	(39, 645),
+	(39, 646);
 
 -- Listage de la structure de table guidelol. choix_sort_invocateur
 CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
@@ -134,26 +198,12 @@ CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
   CONSTRAINT `FK_1487B837A207090` FOREIGN KEY (`sort_invocateur_id`) REFERENCES `sort_invocateur` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_sort_invocateur : ~18 rows (environ)
+-- Listage des données de la table guidelol.choix_sort_invocateur : ~2 rows (environ)
 INSERT INTO `choix_sort_invocateur` (`sort_invocateur_id`, `data_sort_invocateur_id`) VALUES
-	(56, 'SummonerBarrier'),
-	(56, 'SummonerBoost'),
-	(57, 'SummonerBarrier'),
-	(57, 'SummonerBoost'),
-	(58, 'SummonerBarrier'),
-	(58, 'SummonerBoost'),
-	(59, 'SummonerBoost'),
-	(59, 'SummonerDot'),
-	(60, 'SummonerBoost'),
-	(60, 'SummonerDot'),
-	(61, 'SummonerBoost'),
-	(61, 'SummonerDot'),
-	(62, 'SummonerBoost'),
-	(62, 'SummonerDot'),
-	(63, 'SummonerBoost'),
-	(63, 'SummonerDot'),
-	(64, 'SummonerBarrier'),
-	(64, 'SummonerBoost');
+	(86, 'SummonerExhaust'),
+	(86, 'SummonerSmite'),
+	(87, 'SummonerBarrier'),
+	(87, 'SummonerHaste');
 
 -- Listage de la structure de table guidelol. choix_statistiques_bonus
 CREATE TABLE IF NOT EXISTS `choix_statistiques_bonus` (
@@ -166,7 +216,11 @@ CREATE TABLE IF NOT EXISTS `choix_statistiques_bonus` (
   CONSTRAINT `FK_68A8F9E08E20FAE3` FOREIGN KEY (`associations_runes_bonus_id`) REFERENCES `associations_runes_bonus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_statistiques_bonus : ~0 rows (environ)
+-- Listage des données de la table guidelol.choix_statistiques_bonus : ~3 rows (environ)
+INSERT INTO `choix_statistiques_bonus` (`associations_runes_bonus_id`, `data_statistique_bonus_id`) VALUES
+	(644, 1),
+	(645, 6),
+	(646, 7);
 
 -- Listage de la structure de table guidelol. competences
 CREATE TABLE IF NOT EXISTS `competences` (
@@ -179,7 +233,16 @@ CREATE TABLE IF NOT EXISTS `competences` (
   CONSTRAINT `FK_DB2077CEE4340981` FOREIGN KEY (`data_competence_id`) REFERENCES `data_competence` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.competences : ~0 rows (environ)
+-- Listage des données de la table guidelol.competences : ~12 rows (environ)
+INSERT INTO `competences` (`associations_competences_niveaux_id`, `data_competence_id`) VALUES
+	(239, 'AkaliQ'),
+	(240, 'AkaliW'),
+	(241, 'AkaliE'),
+	(242, 'AkaliR'),
+	(243, 'AkaliQ'),
+	(244, 'AkaliW'),
+	(245, 'AkaliE'),
+	(246, 'AkaliR');
 
 -- Listage de la structure de table guidelol. competences_group
 CREATE TABLE IF NOT EXISTS `competences_group` (
@@ -191,9 +254,12 @@ CREATE TABLE IF NOT EXISTS `competences_group` (
   PRIMARY KEY (`id`),
   KEY `IDX_A6069EADD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_A6069EADD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.competences_group : ~1 rows (environ)
+-- Listage des données de la table guidelol.competences_group : ~3 rows (environ)
+INSERT INTO `competences_group` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
+	(27, 104, NULL, NULL, 0),
+	(28, 104, NULL, NULL, 1);
 
 -- Listage de la structure de table guidelol. data_champion
 CREATE TABLE IF NOT EXISTS `data_champion` (
@@ -1423,7 +1489,7 @@ CREATE TABLE IF NOT EXISTS `data_sort_invocateur` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.data_sort_invocateur : ~6 rows (environ)
+-- Listage des données de la table guidelol.data_sort_invocateur : ~11 rows (environ)
 INSERT INTO `data_sort_invocateur` (`id`) VALUES
 	('SummonerBarrier'),
 	('SummonerBoost'),
@@ -1477,20 +1543,12 @@ CREATE TABLE IF NOT EXISTS `ensemble_items_groups` (
   PRIMARY KEY (`id`),
   KEY `IDX_68A1E5FBD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_68A1E5FBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.ensemble_items_groups : ~10 rows (environ)
+-- Listage des données de la table guidelol.ensemble_items_groups : ~1 rows (environ)
 INSERT INTO `ensemble_items_groups` (`id`, `titre`, `ordre`, `guide_id`) VALUES
-	(23, NULL, 0, 76),
-	(24, NULL, 0, 77),
-	(25, NULL, 0, 78),
-	(26, NULL, 0, 79),
-	(27, NULL, 0, 80),
-	(28, NULL, 0, 81),
-	(29, NULL, 0, 82),
-	(30, NULL, 0, 83),
-	(31, NULL, 0, 84),
-	(32, NULL, 1, 84);
+	(67, NULL, 0, 104),
+	(68, NULL, 1, 104);
 
 -- Listage de la structure de table guidelol. guide
 CREATE TABLE IF NOT EXISTS `guide` (
@@ -1506,19 +1564,11 @@ CREATE TABLE IF NOT EXISTS `guide` (
   KEY `IDX_CA9EC735A76ED395` (`user_id`),
   CONSTRAINT `FK_CA9EC735A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_CA9EC735FA7FD7EB` FOREIGN KEY (`champion_id`) REFERENCES `data_champion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.guide : ~9 rows (environ)
+-- Listage des données de la table guidelol.guide : ~1 rows (environ)
 INSERT INTO `guide` (`id`, `champion_id`, `titre`, `voie`, `created_at`, `modified_at`, `user_id`) VALUES
-	(76, 'Aatrox', 'dazd', 'Jungle', '2023-11-16 15:23:59', NULL, 24),
-	(77, 'Akali', 'rgv', 'Top', '2023-11-16 15:24:51', NULL, 24),
-	(78, 'Ahri', 'ezcvcz', 'Jungle', '2023-11-16 15:25:29', NULL, 24),
-	(79, 'Ahri', 'frefr', 'Top', '2023-11-16 15:33:47', NULL, 24),
-	(80, 'Ahri', 'cezce', 'Jungle', '2023-11-16 15:47:34', NULL, 24),
-	(81, 'Ahri', 'cezce', 'Jungle', '2023-11-16 15:49:39', NULL, 24),
-	(82, 'Ahri', 'cezce', 'Jungle', '2023-11-16 15:51:23', NULL, 24),
-	(83, 'Ahri', 'cezce', 'Jungle', '2023-11-16 15:52:13', NULL, 24),
-	(84, 'Braum', 'vzevez', 'Top', '2023-11-16 19:09:46', NULL, 24);
+	(104, 'Akali', 'fezfze', 'Bottom', '2023-11-19 19:43:08', '2023-11-19 21:54:55', 24);
 
 -- Listage de la structure de table guidelol. items_group
 CREATE TABLE IF NOT EXISTS `items_group` (
@@ -1527,24 +1577,17 @@ CREATE TABLE IF NOT EXISTS `items_group` (
   `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `commentaire` longtext COLLATE utf8mb4_unicode_ci,
   `ordre` int NOT NULL,
+  `ordre_items` json NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_691C8E7E5D08CDBE` (`ensemble_items_groups_id`),
   CONSTRAINT `FK_691C8E7E5D08CDBE` FOREIGN KEY (`ensemble_items_groups_id`) REFERENCES `ensemble_items_groups` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.items_group : ~11 rows (environ)
-INSERT INTO `items_group` (`id`, `ensemble_items_groups_id`, `titre`, `commentaire`, `ordre`) VALUES
-	(31, 23, NULL, NULL, 0),
-	(32, 24, NULL, NULL, 0),
-	(33, 25, NULL, NULL, 0),
-	(34, 26, NULL, NULL, 0),
-	(35, 27, NULL, NULL, 0),
-	(36, 28, NULL, NULL, 0),
-	(37, 29, NULL, NULL, 0),
-	(38, 30, NULL, NULL, 0),
-	(39, 31, NULL, NULL, 0),
-	(40, 31, NULL, NULL, 1),
-	(41, 32, NULL, NULL, 0);
+-- Listage des données de la table guidelol.items_group : ~1 rows (environ)
+INSERT INTO `items_group` (`id`, `ensemble_items_groups_id`, `titre`, `commentaire`, `ordre`, `ordre_items`) VALUES
+	(91, 67, NULL, NULL, 0, '{"1103": 4, "2031": 3, "3222": 2, "3340": 0, "6660": 1}'),
+	(92, 67, NULL, NULL, 1, '{"1001": 3, "1004": 4, "2031": 5, "3340": 0, "3363": 1, "3364": 2}'),
+	(93, 68, NULL, NULL, 0, '{"2003": 0, "2055": 1, "3363": 2, "3364": 3, "3599": 4}');
 
 -- Listage de la structure de table guidelol. messenger_messages
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
@@ -1573,9 +1616,11 @@ CREATE TABLE IF NOT EXISTS `runes_page` (
   PRIMARY KEY (`id`),
   KEY `IDX_B55624CBD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_B55624CBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.runes_page : ~0 rows (environ)
+-- Listage des données de la table guidelol.runes_page : ~1 rows (environ)
+INSERT INTO `runes_page` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
+	(39, 104, 'btrebt', 'vcezrvrzbrz', 0);
 
 -- Listage de la structure de table guidelol. sort_invocateur
 CREATE TABLE IF NOT EXISTS `sort_invocateur` (
@@ -1587,19 +1632,12 @@ CREATE TABLE IF NOT EXISTS `sort_invocateur` (
   PRIMARY KEY (`id`),
   KEY `IDX_CEBB8376D7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_CEBB8376D7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.sort_invocateur : ~9 rows (environ)
+-- Listage des données de la table guidelol.sort_invocateur : ~1 rows (environ)
 INSERT INTO `sort_invocateur` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
-	(56, 76, NULL, NULL, 0),
-	(57, 77, NULL, NULL, 0),
-	(58, 78, NULL, NULL, 0),
-	(59, 79, NULL, NULL, 0),
-	(60, 80, NULL, NULL, 0),
-	(61, 81, NULL, NULL, 0),
-	(62, 82, NULL, NULL, 0),
-	(63, 83, NULL, NULL, 0),
-	(64, 84, NULL, NULL, 0);
+	(86, 104, NULL, NULL, 0),
+	(87, 104, NULL, 'test', 1);
 
 -- Listage de la structure de table guidelol. user
 CREATE TABLE IF NOT EXISTS `user` (
