@@ -29,8 +29,8 @@ class ItemType extends AbstractType
             ->add('titre', TextType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ]),
                     new Length([
                         'max' => 50,
@@ -46,8 +46,8 @@ class ItemType extends AbstractType
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\]]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàù$#,[])',
+                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
+                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
                     ])
                 ],
                 'attr' => [
@@ -89,19 +89,19 @@ class ItemType extends AbstractType
                 },
             ]);
 
-        $ordreItems = [];
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (&$ordreItems) {
+            $form = $event->getForm();
             $data = $event->getData();
+        
+            if (isset($data['ordreItems']) && is_array($data['ordreItems'])) {
+                $form->add('ordreItems', CollectionType::class, [
+                    'entry_type' => IntegerType::class,
+                    'entry_options' => ['attr' => ['class' => 'ordre-item']],
+                    'data' => $data['ordreItems'],
+                ]);
+            }
 
-            $ordreItems = $data['ordreItem'];
-        });
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use (&$ordreItems) {
-            $itemsGroup = $event->getData();
-
-            // Ajoute l'ordre d'items au groupe d'items
-            $itemsGroup->setOrdreItems($ordreItems);
         });
     }
 
