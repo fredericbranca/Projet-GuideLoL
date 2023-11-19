@@ -366,6 +366,7 @@
 }
 
 .checkbox-sorts {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   width: 40%;
@@ -460,4 +461,35 @@
 
 .ordre-item {
   display: none;
+}
+
+/* error message */
+#nav-config,
+#nav-builder,
+#menu-sorts-invocateur-container,
+#menu-items-container,
+#menu-competences-container,
+#menu-runes-container {
+  position: relative;
+}
+
+/* Erreur formulaire */
+.error-message {
+  pointer-events: none;
+  color: red;
+  font-size: 13px;
+}
+
+.error-message-main {
+  font-size: 25px;
+  position: absolute;
+  right: 7%;
+}
+
+.error-message-point {
+  font-size: 13px;
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  transform: translateY(-50%);
 }
