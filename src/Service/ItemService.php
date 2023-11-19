@@ -29,4 +29,34 @@ class ItemService {
 
         return $itemData;
     }
+
+    public function getInfosItems($guide) {
+
+        $ensembles = $guide->getGroupeEnsemblesItems();
+
+        $ensemblesArray = [];
+
+        foreach ($ensembles as $key => $ensemble) {
+
+            $ensemblesArray[$key] = [
+                'ordre' => $ensemble->getOrdre(),
+            ];
+
+            $groupesArray = [];
+
+            $groupes = $ensemble->getAssociationsEnsemblesItemsGroups();
+
+            foreach ($groupes as $keyGroupe => $groupe) {
+                $groupesArray[$keyGroupe] = [
+                    'ordre' => $groupe->getOrdre(),
+                    'ordreItems' => $groupe->getOrdreItems()
+                ];
+            }
+
+            $ensemblesArray[$key] += $groupesArray;
+        }
+
+        return $ensemblesArray;
+
+    }
 }
