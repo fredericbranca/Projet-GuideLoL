@@ -9,6 +9,15 @@
 
 {% block body %}
 
+	{% if errors is defined %}
+		{% set hasErrorsInMainPage = form.titre.vars.errors|length > 0 or form.voie.vars.errors|length > 0 or form.champion.vars.errors|length > 0 %}
+		{% set hasErrorsInConstructor = errors['groupeSortsInvocateur'] or errors['groupeRunes'] or errors['groupeEnsemblesItems'] or errors['groupesCompetences'] ? true : false %}
+		{% set hasErrorsInSI = errors['groupeSortsInvocateur'] ? true : false %}
+		{% set hasErrorsInGR = errors['groupeRunes'] ? true : false %}
+		{% set hasErrorsInEI = errors['groupeEnsemblesItems'] ? true : false %}
+		{% set hasErrorsInC = errors['groupesCompetences'] ? true : false  %}
+	{% endif %}
+
 	<h1>Editer un guide</h1>
 
 	<div id="new-guide">
@@ -19,11 +28,19 @@
 			{# Sidebar #}
 			<div class="new-guide-sidebar col-left">
 				<div class="new-guide-sidebar__header">
-					Création d'un guide
+					Modification d'un guide
 				</div>
 				<div class="new-guide-sidebar__nav">
-					<span id="nav-config" class="current">Configuration</span>
-					<span id="nav-builder">Construction</span>
+					<span id="nav-config" class="current">Configuration
+						{% if hasErrorsInMainPage %}
+							<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
+						{% endif %}
+					</span>
+					<span id="nav-builder">Construction
+						{% if hasErrorsInConstructor %}
+							<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
+						{% endif %}
+					</span>
 				</div>
 				<div class="new-guide-sidebar_actions">
 					<span class="flat-btn split" id="action-sauvegarder">Sauvegarder</span>
@@ -33,7 +50,7 @@
 			</div>
 
 			<div class="col-right">
-				{{ form_start(form) }}
+				{{ form_start(form, {'attr': {'id': 'FormGuide'}}) }}
 				{# Container de la première partie du guide (configuration) #}
 				<div
 					class="new-guide-config">
@@ -72,10 +89,26 @@
 				<div class="new-guide-builder">
 
 					<div class="new-guide-builder__menu">
-						<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur</span>
-						<span id="menu-items-container">Items</span>
-						<span id="menu-competences-container">Compétences</span>
-						<span id="menu-runes-container">Runes</span>
+						<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur
+							{% if hasErrorsInSI %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-items-container">Items
+							{% if hasErrorsInEI %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-competences-container">Compétences
+							{% if hasErrorsInC %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-runes-container">Runes
+							{% if hasErrorsInGR %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
 					</div>
 
 					{# Choix des summoner spells #}
@@ -111,14 +144,26 @@
 	</div>
 </div>
 
+<script>
+	let formData;
+</script>
+{% if guideData is defined %}
+	{
+	<script>
+		formData = {{ guideData|json_encode|raw }};
+	</script>
+	}
+{% endif %}
 <script src="{{ asset('js/guide.js') }}"></script>
 <script>
 	var infos_sorts = {{ infos_sorts|json_encode|raw }};
 	var infos_runes = {{ infos_runes|json_encode|raw }};
+	var infos_items = {{ infos_items|json_encode|raw }};
 </script>
 <script src="{{ asset('js/checkboxCompetences.js') }}"></script>
 <script src="{{ asset('js/checkRadioRunes.js') }}"></script>
 <script src="{{ asset('js/copieCheckbox.js') }}"></script>
 <script src="{{ asset('js/setItemsData.js') }}"></script>
+<script src="{{ asset('js/setOrdreItems.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="{{ asset('js/guide-sortable.js') }}"></script>{% endblock %}
