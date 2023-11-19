@@ -23,7 +23,7 @@
 							</label>
 							<span>{{ list_items[item.vars.value].name }}</span>
 							<p>{{ list_items[item.vars.value].gold['total'] }}</p>
-							<input type="number" id="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{ form.vars.name }}_ordreItem_{{ item.vars.value }}" name="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}][ordreItem][{{ item.vars.value }}]" class="ordre-item">
+							<input type="number" id="guide_groupeEnsemblesItems_{{ form.parent.parent.vars.name }}_associationsEnsemblesItemsGroups_{{ form.vars.name }}_ordreItems_{{ item.vars.value }}" name="guide[groupeEnsemblesItems][{{ form.parent.parent.vars.name }}][associationsEnsemblesItemsGroups][{{ form.vars.name }}][ordreItems][{{ item.vars.value }}]" class="ordre-item">
 						</div>
 					{% endif %}
 				{% endfor %}
