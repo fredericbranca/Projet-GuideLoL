@@ -16,6 +16,7 @@
 				{% for arbre_name in arbres_list %}
 					<div id="{{ form.vars.id ~ '_' ~ arbre_name }}">
 						{{ form_widget(attribute(form, arbre_name).typeArbre) }}
+						{{ form_errors(attribute(form, arbre_name).typeArbre) }}
 						<img class="arbre" data-name="{{ arbre_name }}" style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}.webp" alt="{{ runes_data[arbre_name].name }}">{{ runes_data[arbre_name].name }}
 						<div class="runes-options" style="display: none">
 							{% for arbre in attribute(form, arbre_name) %}
@@ -30,6 +31,7 @@
 
 										{% for rune in arbre %}
 											{{ form_widget(rune, {'id': rune.vars.id}) }}
+											{{ form_errors(rune) }}
 											<label for="{{ rune.vars.id }}">
 												<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].slots[number].runes[loop.index0].icon }}.webp" alt="{{ runes_data[arbre_name].slots[number].runes[loop.index0].name }}">
 											</label>
@@ -48,6 +50,7 @@
 							{{ form_label(attribute(form, 'bonusLine' ~ line)) }}
 							<div>
 								{{ form_widget(attribute(form, 'bonusLine' ~ line)) }}
+								{{ form_errors(attribute(form, 'bonusLine' ~ line)) }}
 							</div>
 						</div>
 					{% endfor %}
@@ -55,11 +58,13 @@
 
 				<div class="commentaire">
 					{{ form_widget(form.commentaire) }}
+					{{ form_errors(form.commentaire) }}
 				</div>
 
 			</div>
 			<div class="titre-groupe">
 				{{ form_widget(form.titre) }}
+				{{ form_errors(form.titre) }}
 			</div>
 			<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 		</div>

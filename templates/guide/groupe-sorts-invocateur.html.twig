@@ -19,15 +19,18 @@
 						</label>
 					</div>
 				{% endfor %}
+				{{ form_errors(form.choixSortInvocateur) }}
 			</div>
 
 			<div class="commentaire">
 				{{ form_widget(form.commentaire) }}
+				{{ form_errors(form.commentaire) }}
 			</div>
 
 		</div>
 		<div class="titre-groupe">
 			{{ form_widget(form.titre) }}
+			{{ form_errors(form.titre) }}
 		</div>
 		<i class="fa-regular fa-trash-can supprimer-groupe"></i>
 	</div>
