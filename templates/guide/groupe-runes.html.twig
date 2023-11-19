@@ -86,51 +86,63 @@
 
 			{% set arbres_list = ['Domination', 'Inspiration', 'Precision', 'Resolve', 'Sorcery'] %}
 
-			{% for arbre_name in arbres_list %}
-				<div id="{{ form.vars.id ~ '_' ~ arbre_name }}">
-					{{ form_widget(attribute(form, arbre_name).typeArbre) }}
-					<img class="arbre" data-name="{{ arbre_name }}" style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}.webp" alt="{{ runes_data[arbre_name].name }}">{{ runes_data[arbre_name].name }}
-					<div class="runes-options" style="display: none">
-						{% for arbre in attribute(form, arbre_name) %}
-							{% if loop.index0 > 0 %}
-								<div>
-									{% if "Secondary" in arbre.vars.name %}
-										{% set number = arbre.vars.name|slice(-1) %}
-									{% else %}
-										{% set number = arbre.vars.name %}
+			<div class="arbres">
+
+				<div class="arbre-runes">
+					{% for arbre_name in arbres_list %}
+						<div id="{{ form.vars.id ~ '_' ~ arbre_name }}">
+							{{ form_widget(attribute(form, arbre_name).typeArbre) }}
+							<img class="arbre" data-name="{{ arbre_name }}" style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].icon }}.webp" alt="{{ runes_data[arbre_name].name }}">
+							<div class="runes-options" style="display: none">
+								{% for arbre in attribute(form, arbre_name) %}
+									{% if loop.index0 > 0 %}
+										<div>
+											{% if "Secondary" in arbre.vars.name %}
+												{% set number = arbre.vars.name|slice(-1) %}
+											{% else %}
+												{% set number = arbre.vars.name %}
+											{% endif %}
+
+
+											{% for rune in arbre %}
+												{{ form_widget(rune, {'id': rune.vars.id}) }}
+												<label for="{{ rune.vars.id }}">
+													<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].slots[number].runes[loop.index0].icon }}.webp" alt="{{ runes_data[arbre_name].slots[number].runes[loop.index0].name }}">
+												</label>
+											{% endfor %}
+										</div>
 									{% endif %}
-
-
-									{% for rune in arbre %}
-										{{ form_widget(rune, {'id': rune.vars.id}) }}
-										<label for="{{ rune.vars.id }}">
-											<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[arbre_name].slots[number].runes[loop.index0].icon }}.webp" alt="{{ runes_data[arbre_name].slots[number].runes[loop.index0].name }}">
-										</label>
-									{% endfor %}
-								</div>
-							{% endif %}
-						{% endfor %}
-					</div>
-				</div>
-			{% endfor %}
-
-			{# Options pour les lignes de bonus #}
-			<div class="bonus-lines">
-				{% for line in 1..3 %}
-					<div class="bonus-line">
-						{{ form_label(attribute(form, 'bonusLine' ~ line)) }}
-						<div>
-							{{ form_widget(attribute(form, 'bonusLine' ~ line)) }}
+								{% endfor %}
+							</div>
 						</div>
-					</div>
-				{% endfor %}
-			</div>
+					{% endfor %}
+				</div>
 
-			<div class="commentaire">
-				{{ form_widget(form.commentaire) }}
+				{# Options pour les lignes de bonus #}
+				<div class="bonus-lines">
+					{% for line in 1..3 %}
+						<div class="bonus-line">
+							{% set lineField = attribute(form, 'bonusLine' ~ line) %}
+							{% for choiceKey, choice in lineField.vars.choices %}
+								{% set iconPath = img_url ~ choice.data.icon ~ '.webp' %}
+								<div class="bonus-line-choice">
+									<label for="{{ lineField.vars.id }}_{{ choiceKey }}">
+										<img src="{{ iconPath }}" alt="{{ choice.label }}">
+									</label>
+									{{ form_widget(attribute(lineField, choice.value)) }}
+								</div>
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</div>
+
 			</div>
 
 		</div>
+		<div class="commentaire">
+			{{ form_widget(form.commentaire) }}
+		</div>
+
 		<div class="titre-groupe">
 			{{ form_widget(form.titre) }}
 		</div>

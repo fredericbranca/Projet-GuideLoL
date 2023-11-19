@@ -418,6 +418,14 @@
   gap: 10px;
 }
 
+/* Section Runes */
+.arbres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
 /* Image checkbox */
 .checkbox label {
   cursor: pointer;
