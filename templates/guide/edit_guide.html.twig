@@ -148,11 +148,9 @@
 	let formData;
 </script>
 {% if guideData is defined %}
-	{
 	<script>
 		formData = {{ guideData|json_encode|raw }};
 	</script>
-	}
 {% endif %}
 <script src="{{ asset('js/guide.js') }}"></script>
 <script>
