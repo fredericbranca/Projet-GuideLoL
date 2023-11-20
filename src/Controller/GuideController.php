@@ -15,9 +15,7 @@ use App\Entity\CompetencesGroup;
 use App\Service\ChampionService;
 use App\Service\CompetenceService;
 use App\Entity\EnsembleItemsGroups;
-use App\Repository\EnsembleItemsGroupsRepository;
 use App\Repository\GuideRepository;
-use App\Repository\ItemsGroupRepository;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -56,7 +54,7 @@ class GuideController extends AbstractController
     // Route qui mène vers la création d'un guide et redirige vers le guide créé s'il est validé
     #[Route('/guide/new', name: 'new_guide')]
     #[Route('/guide/{idGuide}/edit', name: 'edit_guide')]
-    public function new(
+    public function newOrEditGuide(
         Request $request,
         ChampionService $championService,
         GuideService $guideService,
@@ -82,14 +80,14 @@ class GuideController extends AbstractController
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $guideData = $request->request->All();
             $groupesRunes = $form->get('groupeRunes')->getData();
 
             if (!$groupesRunes->isEmpty()) {
-                // Persist les runes
+                // Fonction pour trier et persist les runes
                 $guideService->runesHelper($form, $guide, $groupesRunes, $entityManager);
             }
 
@@ -97,10 +95,11 @@ class GuideController extends AbstractController
 
             if (!$groupesCompetences->isEmpty() && !empty($guideData['guide']['groupesCompetences'])) {
                 $groupesCompetencesData = $guideData['guide']['groupesCompetences'];
-                // Persist les compétences
+                // Fonction pour trier et persist les compétences
                 $guideService->competencesHelper($guide, $groupesCompetences, $groupesCompetencesData, $entityManager);
             }
 
+            // On lie le guide à l'utilisateur qui le créé
             $guide->setUser($user);
 
             // Si c'est l'édition d'un guide, on ajoute la date de modification
@@ -108,16 +107,19 @@ class GuideController extends AbstractController
                 $guide->setModifiedAt(new \DateTimeImmutable());
             }
 
+            // Persist et fush le guide
             $entityManager->persist($guide);
             $entityManager->flush();
 
+            // Redirection vers la vue pour afficher le Guide qui vient d'etre créé
             return $this->redirectToRoute('get_guide_byId', ['idGuide' => $guide->getId()]);
-        } else {
-            // Edition d'un guide et gestion des erreurs lors de la création et d'édition de guide
-            // Si le formulaire est invalide
-            $errorsSections = [];
 
+        } else {
+            // Si aucun formulaire n'est submit
+            // Si le formulaire est invalide
+            
             // Défini les erreurs des sections à false
+            $errorsSections = [];
             $errorsSections = [
                 'groupeSortsInvocateur' => false,
                 'groupeRunes' => false,
@@ -141,12 +143,11 @@ class GuideController extends AbstractController
             }
 
             // Obtenir les données du formulaire
-            $formView = $form->createView();
             $guideData = $request->request->All();
 
             if (!$idGuide) {
                 return $this->render('guide/create_guide.html.twig', [
-                    'form' => $formView,
+                    'form' => $form,
                     'guideData' => $guideData,
                     'champions' => $championsData,
                     'img_url' => $img_url,
@@ -161,7 +162,7 @@ class GuideController extends AbstractController
                 $infosItems = $itemService->getInfosItems($guide);
 
                 return $this->render('guide/edit_guide.html.twig', [
-                    'form' => $formView,
+                    'form' => $form,
                     'guideData' => $guideData,
                     'champions' => $championsData,
                     'img_url' => $img_url,
