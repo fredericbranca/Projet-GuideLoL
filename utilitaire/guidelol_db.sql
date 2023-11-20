@@ -22,7 +22,7 @@ USE `guidelol`;
 -- Listage de la structure de table guidelol. associations_arbres_runes
 CREATE TABLE IF NOT EXISTS `associations_arbres_runes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=452 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -38,11 +38,11 @@ INSERT INTO `associations_arbres_runes` (`id`, `type`) VALUES
 -- Listage de la structure de table guidelol. associations_competences_niveaux
 CREATE TABLE IF NOT EXISTS `associations_competences_niveaux` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `niveaux` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+  `niveaux` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_competences_niveaux : ~12 rows (environ)
+-- Listage des données de la table guidelol.associations_competences_niveaux : ~8 rows (environ)
 INSERT INTO `associations_competences_niveaux` (`id`, `niveaux`) VALUES
 	(239, '1,7,13,17,18'),
 	(240, '2,6,8,12,14'),
@@ -51,12 +51,16 @@ INSERT INTO `associations_competences_niveaux` (`id`, `niveaux`) VALUES
 	(243, '1,2,3,4,5'),
 	(244, '6,7,8,9,10'),
 	(245, '11,12,13,14,15'),
-	(246, '16,17,18');
+	(246, '16,17,18'),
+	(247, '1'),
+	(248, '3'),
+	(249, '4'),
+	(250, '6');
 
 -- Listage de la structure de table guidelol. associations_runes_bonus
 CREATE TABLE IF NOT EXISTS `associations_runes_bonus` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=647 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -103,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `choix_competences_niveaux` (
   CONSTRAINT `FK_A3F0C9A1B1400904` FOREIGN KEY (`competences_group_id`) REFERENCES `competences_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_competences_niveaux : ~12 rows (environ)
+-- Listage des données de la table guidelol.choix_competences_niveaux : ~8 rows (environ)
 INSERT INTO `choix_competences_niveaux` (`competences_group_id`, `associations_competences_niveaux_id`) VALUES
 	(27, 239),
 	(27, 240),
@@ -112,7 +116,11 @@ INSERT INTO `choix_competences_niveaux` (`competences_group_id`, `associations_c
 	(28, 243),
 	(28, 244),
 	(28, 245),
-	(28, 246);
+	(28, 246),
+	(30, 247),
+	(30, 248),
+	(30, 249),
+	(30, 250);
 
 -- Listage de la structure de table guidelol. choix_items
 CREATE TABLE IF NOT EXISTS `choix_items` (
@@ -125,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `choix_items` (
   CONSTRAINT `FK_299CCA8A892F6989` FOREIGN KEY (`items_group_id`) REFERENCES `items_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_items : ~5 rows (environ)
+-- Listage des données de la table guidelol.choix_items : ~16 rows (environ)
 INSERT INTO `choix_items` (`items_group_id`, `data_item_id`) VALUES
 	(91, 1103),
 	(91, 2031),
@@ -190,7 +198,7 @@ INSERT INTO `choix_runes_pages` (`runes_page_id`, `associations_runes_bonus_id`)
 -- Listage de la structure de table guidelol. choix_sort_invocateur
 CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
   `sort_invocateur_id` int NOT NULL,
-  `data_sort_invocateur_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data_sort_invocateur_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`sort_invocateur_id`,`data_sort_invocateur_id`),
   KEY `IDX_1487B837A207090` (`sort_invocateur_id`),
   KEY `IDX_1487B8350930EAF` (`data_sort_invocateur_id`),
@@ -198,12 +206,14 @@ CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
   CONSTRAINT `FK_1487B837A207090` FOREIGN KEY (`sort_invocateur_id`) REFERENCES `sort_invocateur` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_sort_invocateur : ~2 rows (environ)
+-- Listage des données de la table guidelol.choix_sort_invocateur : ~4 rows (environ)
 INSERT INTO `choix_sort_invocateur` (`sort_invocateur_id`, `data_sort_invocateur_id`) VALUES
 	(86, 'SummonerExhaust'),
 	(86, 'SummonerSmite'),
 	(87, 'SummonerBarrier'),
-	(87, 'SummonerHaste');
+	(87, 'SummonerHaste'),
+	(88, 'SummonerDot'),
+	(88, 'SummonerMana');
 
 -- Listage de la structure de table guidelol. choix_statistiques_bonus
 CREATE TABLE IF NOT EXISTS `choix_statistiques_bonus` (
@@ -225,7 +235,7 @@ INSERT INTO `choix_statistiques_bonus` (`associations_runes_bonus_id`, `data_sta
 -- Listage de la structure de table guidelol. competences
 CREATE TABLE IF NOT EXISTS `competences` (
   `associations_competences_niveaux_id` int NOT NULL,
-  `data_competence_id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data_competence_id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`associations_competences_niveaux_id`,`data_competence_id`),
   KEY `IDX_DB2077CE8E5F4FAE` (`associations_competences_niveaux_id`),
   KEY `IDX_DB2077CEE4340981` (`data_competence_id`),
@@ -233,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `competences` (
   CONSTRAINT `FK_DB2077CEE4340981` FOREIGN KEY (`data_competence_id`) REFERENCES `data_competence` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.competences : ~12 rows (environ)
+-- Listage des données de la table guidelol.competences : ~8 rows (environ)
 INSERT INTO `competences` (`associations_competences_niveaux_id`, `data_competence_id`) VALUES
 	(239, 'AkaliQ'),
 	(240, 'AkaliW'),
@@ -242,28 +252,33 @@ INSERT INTO `competences` (`associations_competences_niveaux_id`, `data_competen
 	(243, 'AkaliQ'),
 	(244, 'AkaliW'),
 	(245, 'AkaliE'),
-	(246, 'AkaliR');
+	(246, 'AkaliR'),
+	(247, 'BriarQ'),
+	(248, 'BriarW'),
+	(249, 'BriarE'),
+	(250, 'BriarR');
 
 -- Listage de la structure de table guidelol. competences_group
 CREATE TABLE IF NOT EXISTS `competences_group` (
   `id` int NOT NULL AUTO_INCREMENT,
   `guide_id` int DEFAULT NULL,
-  `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `titre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commentaire` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `ordre` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_A6069EADD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_A6069EADD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Listage des données de la table guidelol.competences_group : ~3 rows (environ)
 INSERT INTO `competences_group` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
 	(27, 104, NULL, NULL, 0),
-	(28, 104, NULL, NULL, 1);
+	(28, 104, NULL, NULL, 1),
+	(30, 105, NULL, NULL, 0);
 
 -- Listage de la structure de table guidelol. data_champion
 CREATE TABLE IF NOT EXISTS `data_champion` (
-  `id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -437,9 +452,9 @@ INSERT INTO `data_champion` (`id`) VALUES
 
 -- Listage de la structure de table guidelol. data_competence
 CREATE TABLE IF NOT EXISTS `data_competence` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nom_champion` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nom_champion` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1411,8 +1426,8 @@ INSERT INTO `data_item` (`id`, `prix`) VALUES
 -- Listage de la structure de table guidelol. data_rune
 CREATE TABLE IF NOT EXISTS `data_rune` (
   `id` int NOT NULL,
-  `rune_arbre` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rune_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rune_arbre` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rune_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `ordre` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1485,7 +1500,7 @@ INSERT INTO `data_rune` (`id`, `rune_arbre`, `rune_type`, `ordre`) VALUES
 
 -- Listage de la structure de table guidelol. data_sort_invocateur
 CREATE TABLE IF NOT EXISTS `data_sort_invocateur` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1506,9 +1521,9 @@ INSERT INTO `data_sort_invocateur` (`id`) VALUES
 -- Listage de la structure de table guidelol. data_statistique_bonus
 CREATE TABLE IF NOT EXISTS `data_statistique_bonus` (
   `id` int NOT NULL,
-  `bonus_value` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bonus_value` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `bonus_line` int NOT NULL,
-  `icon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1526,7 +1541,7 @@ INSERT INTO `data_statistique_bonus` (`id`, `bonus_value`, `bonus_line`, `icon`)
 
 -- Listage de la structure de table guidelol. doctrine_migration_versions
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL,
   PRIMARY KEY (`version`)
@@ -1537,7 +1552,7 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 -- Listage de la structure de table guidelol. ensemble_items_groups
 CREATE TABLE IF NOT EXISTS `ensemble_items_groups` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ordre` int NOT NULL,
   `guide_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -1545,7 +1560,7 @@ CREATE TABLE IF NOT EXISTS `ensemble_items_groups` (
   CONSTRAINT `FK_68A1E5FBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.ensemble_items_groups : ~1 rows (environ)
+-- Listage des données de la table guidelol.ensemble_items_groups : ~0 rows (environ)
 INSERT INTO `ensemble_items_groups` (`id`, `titre`, `ordre`, `guide_id`) VALUES
 	(67, NULL, 0, 104),
 	(68, NULL, 1, 104);
@@ -1553,9 +1568,9 @@ INSERT INTO `ensemble_items_groups` (`id`, `titre`, `ordre`, `guide_id`) VALUES
 -- Listage de la structure de table guidelol. guide
 CREATE TABLE IF NOT EXISTS `guide` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `champion_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `titre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `voie` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `champion_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `titre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `voie` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `modified_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `user_id` int NOT NULL,
@@ -1564,18 +1579,23 @@ CREATE TABLE IF NOT EXISTS `guide` (
   KEY `IDX_CA9EC735A76ED395` (`user_id`),
   CONSTRAINT `FK_CA9EC735A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_CA9EC735FA7FD7EB` FOREIGN KEY (`champion_id`) REFERENCES `data_champion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.guide : ~1 rows (environ)
+-- Listage des données de la table guidelol.guide : ~0 rows (environ)
 INSERT INTO `guide` (`id`, `champion_id`, `titre`, `voie`, `created_at`, `modified_at`, `user_id`) VALUES
-	(104, 'Akali', 'fezfze', 'Bottom', '2023-11-19 19:43:08', '2023-11-19 21:54:55', 24);
+	(104, 'Akali', 'fezfze', 'Bottom', '2023-11-19 19:43:08', '2023-11-19 21:54:55', 24),
+	(105, 'Briar', 'test', 'Bottom', '2023-11-20 10:47:10', NULL, 24),
+	(106, 'Aatrox', 'htyh', 'Top', '2023-11-20 15:15:08', NULL, 24),
+	(107, 'Aatrox', 'cezzce', 'Jungle', '2023-11-20 15:15:45', NULL, 24),
+	(108, 'Ahri', '2', 'Top', '2023-11-20 15:16:16', NULL, 24),
+	(109, 'Ahri', 'cece', 'Jungle', '2023-11-20 15:50:22', NULL, 24);
 
 -- Listage de la structure de table guidelol. items_group
 CREATE TABLE IF NOT EXISTS `items_group` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ensemble_items_groups_id` int DEFAULT NULL,
-  `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `titre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commentaire` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `ordre` int NOT NULL,
   `ordre_items` json NOT NULL,
   PRIMARY KEY (`id`),
@@ -1583,7 +1603,7 @@ CREATE TABLE IF NOT EXISTS `items_group` (
   CONSTRAINT `FK_691C8E7E5D08CDBE` FOREIGN KEY (`ensemble_items_groups_id`) REFERENCES `ensemble_items_groups` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.items_group : ~1 rows (environ)
+-- Listage des données de la table guidelol.items_group : ~0 rows (environ)
 INSERT INTO `items_group` (`id`, `ensemble_items_groups_id`, `titre`, `commentaire`, `ordre`, `ordre_items`) VALUES
 	(91, 67, NULL, NULL, 0, '{"1103": 4, "2031": 3, "3222": 2, "3340": 0, "6660": 1}'),
 	(92, 67, NULL, NULL, 1, '{"1001": 3, "1004": 4, "2031": 5, "3340": 0, "3363": 1, "3364": 2}'),
@@ -1592,9 +1612,9 @@ INSERT INTO `items_group` (`id`, `ensemble_items_groups_id`, `titre`, `commentai
 -- Listage de la structure de table guidelol. messenger_messages
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -1610,15 +1630,15 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
 CREATE TABLE IF NOT EXISTS `runes_page` (
   `id` int NOT NULL AUTO_INCREMENT,
   `guide_id` int NOT NULL,
-  `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `titre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commentaire` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `ordre` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B55624CBD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_B55624CBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.runes_page : ~1 rows (environ)
+-- Listage des données de la table guidelol.runes_page : ~0 rows (environ)
 INSERT INTO `runes_page` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
 	(39, 104, 'btrebt', 'vcezrvrzbrz', 0);
 
@@ -1626,18 +1646,19 @@ INSERT INTO `runes_page` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VAL
 CREATE TABLE IF NOT EXISTS `sort_invocateur` (
   `id` int NOT NULL AUTO_INCREMENT,
   `guide_id` int NOT NULL,
-  `titre` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `titre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commentaire` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `ordre` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_CEBB8376D7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_CEBB8376D7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.sort_invocateur : ~1 rows (environ)
+-- Listage des données de la table guidelol.sort_invocateur : ~0 rows (environ)
 INSERT INTO `sort_invocateur` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
 	(86, 104, NULL, NULL, 0),
-	(87, 104, NULL, 'test', 1);
+	(87, 104, NULL, 'test', 1),
+	(88, 105, NULL, NULL, 0);
 
 -- Listage de la structure de table guidelol. user
 CREATE TABLE IF NOT EXISTS `user` (
