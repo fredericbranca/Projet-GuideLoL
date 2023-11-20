@@ -9,7 +9,6 @@ use App\Form\SortInvocateurType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,12 +24,8 @@ class GuideType extends AbstractType
         $builder
             ->add('titre', TextType::class, [
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
-                    ]),
                     new Length([
-                        'max' => 50,
+                        'max' => 100,
                         'maxMessage' => '{{ limit }} caractères maximal'
                     ]),
                     new NotBlank([
@@ -41,7 +36,7 @@ class GuideType extends AbstractType
                     'placeholder' => 'Titre',
                     'autocomplete' => 'off'
                 ],
-                'required' => true
+                'required' => false,
             ])
             ->add('voie', ChoiceType::class, [
                 'required' => true,
@@ -54,9 +49,6 @@ class GuideType extends AbstractType
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'attr' => [
-                    'autocomplete' => 'off'
-                ],
                 'invalid_message' => 'Choix invalide',
                 'constraints' => [
                     new NotBlank([
@@ -67,9 +59,15 @@ class GuideType extends AbstractType
 
             ->add('champion', EntityType::class, [
                 'class' => DataChampion::class,
+                'required' => true,
                 'multiple' => false,
                 'expanded' => true,
-                'invalid_message' => 'Champion invalide'
+                'invalid_message' => 'Champion invalide',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez choisir un champion.',
+                    ]),
+                ]
             ])
 
             ->add('groupeSortsInvocateur', CollectionType::class, [

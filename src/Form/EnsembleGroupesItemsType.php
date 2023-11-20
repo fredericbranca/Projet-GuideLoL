@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\EnsembleItemsGroups;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,10 +19,6 @@ class EnsembleGroupesItemsType extends AbstractType
         $builder
             ->add('titre', TextType::class, [
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
-                    ]),
                     new Length([
                         'max' => 50,
                         'maxMessage' => '{{ limit }} caractères maximal'

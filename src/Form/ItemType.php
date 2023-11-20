@@ -8,11 +8,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,10 +26,6 @@ class ItemType extends AbstractType
         $builder
             ->add('titre', TextType::class, [
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
-                    ]),
                     new Length([
                         'max' => 50,
                         'maxMessage' => '{{ limit }} caractères maximal'
@@ -44,12 +38,6 @@ class ItemType extends AbstractType
                 'required' => false
             ])
             ->add('commentaire', TextareaType::class, [
-                'constraints' => [
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z0-9@()$!%*?&,éèàù#\[\] çÇ]*$/',
-                        'message' => 'Caractères spéciaux autorisés ($!%*?&,éèàùçÇ$#,[])',
-                    ])
-                ],
                 'attr' => [
                     'placeholder' => 'Écrivez une note...'
                 ],
