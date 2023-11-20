@@ -3,6 +3,8 @@
 {% block title %}Créer un guide
 {% endblock %}
 
+{% block meta %}Création d'un nouveau guide{% endblock %}
+
 {% block additional_css %}
 	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
 {% endblock %}
@@ -149,11 +151,9 @@
 	let formData;
 </script>
 {% if guideData is defined %}
-	{
 	<script>
 		formData = {{ guideData|json_encode|raw }};
 	</script>
-	}
 {% endif %}
 <script src="{{ asset('js/guide.js') }}"></script>
 <script src="{{ asset('js/copieCheckbox.js') }}"></script>
