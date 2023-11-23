@@ -145,23 +145,22 @@
 </div>
 
 <script>
-	let formData;
+	var errors = {{ errors|json_encode|raw }};
+	var formData = {{ guideData|json_encode|raw }};
 </script>
-{% if guideData is defined %}
-	<script>
-		formData = {{ guideData|json_encode|raw }};
-	</script>
-{% endif %}
 <script src="{{ asset('js/guide.js') }}"></script>
-<script>
-	var infos_sorts = {{ infos_sorts|json_encode|raw }};
-	var infos_runes = {{ infos_runes|json_encode|raw }};
-	var infos_items = {{ infos_items|json_encode|raw }};
-</script>
-<script src="{{ asset('js/checkboxCompetences.js') }}"></script>
-<script src="{{ asset('js/checkRadioRunes.js') }}"></script>
 <script src="{{ asset('js/copieCheckbox.js') }}"></script>
-<script src="{{ asset('js/setItemsData.js') }}"></script>
-<script src="{{ asset('js/setOrdreItems.js') }}"></script>
+{% if guideData|length < 1 %}
+	<script>
+		var infos_sorts = {{ infos_sorts|json_encode|raw }};
+		var infos_runes = {{ infos_runes|json_encode|raw }};
+		var infos_items = {{ infos_items|json_encode|raw }};
+	</script>
+	<script src="{{ asset('js/checkboxCompetences.js') }}"></script>
+	<script src="{{ asset('js/checkRadioRunes.js') }}"></script>
+	<script src="{{ asset('js/setItemsData.js') }}"></script>
+	<script> var formData  = {};</script>
+{% endif %}
+	<script src="{{ asset('js/setOrdreItems.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="{{ asset('js/guide-sortable.js') }}"></script>{% endblock %}
