@@ -124,7 +124,9 @@ async function fetchContainer(spanId) {
 
     let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/create/${championId}` : `${mappingFetchURLs[spanId]}/create`;
 
-    if (guideId && fetchUpdate[spanId].fetchUpdate === false && formData.length < 1) {
+    var hasTrue = Object.values(errors).some(value => value === true);
+
+    if (guideId && fetchUpdate[spanId].fetchUpdate === false && Object.keys(formData).length < 1 && !hasTrue) {
         await fetchUpdatedContainer(spanId, championId);
         fetchUpdate[spanId].fetchUpdate = true;
     }
@@ -661,13 +663,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (actionPublierButton && guideValiderButton) {
         actionPublierButton.addEventListener('click', async function () {
-            if (guideId) {
+            // if (guideId) {
                 for (var key in mappingFetchURLs) {
                     if (mappingFetchURLs.hasOwnProperty(key)) {
                         await fetchContainer(key);
                     }
                 }
-            }
+            // }
             guideValiderButton.click();
         });
     }

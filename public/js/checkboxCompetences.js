@@ -16,6 +16,7 @@ function cocherCases() {
             competence.niveaux.forEach(niveau => {
                 var checkboxId = `${baseId}_${niveau - 1}`;
                 var checkbox = document.getElementById(checkboxId);
+
                 if (checkbox) {
                     checkbox.checked = true;
                     checkbox.setAttribute('checked', 'checked'); // Ajoute l'attribut checked au DOM

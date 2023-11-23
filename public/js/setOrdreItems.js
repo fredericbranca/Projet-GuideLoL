@@ -6,7 +6,7 @@ function setOrdreItems() {
     if (scriptSetOrdreItemsDejaExecute) return;
     scriptSetOrdreItemsDejaExecute = true;
 
-    if (formData.length > 0) {
+    if (Object.keys(formData).length > 0) {
         if (formData.guide && formData.guide.groupeEnsemblesItems) {
             formData.guide.groupeEnsemblesItems.forEach((ensemble, ensembleIndex) => {
                 ensemble.associationsEnsemblesItemsGroups.forEach((groupe, groupeIndex) => {
@@ -63,7 +63,8 @@ function observerLesChangements() {
     }
 }
 
-if (formData || infos_items.length > 0) {
+if (Object.keys(formData).length > 0 || infos_items.length > 0) {
     // Démarre l'observation lors du chargement de la page
     window.addEventListener('DOMContentLoaded', observerLesChangements);
 }
+
