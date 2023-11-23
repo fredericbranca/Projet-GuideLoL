@@ -2,60 +2,73 @@
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		  <meta name="description" content="{% block meta %}{% endblock %}">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 		<title>
-			{% block title %}Welcome!
+			{% block title %}LoLGuides
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<meta name="keyword" content="{% block keyword %}{% endblock %}">
+		<meta name="description" content="{% block meta %}{% endblock %}">
+		<meta name="theme-color" content="#RRGGBB">
+		<link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}"/>
+		<link rel="manifest" href="/manifest.json">
 		{% block stylesheets %}
 			<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 			<link rel="stylesheet" href="{{ asset('css/nav.css') }}">
 		{% endblock %}
 		{% block additional_css %}{% endblock %}
-
-		{% block javascripts %}
-			<script src="{{ asset('js/main.js') }}"></script>
-			<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
-		{% endblock %}
 	</head>
 	<body>
 		<header>
 			<nav class="navbar">
-				<ul class="navbar-nav">
-					<div class="nav-links">
-						<li class="nav-item">
+				<ul
+					class="navbar-nav-left ">
+					<!-- Premier groupe de liens -->
+					<li class="nav-item">
+						<div class="nav-links">
 							<a href="{{ path('app_home') }}" class="nav-link">HOME</a>
-						</li>
-						<li class="nav-item">
+						</div>
+					</li>
+					<li class="nav-item">
+						<div class="nav-links">
 							<a href="{{ path('app_guide') }}" class="nav-link">GUIDES</a>
-						</li>
-						<li class="nav-item">
+						</div>
+					</li>
+					<li class="nav-item">
+						<div class="nav-links">
 							<a href="{{ path('new_guide') }}" class="nav-link">CREATION</a>
+						</div>
+					</li>
+					<li class="nav-item">
+						<div class="nav-links">
+							<a href="{{ path('app_champions') }}" class="nav-link">CHAMPIONS</a>
+						</div>
+					</li>
+				</ul>
+				<!-- Authentification -->
+				<ul class="navbar-nav-right">
+					{% if app.user %}
+						<li class="nav-item">
+							<div class="nav-auth">
+								<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
+							</div>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('app_champions') }}" class="nav-link">CHAMPIONS</a>
+							<div class="nav-auth">
+								<a href="{{ path('app_logout') }}" class="login-link wrapper-logout">DECONNEXION</a>
+							</div>
 						</li>
-					</div>
-					{% if app.user %}
-						<div class="nav-auth">
-							<li class="nav-item">
-								<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
-							</li>
-							<a href="{{ path('app_logout') }}" class="login-link wrapper-logout">
-								DECONNEXION
-							</a>
-						</div>
 					{% else %}
-						<div class="nav-auth">
-							<li class="nav-item">
+						<li class="nav-item">
+							<div class="nav-auth">
 								<a href="{{ path('app_register') }}" class="nav-link">INSCRIPTION</a>
-							</li>
-							<a href="{{ path('app_login') }}" class="login-link wrapper">
-								LOGIN
-							</a>
-						</div>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="nav-auth">
+								<a href="{{ path('app_login') }}" class="login-link wrapper">LOGIN</a>
+							</div>
+						</li>
 					{% endif %}
 				</ul>
 				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
@@ -82,5 +95,11 @@
 
 		<div class="content"> {% block body %}{% endblock %}
 			</div>
+
+			{% block javascripts %}
+				<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
+				<script src="{{ asset('js/main.js') }}"></script>
+			{% endblock %}
 		</body>
 	</html>
+</head></html>
