@@ -79,7 +79,7 @@
 									{{ form_widget(champion) }}
 									{# génère le bouton radio #}
 									<label for="{{ champion.vars.id }}">
-										<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
+										<img src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
 									</label>
 								</div>
 							{% endfor %}
@@ -141,6 +141,7 @@
 				</div>
 
 				{{ form_widget(form._token) }}
+
 				<button style="display: none" type="submit" id="guide_Valider" name="guide[Valider]"/>
 			</form>
 		</div>
@@ -148,16 +149,12 @@
 </div>
 
 <script>
-	let formData;
+	var errors = {{ errors|json_encode|raw }};
+	var formData = {{ guideData|json_encode|raw }};
 </script>
-{% if guideData is defined %}
-	<script>
-		formData = {{ guideData|json_encode|raw }};
-	</script>
-{% endif %}
 <script src="{{ asset('js/guide.js') }}"></script>
 <script src="{{ asset('js/copieCheckbox.js') }}"></script>
-{% if guideData is defined %}
+{% if guideData|length > 0 %}
 	<script src="{{ asset('js/setOrdreItems.js') }}"></script>
 {% endif %}
 
