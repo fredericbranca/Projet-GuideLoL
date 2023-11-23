@@ -42,21 +42,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     // Méthode pour trouver le plus grand nombre utilisé dans les pseudos
     public function getIncrementedLastNumberUsed(): int
     {
-        try {
-            $qb = $this->createQueryBuilder('u')
-                ->select('u.pseudo')
-                ->where('u.pseudo LIKE :prefix')
-                ->setParameter('prefix', 'user%')
-                ->orderBy('u.pseudo', 'DESC')
-                ->setMaxResults(1);
+        $qb = $this->createQueryBuilder('u') // création d'un constructeur de requêtes pour la table user
+            ->select('u.pseudo') // spécifie la colonne à récupérer dans le requête
+            ->where('u.pseudo LIKE :prefix') // Définit les conditions de filtrage des données
+            ->setParameter('prefix', 'user%') 
+            ->orderBy('u.pseudo', 'DESC') // Détermine le tri des résultats (plus grand au plus petit)
+            ->setMaxResults(1); // Limite le nombre de résultat retourné par la requête à 1
 
-            $lastPseudo = $qb->getQuery()->getSingleScalarResult();
+        $lastPseudo = $qb->getQuery()->getSingleScalarResult(); // exécute et retourne le résultat
 
-            if ($lastPseudo && preg_match('/user(\d+)/', $lastPseudo, $nb)) {
-                return (int) $nb[1] + 1;
-            }
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            // Cette exception est levée si aucun résultat n'est trouvé
+        if ($lastPseudo && preg_match('/user(\d{5})/', $lastPseudo, $nb)) { // Forme 'user' suivi de 5 chiffres
+            return (int) $nb[1] + 1; // return le nombre recherché + 1
         }
 
         return 1; // Si aucun pseudo n'est trouvé
