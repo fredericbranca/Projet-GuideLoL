@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController
 
             // pseudo : user + nombre généré en incrémentant le dernier utilisé
             $number = $userRepository->getIncrementedLastNumberUsed();
-            $user->setPseudo('user' . $number);
+            $user->setPseudo('user' . sprintf('%05d', $number));
 
             $entityManager->persist($user);
             $entityManager->flush();
