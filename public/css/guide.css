@@ -40,6 +40,11 @@
   overflow: auto;
 }
 
+.liste-champions img {
+  width: 40px;
+  height: 40px;
+}
+
 /* Affichage du config et du builder */
 .new-guide-config {
   display: block;
