@@ -1,4 +1,8 @@
-.content {
+body {
+  min-width: 1316px;
+}
+
+content {
   width: 100%;
 }
 
