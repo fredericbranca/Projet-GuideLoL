@@ -533,7 +533,7 @@ function initializeClickedTreesForBlock(index) {
 
 // Fonction pour gérer l'affichage des options des runes
 function toggleRunesOptions(parentBlock, treeName, shouldShow) {
-    
+
     let tree = parentBlock.querySelector(`.arbre[data-name="${treeName}"]`);
     let runesOptions = tree.nextElementSibling;
     runesOptions.style.display = shouldShow ? 'flex' : 'none';
@@ -645,7 +645,7 @@ runesContainer.addEventListener('click', function (event) {
                 // Si le deuxième arbre est ouvert, on met à jour l'input caché en "Secondaire", sinon on le réinitialise
                 updateHiddenInput(parentBlock, treeType, clickedTrees.second ? "Secondaire" : "");
 
-                (runesOptions.style.display === 'flex' && runesOptions.classList !== 'arbre-1' ) ? runesOptions.classList.add('arbre-2') : runesOptions.classList.remove('arbre-2');
+                (runesOptions.style.display === 'flex' && runesOptions.classList !== 'arbre-1') ? runesOptions.classList.add('arbre-2') : runesOptions.classList.remove('arbre-2');
 
                 // Désactive les clics sur le deuxième arbre sélectionné
                 parentBlock.querySelector('.arbre[data-name="' + clickedTrees.second + '"]').classList.add('disabled');
@@ -674,11 +674,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (actionPublierButton && guideValiderButton) {
         actionPublierButton.addEventListener('click', async function () {
             // if (guideId) {
-                for (var key in mappingFetchURLs) {
-                    if (mappingFetchURLs.hasOwnProperty(key)) {
-                        await fetchContainer(key);
-                    }
+            for (var key in mappingFetchURLs) {
+                if (mappingFetchURLs.hasOwnProperty(key)) {
+                    await fetchContainer(key);
                 }
+            }
             // }
             guideValiderButton.click();
         });
@@ -713,8 +713,45 @@ function adjustScale() {
     }
 
     document.getElementById('new-guide').style.transform = `scale(${scaleFactor})`;
-  }
+}
 
 // Ajuste le scale lors du chargement initial et lors du redimensionnement de la fenêtre
 window.addEventListener('load', adjustScale);
 window.addEventListener('resize', adjustScale);
+
+// Recherche d'un champion
+document.getElementById('searchChampion').addEventListener('input', function (e) {
+    let searchTerm = e.target.value.toLowerCase();
+    let champions = document.querySelectorAll('.liste-champions div');
+
+    champions.forEach((championDiv, index) => {
+        let championValue = championDiv.querySelector('input').value.toLowerCase();
+
+        if (searchTerm === "") {
+            // Affiche les 14 premiers champions si la recherche est vide
+            championDiv.style.display = index < 14 ? 'block' : 'none';
+        } else if (championValue.includes(searchTerm)) {
+            championDiv.style.display = 'block';
+        } else {
+            championDiv.style.display = 'none';
+        }
+    });
+});
+
+// Ecouteur d'évènement sur les input radio des champions
+document.querySelectorAll('.liste-champions input[type="radio"]').forEach(input => {
+    input.addEventListener('change', function () {
+        if (this.checked) {
+            // Trouve l'élément image associé
+            let img = this.nextElementSibling.querySelector('img');
+
+            // Clone l'image
+            let clonedImg = img.cloneNode(true);
+
+            // Insère l'image clonée
+            let emptySpan = document.querySelector('.champ-select .empty');
+            emptySpan.innerHTML = '';
+            emptySpan.appendChild(clonedImg);
+        }
+    });
+});

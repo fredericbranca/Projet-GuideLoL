@@ -46,13 +46,31 @@
 .liste-champions {
   display: flex;
   flex-wrap: wrap;
-  height: 200px;
-  overflow: auto;
+  height: 220px;
+  gap: 10px;
+}
+
+.liste-champions input {
+  display: none;
 }
 
 .liste-champions img {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 100px;
+  transition: transform 0.2s;
+  transform-origin: center;
+  cursor: pointer;
+}
+
+.liste-champions label {
+  box-sizing: border-box;
+  flex: 0 1 100px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.liste-champions label img:hover {
+  transform: scale(1.2);
 }
 
 /* Affichage du config et du builder */
@@ -194,6 +212,45 @@
 .new-guide-builder__counters-container,
 .new-guide-builder__synergies-container {
   display: none;
+}
+
+/* Champions */
+.liste-champions div {
+  display: none;
+}
+
+.liste-champions div.initial-display {
+  display: block;
+}
+
+.search-container {
+  margin-bottom: 15px;
+}
+
+.champ-select {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.champ-select > span.empty {
+  background: #0b1727;
+  background-image: url(../img/new-guide__champType.webp);
+  background-repeat: no-repeat;
+  background-size: 26px;
+  background-position: center center;
+  width: 84px;
+  height: 84px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 3px;
+  transition: 300ms;
+}
+
+.champ-select > span.empty img {
+  width: 84px;
+  height: 84px;
 }
 
 /* Banière groupe */
@@ -722,13 +779,13 @@
     gap: 2%;
   }
 
-  .col-left{
+  .col-left {
     height: 50%;
     transform: scale(1.2);
     width: 70%;
   }
 
-  .col-right{
+  .col-right {
     height: 50%;
     transform: scale(1.4);
   }
