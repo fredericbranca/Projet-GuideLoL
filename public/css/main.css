@@ -17,10 +17,6 @@ body {
   color: black;
 }
 
-.content > :not(.header-home) {
-  margin: 0 15%;
-}
-
 .header-home {
   position: relative;
 }
