@@ -128,7 +128,7 @@
   color: white;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .right-col {
     display: none;
   }
@@ -136,5 +136,35 @@
   .left-col {
     flex: 0 0 100%;
     max-width: 100%;
+  }
+
+  .note-guide {
+    padding: 0;
+    flex: 0 0 66px;
+    max-width: 66px;
+    background: #121c30;
+    border-radius: 4px;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .infos-guide {
+    border-left: none;
+    flex: 0 0 calc(100% - 151px);
+    max-width: calc(100% - 151px);
+  }
+
+  .listing-item {
+    background: #233148;
+    border-radius: 4px;
+    padding: 5px;
+    align-items: center;
+  }
+
+  .champion-guide {
+    max-width: 60px;
+    padding: 0 10px;
   }
 }
