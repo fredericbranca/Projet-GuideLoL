@@ -74,7 +74,7 @@
 				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
 			</nav>
 		</header>
-		<main id="main">
+		<main class="content">
 
 			{% for message in app.flashes('success') %}
 				<div class="alert alert-success flash-message">
@@ -94,12 +94,12 @@
 				</div>
 			{% endfor %}
 
-			<content class="content">{% block body %}{% endblock %}</content>
+			{% block body %}{% endblock %}
 
-				{% block javascripts %}
-					<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
-					<script src="{{ asset('js/main.js') }}"></script>
-				{% endblock %}
+			{% block javascripts %}
+				<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
+				<script src="{{ asset('js/main.js') }}"></script>
+			{% endblock %}
 		</main>
 	</body>
 </html>
