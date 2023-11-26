@@ -12,13 +12,8 @@ body {
   min-height: 100vh;
 }
 
-/* #scale-container {
-  transform-origin: top left;
-  width: 1920px;
-} */
-
 .content {
-  min-height: 100vh;
+  min-height: 100%;
   color: black;
 }
 
