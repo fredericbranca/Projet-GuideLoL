@@ -734,6 +734,7 @@ window.addEventListener('resize', adjustScale);
 document.getElementById('searchChampion').addEventListener('input', function (e) {
     let searchTerm = e.target.value.toLowerCase();
     let champions = document.querySelectorAll('.liste-champions div');
+    let displayedCount = 0;
 
     champions.forEach((championDiv, index) => {
         let championValue = championDiv.querySelector('input').value.toLowerCase();
@@ -741,8 +742,10 @@ document.getElementById('searchChampion').addEventListener('input', function (e)
         if (searchTerm === "") {
             // Affiche les 14 premiers champions si la recherche est vide
             championDiv.style.display = index < 14 ? 'block' : 'none';
-        } else if (championValue.includes(searchTerm)) {
+            if (index < 14) displayedCount++;
+        } else if (championValue.startsWith(searchTerm)) {
             championDiv.style.display = 'block';
+            displayedCount++;
         } else {
             championDiv.style.display = 'none';
         }
