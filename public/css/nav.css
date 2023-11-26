@@ -108,13 +108,13 @@
   transform: rotate(25deg);
   background-color: hsla(0, 88%, 25%, 0.37);
   background: linear-gradient(
-    90deg,
-    hsla(0, 0%, 100%, 0.13) 0,
-    hsla(0, 0%, 100%, 0.13) 77%,
-    hsla(0, 0%, 100%, 0.5) 92%,
-    hsla(0, 0%, 100%, 0)
-  ),
-  hsla(0, 88%, 25%, 0.349);
+      90deg,
+      hsla(0, 0%, 100%, 0.13) 0,
+      hsla(0, 0%, 100%, 0.13) 77%,
+      hsla(0, 0%, 100%, 0.5) 92%,
+      hsla(0, 0%, 100%, 0)
+    ),
+    hsla(0, 88%, 25%, 0.349);
 }
 
 .wrapper:hover::after {
@@ -153,6 +153,14 @@
     margin: 0 10%;
   }
 
+  .navbar-nav-left {
+    margin-left: 10%;
+  }
+
+  .navbar-nav-right {
+    margin-right: 10%;
+  }
+
   .navbar a {
     font-size: 12px;
   }
@@ -176,6 +184,14 @@
 @media screen and (max-width: 768px) {
   .navbar-nav {
     gap: 20px;
+  }
+
+  .navbar-nav-left {
+    margin-left: 10px;
+  }
+
+  .navbar-nav-right {
+    margin-right: 10px;
   }
 
   .navbar a {
@@ -203,12 +219,12 @@
 
 /* Styles pour les écrans jusqu'à 480px (mobiles) */
 @media screen and (max-width: 490px) {
-  .navbar-nav {
-    margin: 0 5%; /* Réduire davantage les marges */
-  }
-
   .nav-links,
   .nav-auth {
     gap: 20px;
+  }
+
+  .navbar-nav-left {
+    display: none;
   }
 }
