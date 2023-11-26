@@ -437,7 +437,7 @@ class GuideController extends AbstractController
         }
     }
 
-    #[Route('/guides', name: 'app_guide')]
+    #[Route('/guides', name: 'app_guide', methods: ["POST", "GET"])]
     public function index(
         GuideRepository $guideRepository,
         ChampionService $championService,
