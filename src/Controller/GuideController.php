@@ -437,12 +437,17 @@ class GuideController extends AbstractController
 
     #[Route('/guides', name: 'app_guide')]
     public function index(
-        GuideRepository $guideRepository
+        GuideRepository $guideRepository,
+        ChampionService $championService
     ): Response {
         $guides = $guideRepository->findAll();
 
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
+
         return $this->render('guide/index.html.twig', [
             'guides' => $guides,
+            'img_url' => $img_url
         ]);
     }
 
