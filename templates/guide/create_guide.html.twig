@@ -3,8 +3,7 @@
 {% block title %}Créer un guide
 {% endblock %}
 
-{% block meta %}Création d'un nouveau guide
-{% endblock %}
+{% block meta %}Création d'un nouveau guide{% endblock %}
 
 {% block additional_css %}
 	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
@@ -21,147 +20,143 @@
 		{% set hasErrorsInC = errors['groupesCompetences'] ? true : false  %}
 	{% endif %}
 
-	<div class="wrapper-guide">
+	<h1>Créer un guide</h1>
 
-		<h1>Créer un guide</h1>
+	<div id="new-guide">
 
-		<div id="new-guide">
+		<div
+			class="creation-guide">
 
-			<div
-				class="creation-guide">
+			{# Sidebar #}
+			<div class="new-guide-sidebar col-left">
+				<div class="new-guide-sidebar__header">
+					Création d'un guide
+				</div>
+				<div class="new-guide-sidebar__nav">
+					<span id="nav-config" class="current">Configuration
+						{% if hasErrorsInMainPage %}
+							<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
+						{% endif %}
+					</span>
+					<span id="nav-builder">Construction
+						{% if hasErrorsInConstructor %}
+							<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
+						{% endif %}
+					</span>
+				</div>
+				<div class="new-guide-sidebar_actions">
+					<span class="flat-btn split" id="action-sauvegarder">Sauvegarder</span>
+					<span class="flat-btn split margin-left-2" id="action-previsualisation">Prévisualisation</span>
+					<span class="flat-btn full" id="action-publier">Publier</span>
+				</div>
+			</div>
 
-				{# Sidebar #}
-				<div class="new-guide-sidebar col-left">
-					<div class="new-guide-sidebar__header">
-						Création d'un guide
+			<div class="col-right">
+				{{ form_start(form, {'attr': {'id': 'FormGuide'}}) }}
+				{# Container de la première partie du guide (configuration) #}
+				<div
+					class="new-guide-config">
+
+					{# Ajout d'un titre #}
+					<div class="new-guide-config__title">
+						{{ form_label(form.titre)}}
+						{{ form_widget(form.titre)}}
+						{{ form_errors(form.titre)}}
 					</div>
-					<div class="new-guide-sidebar__nav">
-						<span id="nav-config" class="current">Configuration
-							{% if hasErrorsInMainPage %}
-								<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
-							{% endif %}
-						</span>
-						<span id="nav-builder">Construction
-							{% if hasErrorsInConstructor %}
-								<i class="error-message error-message-main fa-solid fa-circle-exclamation" style="color: #800000;"></i>
-							{% endif %}
-						</span>
+
+					{# Choix du rôle #}
+					<div class="new-guide-config__role">
+						{{ form_label(form.voie)}}
+						{{ form_widget(form.voie)}}
+						{{ form_errors(form.voie)}}
 					</div>
-					<div class="new-guide-sidebar_actions">
-						<span class="flat-btn split" id="action-sauvegarder">Sauvegarder</span>
-						<span class="flat-btn split margin-left-2" id="action-previsualisation">Prévisualisation</span>
-						<span class="flat-btn full" id="action-publier">Publier</span>
+
+					{# Choix du Champion #}
+					<div class="new-guide-config__champion">
+						<div class="liste-champions">
+							{% for champion in form.champion %}
+								<div>
+									{{ form_widget(champion) }}
+									{# génère le bouton radio #}
+									<label for="{{ champion.vars.id }}">
+										<img src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
+									</label>
+								</div>
+							{% endfor %}
+						</div>
+						{# affiche les erreurs #}
+						{{ form_errors(form.champion) }}
 					</div>
 				</div>
 
-				<div class="col-right">
-					{{ form_start(form, {'attr': {'id': 'FormGuide'}}) }}
-					{# Container de la première partie du guide (configuration) #}
-					<div
-						class="new-guide-config">
+				<div class="new-guide-builder">
 
-						{# Ajout d'un titre #}
-						<div class="new-guide-config__title">
-							{{ form_label(form.titre)}}
-							{{ form_widget(form.titre)}}
-							{{ form_errors(form.titre)}}
-						</div>
-
-						{# Choix du rôle #}
-						<div class="new-guide-config__role">
-							{{ form_label(form.voie)}}
-							{{ form_widget(form.voie)}}
-							{{ form_errors(form.voie)}}
-						</div>
-
-						{# Choix du Champion #}
-						<div class="new-guide-config__champion">
-							<div class="liste-champions">
-								{% for champion in form.champion %}
-									<div>
-										{{ form_widget(champion) }}
-										{# génère le bouton radio #}
-										<label for="{{ champion.vars.id }}">
-											<img src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
-										</label>
-									</div>
-								{% endfor %}
-							</div>
-							{# affiche les erreurs #}
-							{{ form_errors(form.champion) }}
-						</div>
+					<div class="new-guide-builder__menu">
+						<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur
+							{% if hasErrorsInSI %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-items-container">Items
+							{% if hasErrorsInEI %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-competences-container">Compétences
+							{% if hasErrorsInC %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
+						<span id="menu-runes-container">Runes
+							{% if hasErrorsInGR %}
+								<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
+							{% endif %}
+						</span>
 					</div>
 
-					<div class="new-guide-builder">
-
-						<div class="new-guide-builder__menu">
-							<span id="menu-sorts-invocateur-container" class="current">Sorts d'invocateur
-								{% if hasErrorsInSI %}
-									<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
-								{% endif %}
-							</span>
-							<span id="menu-items-container">Items
-								{% if hasErrorsInEI %}
-									<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
-								{% endif %}
-							</span>
-							<span id="menu-competences-container">Compétences
-								{% if hasErrorsInC %}
-									<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
-								{% endif %}
-							</span>
-							<span id="menu-runes-container">Runes
-								{% if hasErrorsInGR %}
-									<i class="error-message error-message-point fa-solid fa-circle" style="color: #c10b0b;"></i>
-								{% endif %}
-							</span>
-						</div>
-
-						{# Choix des summoner spells #}
-						<div class="new-guide-builder__sorts-invocateur-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Sorts</span>
-						</div>
-
-						{# Choix des items #}
-						<div class="new-guide-builder__items-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un ensemble d'Items</span>
-						</div>
-
-						{# Choix des compétences #}
-						<div class="new-guide-builder__competences-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Compétences</span>
-						</div>
-
-						{# Choix des runes #}
-						<div class="new-guide-builder__runes-container">
-							<div class="new-guide-builder__container"></div>
-							<span class="flat-btn add-group">Ajouter d'un groupe de Runes</span>
-						</div>
-
+					{# Choix des summoner spells #}
+					<div class="new-guide-builder__sorts-invocateur-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Sorts</span>
 					</div>
 
-					{{ form_widget(form._token) }}
+					{# Choix des items #}
+					<div class="new-guide-builder__items-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un ensemble d'Items</span>
+					</div>
 
-					<button style="display: none" type="submit" id="guide_Valider" name="guide[Valider]"/>
-				</form>
-			</div>
+					{# Choix des compétences #}
+					<div class="new-guide-builder__competences-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Compétences</span>
+					</div>
+
+					{# Choix des runes #}
+					<div class="new-guide-builder__runes-container">
+						<div class="new-guide-builder__container"></div>
+						<span class="flat-btn add-group">Ajouter d'un groupe de Runes</span>
+					</div>
+
+				</div>
+
+				{{ form_widget(form._token) }}
+
+				<button style="display: none" type="submit" id="guide_Valider" name="guide[Valider]"/>
+			</form>
 		</div>
 	</div>
+</div>
 
-	<script>
-		var errors = {{ errors|json_encode|raw }};
-		var formData = {{ guideData|json_encode|raw }};
-	</script>
-	<script src="{{ asset('js/guide.js') }}"></script>
-	<script src="{{ asset('js/copieCheckbox.js') }}"></script>
-	{% if guideData|length > 0 %}
-		<script src="{{ asset('js/setOrdreItems.js') }}"></script>
-	{% endif %}
+<script>
+	var errors = {{ errors|json_encode|raw }};
+	var formData = {{ guideData|json_encode|raw }};
+</script>
+<script src="{{ asset('js/guide.js') }}"></script>
+<script src="{{ asset('js/copieCheckbox.js') }}"></script>
+{% if guideData|length > 0 %}
+	<script src="{{ asset('js/setOrdreItems.js') }}"></script>
+{% endif %}
 
-	<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-	<script src="{{ asset('js/guide-sortable.js') }}"></script>
-
-</div>{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="{{ asset('js/guide-sortable.js') }}"></script>{% endblock %}
