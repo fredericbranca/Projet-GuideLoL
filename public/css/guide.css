@@ -2,10 +2,6 @@
   width: 100%;
 }
 
-.content > :not(.header-home) {
-  margin: 0;
-}
-
 /* Position des éléments */
 #new-guide {
   display: flex;

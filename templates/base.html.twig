@@ -18,7 +18,7 @@
 		{% endblock %}
 		{% block additional_css %}{% endblock %}
 	</head>
-	<body>
+	<body id="body">
 		<header>
 			<nav class="navbar">
 				<ul
@@ -74,32 +74,32 @@
 				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
 			</nav>
 		</header>
+		<main id="main">
 
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success flash-message">
-				{{ message }}
-			</div>
-		{% endfor %}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success flash-message">
+					{{ message }}
+				</div>
+			{% endfor %}
 
-		{% for message in app.flashes('note') %}
-			<div class="alert alert-note flash-message">
-				{{ message }}
-			</div>
-		{% endfor %}
+			{% for message in app.flashes('note') %}
+				<div class="alert alert-note flash-message">
+					{{ message }}
+				</div>
+			{% endfor %}
 
-		{% for message in app.flashes('error') %}
-			<div class="alert alert-error flash-message">
-				{{ message }}
-			</div>
-		{% endfor %}
+			{% for message in app.flashes('error') %}
+				<div class="alert alert-error flash-message">
+					{{ message }}
+				</div>
+			{% endfor %}
 
-		<div class="content"> {% block body %}{% endblock %}
-			</div>
+			<content class="content">{% block body %}{% endblock %}</content>
 
-			{% block javascripts %}
-				<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
-				<script src="{{ asset('js/main.js') }}"></script>
-			{% endblock %}
-		</body>
-	</html>
-</head></html>
+				{% block javascripts %}
+					<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
+					<script src="{{ asset('js/main.js') }}"></script>
+				{% endblock %}
+		</main>
+	</body>
+</html>
