@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\ChoixItems;
 use App\Entity\Guide;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
+use App\Entity\ChoixItems;
 use App\Entity\ItemsGroup;
 use App\Service\ItemService;
 use App\Service\RuneService;
@@ -21,9 +21,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 class GuideController extends AbstractController
 {
@@ -51,9 +53,10 @@ class GuideController extends AbstractController
     }
 
 
-    // Route qui mène vers la création d'un guide et redirige vers le guide créé s'il est validé
+    // Route pour créer un guide
+    // Route pour éditer un guide existant
     #[Route('/guide/new', name: 'new_guide')]
-    #[Route('/guide/{idGuide}/edit', name: 'edit_guide')]
+    #[Route('/guide/{id}/edit', name: 'edit_guide')]
     public function newOrEditGuide(
         Request $request,
         ChampionService $championService,
@@ -62,27 +65,31 @@ class GuideController extends AbstractController
         RuneService $runeService,
         CompetenceService $competenceService,
         ItemService $itemService,
-        int $idGuide = null
+        Guide $guide = null
     ): Response {
-        $user = $this->security->getUser();
 
-        // Récupère le guide avec l'id ou en créé un s'il n'existe pas
-        $guide = $idGuide ? $entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
-
-        if ($idGuide && $guide->getUser() !== $user) {
-            throw new AccessDeniedException('Vous ne pouvez pas éditer le guide des autres utilisateurs.');
+        // Si c'est un nouveau guide, on le créé
+        $isNewGuide = ($guide === null);
+        if ($isNewGuide) {
+            $guide = new Guide();
         }
 
-        // Récupère la liste d'id des champions
+        // Autorisation d'accès aux routes (appelé ici car si c'est un nouveau guide, les autorisations d'accès sont différentes)
+        $this->denyAccessUnlessGranted('guide_edit', $guide, "Vous ne pouvez qu'éditer vos propre guide.");
+
+        // Initialise la liste des champions
         $championsData = $championService->getChampions();
-        // URL pour récupérer les images
+        // Initialise l'URL d'accès aux images
         $img_url = $championService->getChampionImageURL();
 
         // Création du formulaire
         $form = $this->createForm(GuideType::class, $guide, ['champion_id' => null]);
+        // Traitement de la requête et hydratation conditionnelle de l'objet
         $form->handleRequest($request);
 
+        // Si le formulaire a été soumit et est valide
         if ($form->isSubmitted() && $form->isValid()) {
+
             $guideData = $request->request->All();
             $groupesRunes = $form->get('groupeRunes')->getData();
 
@@ -100,10 +107,11 @@ class GuideController extends AbstractController
             }
 
             // On lie le guide à l'utilisateur qui le créé
+            $user = $this->security->getUser();
             $guide->setUser($user);
 
             // Si c'est l'édition d'un guide, on ajoute la date de modification
-            if ($idGuide) {
+            if (!$isNewGuide) {
                 $guide->setModifiedAt(new \DateTimeImmutable());
             }
 
@@ -111,14 +119,17 @@ class GuideController extends AbstractController
             $entityManager->persist($guide);
             $entityManager->flush();
 
-            // Redirection vers la vue pour afficher le Guide qui vient d'etre créé
-            return $this->redirectToRoute('get_guide_byId', ['idGuide' => $guide->getId()]);
+            // Redirection vers la vue pour afficher le Guide qui vient d'etre créé ou mise à jour
+            return $this->redirectToRoute('get_guide_byId', ['id' => $guide->getId()]);
 
+            // Si aucun formulaire n'est soumis
         } else {
-            // Si aucun formulaire n'est submit
-            // Si le formulaire est invalide
-            
-            // Défini les erreurs des sections à false
+
+            // Obtenir les données du formulaire
+            // Null si pas de soumission
+            $guideData = $request->request->All();
+
+            // Initialisation des variables des gestions des erreurs
             $errorsSections = [];
             $errorsSections = [
                 'groupeSortsInvocateur' => false,
@@ -127,59 +138,68 @@ class GuideController extends AbstractController
                 'groupesCompetences' => false,
             ];
 
-            // Si l'erreur vient d'une section, on met l'état de la section à true
-            foreach ($form->getErrors(true) as $error) {
-                $propertyPath = $error->getCause()->getPropertyPath();
+            // Si le formulaire est invalide
+            if ($form->isSubmitted() && !$form->isValid()) {
 
-                if (strpos($propertyPath, 'groupeSortsInvocateur') !== false) {
-                    $errorsSections['groupeSortsInvocateur'] = true;
-                } elseif (strpos($propertyPath, 'groupeRunes') !== false) {
-                    $errorsSections['groupeRunes'] = true;
-                } elseif (strpos($propertyPath, 'groupeEnsemblesItems') !== false) {
-                    $errorsSections['groupeEnsemblesItems'] = true;
-                } elseif (strpos($propertyPath, 'groupesCompetences') !== false) {
-                    $errorsSections['groupesCompetences'] = true;
+                // Si l'erreur vient d'une section, on met l'état de la section à true
+                foreach ($form->getErrors(true) as $error) {
+                    $propertyPath = $error->getCause()->getPropertyPath();
+
+                    if (strpos($propertyPath, 'groupeSortsInvocateur') !== false) {
+                        $errorsSections['groupeSortsInvocateur'] = true;
+                    } elseif (strpos($propertyPath, 'groupeRunes') !== false) {
+                        $errorsSections['groupeRunes'] = true;
+                    } elseif (strpos($propertyPath, 'groupeEnsemblesItems') !== false) {
+                        $errorsSections['groupeEnsemblesItems'] = true;
+                    } elseif (strpos($propertyPath, 'groupesCompetences') !== false) {
+                        $errorsSections['groupesCompetences'] = true;
+                    }
                 }
-            }
 
-            // Obtenir les données du formulaire
-            $guideData = $request->request->All();
-
-            if (!$idGuide) {
-                return $this->render('guide/create_guide.html.twig', [
+                // Renvoie à la vue correspondante avec les erreurs et le formulaire rempli avec les informations déjà entrées
+                return $this->render('guide/' . ($isNewGuide ? 'create_guide' : 'edit_guide') . '.html.twig', [
                     'form' => $form,
                     'guideData' => $guideData,
                     'champions' => $championsData,
                     'img_url' => $img_url,
-                    'errors' => $errorsSections
-                ]);
-            } else {
-                // Infos du niveaux des compétences
-                $infoNiveauxSorts = $competenceService->getNiveauxParSorts($guide);
-                // Infos des runes sélectionnées
-                $infosRunes = $runeService->getRunesSelection($guide);
-                // Ordre des items
-                $infosItems = $itemService->getInfosItems($guide);
-
-                return $this->render('guide/edit_guide.html.twig', [
-                    'form' => $form,
-                    'guideData' => $guideData,
-                    'champions' => $championsData,
-                    'img_url' => $img_url,
-                    'infos_sorts' => $infoNiveauxSorts,
-                    'infos_runes' => $infosRunes,
-                    'infos_items' => $infosItems,
                     'errors' => $errorsSections
                 ]);
             }
         }
+
+        if ($isNewGuide) {
+            return $this->render('guide/create_guide.html.twig', [
+                'form' => $form,
+                'guideData' => $guideData,
+                'champions' => $championsData,
+                'img_url' => $img_url,
+                'errors' => $errorsSections
+            ]);
+        } else {
+            // Infos du niveaux des compétences
+            $infoNiveauxSorts = $competenceService->getNiveauxParSorts($guide);
+            // Infos des runes sélectionnées
+            $infosRunes = $runeService->getRunesSelection($guide);
+            // Ordre des items
+            $infosItems = $itemService->getInfosItems($guide);
+
+            return $this->render('guide/edit_guide.html.twig', [
+                'form' => $form,
+                'guideData' => $guideData,
+                'champions' => $championsData,
+                'img_url' => $img_url,
+                'infos_sorts' => $infoNiveauxSorts,
+                'infos_runes' => $infosRunes,
+                'infos_items' => $infosItems,
+                'errors' => $errorsSections
+            ]);
+        }
     }
 
     // Route pour afficher un Guide avec son id
-    #[Route('/guide/{idGuide}', name: 'get_guide_byId')]
+    #[Route('/guide/{id}', name: 'get_guide_byId')]
     public function getGuide(
-        int $idGuide,
-        EntityManagerInterface $em,
+        Guide $guide,
         ChampionService $championService,
         SortInvocateurService $sortInvocateurService,
         ItemService $itemService,
@@ -193,12 +213,6 @@ class GuideController extends AbstractController
         $itemsList = $itemService->getItems();
         // Liste des runes
         $runesData = $runeService->getRunesIds();
-
-        $guide = $em->getRepository(Guide::class)->find($idGuide);
-
-        if (!$guide) {
-            throw $this->createNotFoundException('Guide not found.');
-        }
 
         // Récupère les data du champion
         $championData = $championService->getChampion($guide->getChampion());
@@ -218,30 +232,26 @@ class GuideController extends AbstractController
 
     // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur ou sa version avec les données du guide
     #[Route('/groupe-sorts-invocateur/create', name: "create_groupe_sorts_invocateur")]
-    #[Route('/groupe-sorts-invocateur/edit/{idGuide}', name: "edit_groupe_sorts_invocateur")]
-    public function createOrEditGroupeSortsInvocateur(Request $request, int $idGuide = null): Response
+    #[Route('/groupe-sorts-invocateur/edit/{id}', name: "edit_groupe_sorts_invocateur")]
+    public function createOrEditGroupeSortsInvocateur(Request $request, Guide $guide = null): Response
     {
-        $index = null;
-
         // Récupérer les données soumises
         $data = json_decode($request->getContent(), true);
         if ($data != null) {
             $data = $data['guide']['groupeSortsInvocateur'];
         }
 
-        // Initialisation ou récupération du Guide
-        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
-        if (!$idGuide) {
+        $isNewGuide = ($guide === null);
+
+        if ($isNewGuide) {
+            $guide = new Guide();
             $guide->addGroupeSortsInvocateur(new SortInvocateur());
-            if ($data == null) {
-                $index = 0;
-            }
         }
 
         // Appel de la méthode globale pour créer le formulaire
-        $formInfo = $this->createGuideForm($guide, 'sorts', $index, null, $data);
+        $formInfo = $this->createGuideForm($guide, 'sorts', !$isNewGuide ? null : ($data ? null : 0), null, $data);
 
-        if (!$idGuide && $data == null) {
+        if ($isNewGuide && $data == null) {
             return $this->render('guide/groupe-sorts-invocateur.html.twig', [
                 'form' => $formInfo['form'],
                 'list_sorts_invocateur' => $formInfo['list'],
@@ -436,26 +446,21 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/guide/{idGuide}/delete', name: 'delete_guide')]
+    // Route pour qu'un utilisateur supprime un guide qu'il a créé par son id
+    #[Route('/guide/{id}/delete', name: 'user_delete_guide', methods: ["POST"])]
     public function deleteGuide(
         EntityManagerInterface $em,
-        int $idGuide
+        Guide $guide,
+        Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
-        $user = $this->security->getUser();
-
-        if (!$user) {
-            return new Response('Non autorisé', Response::HTTP_UNAUTHORIZED);
+        // Vérification de jeton CSRF
+        $csrfToken = new CsrfToken('delete_guide', $request->request->get('_csrf_token'));
+        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
+            throw new InvalidCsrfTokenException();
         }
 
-        $guide = $em->getRepository(Guide::class)->find($idGuide);
-
-        if (!$guide) {
-            throw $this->createNotFoundException('Ce guide n\'existe pas.');
-        }
-
-        if ($guide->getUser() !== $user) {
-            throw new AccessDeniedException('Action non autorisé.');
-        }
+        $this->denyAccessUnlessGranted('guide_delete', $guide, "Vous ne pouvez supprimer que vos guides.");
 
         $em->remove($guide);
         $em->flush();
