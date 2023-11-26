@@ -451,6 +451,13 @@ class GuideController extends AbstractController
         // Applique les filtres si le formulaire est soumis
         $filtres = $filtreForm->isSubmitted() ? $filtreForm->getData() : [];
 
+        // Vérifie si un champion est passé dans l'URL
+        if ($request->query->has('champion')) {
+            $filtres['champion'] = $request->query->get('champion');
+            // Ajoute le champion dans le formulaire
+            $filtreForm->get('champion')->setData($filtres['champion']);
+        }
+
         // Récupère les guides + prépare l'affichage avec paginator pour la pagination
         $guides = $paginator->paginate(
             $guideRepository->findByDateWithFilters($filtres),
@@ -492,12 +499,19 @@ class GuideController extends AbstractController
     }
 
 
+    // Liste des champions
+    #[Route('/champions', name: 'app_champions', methods: ["GET"])]
+    public function getChampions(
+        ChampionService $championService
+    ): Response {
+        // URL pour récupérer les images
+        $img_url = $championService->getChampionImageURL();
 
-    #[Route('/champions', name: 'app_champions')]
-    public function getChampions(): Response
-    {
+        $champions = $championService->getChampions();
+
         return $this->render('guide/champions.html.twig', [
-            'controller_name' => 'GuideController',
+            'champions' => $champions,
+            'img_url' => $img_url
         ]);
     }
 
