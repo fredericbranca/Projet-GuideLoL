@@ -444,19 +444,21 @@ class GuideController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
-        // Créer le formulaire de filtre
-        $filtreForm = $this->createForm(GuideFiltreType::class);
+        // Prépare les données pour le formulaire (avec les données initiales)
+        $initialData = [];
+        if ($request->query->has('champion')) {
+            $initialData['champion'] = $request->query->get('champion');
+        }
+
+        // Crée le formulaire de filtre
+        $filtreForm = $this->createForm(GuideFiltreType::class, $initialData);
+
+        // Traite le formulaire
         $filtreForm->handleRequest($request);
 
-        // Applique les filtres si le formulaire est soumis
-        $filtres = $filtreForm->isSubmitted() ? $filtreForm->getData() : [];
+        // Utilise les données du formulaire pour filtrer
+        $filtres = $filtreForm->isSubmitted() && $filtreForm->isValid() ? $filtreForm->getData() : $initialData;
 
-        // Vérifie si un champion est passé dans l'URL
-        if ($request->query->has('champion')) {
-            $filtres['champion'] = $request->query->get('champion');
-            // Ajoute le champion dans le formulaire
-            $filtreForm->get('champion')->setData($filtres['champion']);
-        }
 
         // Récupère les guides + prépare l'affichage avec paginator pour la pagination
         $guides = $paginator->paginate(
