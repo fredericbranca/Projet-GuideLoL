@@ -9,6 +9,7 @@ use App\Entity\ChoixItems;
 use App\Entity\ItemsGroup;
 use App\Service\ItemService;
 use App\Service\RuneService;
+use App\Form\GuideFiltreType;
 use App\Service\GuideService;
 use App\Entity\SortInvocateur;
 use App\Entity\CompetencesGroup;
@@ -443,9 +444,16 @@ class GuideController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        // Créer le formulaire de filtre
+        $filtreForm = $this->createForm(GuideFiltreType::class);
+        $filtreForm->handleRequest($request);
+
+        // Applique les filtres si le formulaire est soumis
+        $filtres = $filtreForm->isSubmitted() ? $filtreForm->getData() : [];
+
         // Récupère les guides + prépare l'affichage avec paginator pour la pagination
         $guides = $paginator->paginate(
-            $guideRepository->findByDate(),
+            $guideRepository->findByDateWithFilters($filtres),
             $request->query->getInt('page', 1),
             5,
             ['pageParameterName' => 'page']
@@ -456,7 +464,8 @@ class GuideController extends AbstractController
 
         return $this->render('guide/index.html.twig', [
             'guides' => $guides,
-            'img_url' => $img_url
+            'img_url' => $img_url,
+            'filtre_form' => $filtreForm->createView(),
         ]);
     }
 
