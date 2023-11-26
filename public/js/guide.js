@@ -83,8 +83,19 @@ let menu = document.querySelector(".new-guide-builder__menu");
  * Récupère l'id du champion sélectionné dans le formulaire de configuration.
  * @return {string|null} L'id du champion ou null si aucun n'est sélectionné.
  */
-function getSelectedChampionId() {
+function getSelectedChampionId(newChamp = null) {
     const selectedChampionRadio = document.querySelector('.new-guide-config__champion input[type="radio"]:checked');
+    const containerCompetence = document.querySelectorAll('.new-guide-builder__competences-container .new-guide__block');
+
+    if (newChamp && containerCompetence.length > 0) {
+        containerCompetence.forEach(element => {
+            element.remove();
+        });
+        if (savedForm['new-guide-builder__competences-container']) {
+            delete savedForm['new-guide-builder__competences-container'];
+        }
+    }
+
     return selectedChampionRadio ? selectedChampionRadio.value : null;
 }
 
@@ -752,6 +763,9 @@ document.querySelectorAll('.liste-champions input[type="radio"]').forEach(input 
             let emptySpan = document.querySelector('.champ-select .empty');
             emptySpan.innerHTML = '';
             emptySpan.appendChild(clonedImg);
+
+            // Actualise groupe de compétence
+            getSelectedChampionId(true);
         }
     });
 });
