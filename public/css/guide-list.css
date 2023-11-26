@@ -99,6 +99,35 @@
   width: 100%;
 }
 
+.pagination {
+  display: flex;
+  background: #152034;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pagination a,
+.pagination .current {
+  display: inline-block;
+  color: #8092b3;
+  text-transform: uppercase;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 15px;
+  transition: 300ms;
+}
+
+.pagination a:hover {
+  background: rgba(39, 84, 149, 0.25);
+  color: white;
+}
+
+.pagination .current {
+  background: #275495;
+  color: white;
+}
+
 @media screen and (max-width: 768px) {
   .right-col {
     display: none;
