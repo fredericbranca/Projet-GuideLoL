@@ -21,13 +21,26 @@ class GuideRepository extends ServiceEntityRepository
         parent::__construct($registry, Guide::class);
     }
 
-    // Guide par date de modification et s'il n'y en a pas pas date de création
-    public function findByDate()
+    // Récupère la liste des guides par date (modifié ou création) + gère les filtres champion et voie (role)
+    public function findByDateWithFilters($filters)
     {
-        return $this->createQueryBuilder('g')
-            ->orderBy('CASE WHEN g.modified_at IS NOT NULL THEN g.modified_at ELSE g.created_at END', 'DESC')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('g');
+
+        // Conditions basées sur les filtres
+        if (isset($filters['champion']) && $filters['champion']) {
+            $qb->andWhere('g.champion = :champion')
+                ->setParameter('champion', $filters['champion']);
+        }
+
+        if (isset($filters['role']) && $filters['role']) {
+            $qb->andWhere('g.voie = :voie')
+                ->setParameter('voie', $filters['role']);
+        }
+
+        // Trie par date de modification si elle existe sinon par date de création
+        $qb->orderBy('CASE WHEN g.modified_at IS NOT NULL THEN g.modified_at ELSE g.created_at END', 'DESC');
+
+        return $qb->getQuery()->getResult();
     }
 
     //    /**
