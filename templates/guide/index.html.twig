@@ -2,17 +2,61 @@
 
 {% block title %}Liste des guides
 
-{% block meta %}Page d'accueil{% endblock %}
+{% block meta %}Recherhe d'un guide{% endblock %}
+
+{% block additional_css %}
+	<link rel="stylesheet" href="{{ asset('css/guide-list.css') }}">
+{% endblock %}
+
 
 {% endblock %}
 
 {% block body %}
-	<h1>Liste des Guides</h1>
 
-	{% for guide in guides %}
-		<div>
-			<a href="/guide/{{ guide.id }}">{{ guide.titre }}</a>
+<div class="wrapper-recherche-guide">
+
+	<div class="content-page">
+	
+
+		<div class="content-guide-list left-col">
+
+			<h1>Liste des Guides</h1>
+
+			<div class="listing-guide">
+
+				{% for guide in guides %}
+					<a class="listing-item" href="/guide/{{ guide.id }}">
+						<div class="note-guide">
+							EVALUATION
+						</div>
+						<div class="champion-guide">
+							<img src="{{ img_url }}/champion/{{ guide.champion.id }}.png.webp" alt="{{ guide.champion }}">
+						</div>
+						<div class="infos-guide">
+							<h2 class="titre-guide">
+								<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="">
+								{{ guide.titre }}
+							</h2>
+							<span class="user-infos">
+								Guide créé par {{ guide.user }} {{ guide.modifiedAt ? ('modifié le ' ~ guide.modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide.createdAt|date("m/d/Y")) }}
+							</span>
+						</div>
+					</a>
+				{% endfor %}
+
+			</div>
+
 		</div>
-	{% endfor %}
+
+		<div class="right-col">
+			<div>test</div>
+			<div>test</div>
+			<div>test</div>
+			<div>test</div>
+		</div>
+
+	</div>
+
+</div>
 
 {% endblock %}
