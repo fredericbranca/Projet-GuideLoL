@@ -18,6 +18,7 @@ use App\Entity\EnsembleItemsGroups;
 use App\Repository\GuideRepository;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -438,9 +439,17 @@ class GuideController extends AbstractController
     #[Route('/guides', name: 'app_guide')]
     public function index(
         GuideRepository $guideRepository,
-        ChampionService $championService
+        ChampionService $championService,
+        PaginatorInterface $paginator,
+        Request $request
     ): Response {
-        $guides = $guideRepository->findAll();
+        // Récupère les guides + prépare l'affichage avec paginator pour la pagination
+        $guides = $paginator->paginate(
+            $guideRepository->findByDate(),
+            $request->query->getInt('page', 1),
+            5,
+            ['pageParameterName' => 'page']
+        );
 
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
