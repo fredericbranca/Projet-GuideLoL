@@ -3,7 +3,8 @@
 {% block title %}Créer un guide
 {% endblock %}
 
-{% block meta %}Création d'un nouveau guide{% endblock %}
+{% block meta %}Création d'un nouveau guide
+{% endblock %}
 
 {% block additional_css %}
 	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
@@ -72,10 +73,17 @@
 					</div>
 
 					{# Choix du Champion #}
+					<div class="champ-select">
+						<span class="empty"></span>
+					</div>
+					
+					<div class="search-container">
+						<input type="text" id="searchChampion" placeholder="Recherche un champion...">
+					</div>
 					<div class="new-guide-config__champion">
 						<div class="liste-champions">
 							{% for champion in form.champion %}
-								<div>
+								<div class="{{ loop.index <= 14 ? 'initial-display' : '' }}">
 									{{ form_widget(champion) }}
 									{# génère le bouton radio #}
 									<label for="{{ champion.vars.id }}">
@@ -150,7 +158,7 @@
 
 <script>
 	var errors = {{ errors|json_encode|raw }};
-	var formData = {{ guideData|json_encode|raw }};
+var formData = {{ guideData|json_encode|raw }};
 </script>
 <script src="{{ asset('js/guide.js') }}"></script>
 <script src="{{ asset('js/copieCheckbox.js') }}"></script>

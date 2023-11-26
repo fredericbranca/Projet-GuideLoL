@@ -750,22 +750,32 @@ document.getElementById('searchChampion').addEventListener('input', function (e)
 });
 
 // Ecouteur d'évènement sur les input radio des champions
-document.querySelectorAll('.liste-champions input[type="radio"]').forEach(input => {
-    input.addEventListener('change', function () {
-        if (this.checked) {
-            // Trouve l'élément image associé
-            let img = this.nextElementSibling.querySelector('img');
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.liste-champions input[type="radio"]').forEach(input => {
+        // Appelle la fonction pour l'état initial des inputs radio
+        handleChampionSelection(input);
 
-            // Clone l'image
-            let clonedImg = img.cloneNode(true);
-
-            // Insère l'image clonée
-            let emptySpan = document.querySelector('.champ-select .empty');
-            emptySpan.innerHTML = '';
-            emptySpan.appendChild(clonedImg);
-
-            // Actualise groupe de compétence
-            getSelectedChampionId(true);
-        }
+        // Ajoute l'écouteur d'évènements pour les changements futurs
+        input.addEventListener('change', function () {
+            handleChampionSelection(this);
+        });
     });
 });
+
+function handleChampionSelection(input) {
+    if (input.checked) {
+        // Trouve l'élément image associé
+        let img = input.nextElementSibling.querySelector('img');
+
+        // Clone l'image
+        let clonedImg = img.cloneNode(true);
+
+        // Insère l'image clonée
+        let emptySpan = document.querySelector('.champ-select .empty');
+        emptySpan.innerHTML = '';
+        emptySpan.appendChild(clonedImg);
+
+        // Actualise groupe de compétence
+        getSelectedChampionId(true);
+    }
+}

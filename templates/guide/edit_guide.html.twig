@@ -69,14 +69,21 @@
 					</div>
 
 					{# Choix du Champion #}
+					<div class="champ-select">
+						<span class="empty"></span>
+					</div>
+					
+					<div class="search-container">
+						<input type="text" id="searchChampion" placeholder="Recherche un champion...">
+					</div>
 					<div class="new-guide-config__champion">
 						<div class="liste-champions">
 							{% for champion in form.champion %}
-								<div>
+								<div class="{{ loop.index <= 14 ? 'initial-display' : '' }}">
 									{{ form_widget(champion) }}
 									{# génère le bouton radio #}
 									<label for="{{ champion.vars.id }}">
-										<img style="width: 40px; height: auto" src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
+										<img src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
 									</label>
 								</div>
 							{% endfor %}
