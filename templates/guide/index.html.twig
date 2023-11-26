@@ -22,6 +22,10 @@
 
 			<h1>Liste des Guides</h1>
 
+			<div class="filtre-list-guide">
+				
+			</div>
+
 			<div class="listing-guide">
 
 				{% for guide in guides %}
@@ -45,6 +49,7 @@
 				{% endfor %}
 
 			</div>
+				{{ knp_pagination_render(guides) }}
 
 		</div>
 
