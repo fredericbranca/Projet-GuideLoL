@@ -533,9 +533,16 @@ function initializeClickedTreesForBlock(index) {
 
 // Fonction pour gérer l'affichage des options des runes
 function toggleRunesOptions(parentBlock, treeName, shouldShow) {
+    
     let tree = parentBlock.querySelector(`.arbre[data-name="${treeName}"]`);
     let runesOptions = tree.nextElementSibling;
-    runesOptions.style.display = shouldShow ? 'block' : 'none';
+    runesOptions.style.display = shouldShow ? 'flex' : 'none';
+    shouldShow ? tree.classList.add('arbre-click') : tree.classList.remove('arbre-click')
+    if (!shouldShow) {
+        runesOptions.classList.remove('arbre-1');
+        runesOptions.classList.remove('arbre-2');
+    }
+
     if (!shouldShow) {
         resetRadioButtons(runesOptions);
     }
@@ -606,11 +613,12 @@ runesContainer.addEventListener('click', function (event) {
 
         // Gérer le premier arbre
         if (!clickedTrees.first || treeName === clickedTrees.first) {
-            let runesOptions = toggleRunesOptions(parentBlock, treeName, event.target.nextElementSibling.style.display !== 'block');
-            clickedTrees.first = runesOptions.style.display === 'block' ? treeName : null;
+            let runesOptions = toggleRunesOptions(parentBlock, treeName, event.target.nextElementSibling.style.display !== 'flex');
+            clickedTrees.first = runesOptions.style.display === 'flex' ? treeName : null;
+            (runesOptions.style.display === 'flex' && runesOptions.classList !== 'arbre-2') ? runesOptions.classList.add('arbre-1') : runesOptions.classList.remove('arbre-1');
             let firstDiv = runesOptions.querySelector('div');
             if (firstDiv) {
-                firstDiv.style.display = 'block';
+                firstDiv.style.display = 'flex';
             }
             // Si l'arbre est ouvert, on met à jour l'input caché en "Primaire", sinon on le réinitialise
             updateHiddenInput(parentBlock, treeType, clickedTrees.first ? "Primaire" : "");
@@ -627,7 +635,7 @@ runesContainer.addEventListener('click', function (event) {
 
             // Ouvrir le deuxième arbre
             let runesOptions = toggleRunesOptions(parentBlock, treeName, true);
-            if (runesOptions.style.display === 'block') {
+            if (runesOptions.style.display === 'flex') {
                 clickedTrees.second = treeName;
                 let firstDiv = runesOptions.querySelector('div');
                 if (firstDiv) {
@@ -636,6 +644,8 @@ runesContainer.addEventListener('click', function (event) {
 
                 // Si le deuxième arbre est ouvert, on met à jour l'input caché en "Secondaire", sinon on le réinitialise
                 updateHiddenInput(parentBlock, treeType, clickedTrees.second ? "Secondaire" : "");
+
+                (runesOptions.style.display === 'flex' && runesOptions.classList !== 'arbre-1' ) ? runesOptions.classList.add('arbre-2') : runesOptions.classList.remove('arbre-2');
 
                 // Désactive les clics sur le deuxième arbre sélectionné
                 parentBlock.querySelector('.arbre[data-name="' + clickedTrees.second + '"]').classList.add('disabled');
@@ -685,3 +695,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// Futur test
+function adjustScale() {
+    const windowWidth = window.innerWidth;
+    const baseWidth = 1316;
+    let scaleFactor = windowWidth / baseWidth;
+  
+    if (windowWidth < baseWidth) {
+        document.querySelector('.content').style.transform = `scale(${scaleFactor})`;
+    } else {
+        document.querySelector('.content').style.transform = 'none';
+    }
+  
+  }
+
+// Ajuste le scale lors du chargement initial et lors du redimensionnement de la fenêtre
+window.addEventListener('load', adjustScale);
+window.addEventListener('resize', adjustScale);
