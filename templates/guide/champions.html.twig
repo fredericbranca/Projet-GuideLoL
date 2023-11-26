@@ -1,8 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{% block additional_css %}
+	<link rel="stylesheet" href="{{ asset('css/champions-list.css') }}">
+{% endblock %}
+
 {% block title %}Listes de champions
 {% endblock %}
 
 {% block body %}
-	<h1>Liste des Champions</h1>
+
+	<div class="champions-list-page">
+
+		<div class="champion-list-page-content">
+
+			<div class="header-titre">
+				<h1>Liste des Champions</h1>
+				<h2>Découvrez la liste des Guides de chaque Champion</h2>
+			</div>
+
+			<div class="champions-container">
+				<div class="champions-liste">
+					{% for champion in champions %}
+
+						<a class="champion-link" href="{{ path('app_guide', {'champion': champion.idChamp}) }}">
+							<div class="image-wrapper">
+								<img src="{{ img_url }}/champion/{{ champion.idChamp }}.png.webp" alt="{{ champion.name }}">
+							</div>
+							<div class="champion-name">{{ champion.name }}</div>
+						</a>
+
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+
 {% endblock %}
