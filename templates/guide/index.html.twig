@@ -22,9 +22,11 @@
 
 			<h1>Liste des Guides</h1>
 
-			<div class="filtre-list-guide">
-				
-			</div>
+			{{ form_start(filtre_form) }}
+				{{ form_row(filtre_form.champion) }}
+				{{ form_row(filtre_form.role) }}
+				<button type="submit">Filtrer</button>
+			{{ form_end(filtre_form) }}
 
 			<div class="listing-guide">
 
