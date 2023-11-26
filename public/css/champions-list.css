@@ -1,0 +1,125 @@
+.content {
+  width: 100%;
+}
+
+.champions-list-page {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.champions-list-page.content {
+  flex: 1 1;
+  max-width: 1014px;
+  box-sizing: content-box;
+}
+
+.header-titre {
+  margin: 24px 0;
+}
+
+.header-titre h1 {
+  font-weight: 600;
+  color: #fff;
+}
+
+.header-titre h2 {
+  font-weight: 500;
+  font-size: 18px;
+  color: #cddcfe;
+  margin-top: 12px;
+  margin-bottom: 0;
+  letter-spacing: 0;
+}
+
+.champions-container {
+  width: 100vw;
+  box-sizing: content-box;
+  margin-top: 34px;
+}
+
+.champions-liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 12px 12px;
+  padding: 20px;
+  border: 1px solid #2c2c40;
+  background-color: #17172e;
+  margin: 0 20px;
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+}
+
+.image-wrapper {
+  position: relative;
+  border: 1px solid #2c2c40;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  display: block;
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.image-wrapper::after {
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -180%;
+  width: 220%;
+  height: 220%;
+  opacity: 0;
+  transform: rotate(45deg);
+  background: hsla(0, 0%, 100%, 0.13);
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0.13) 0,
+    hsla(0, 0%, 100%, 0.13) 77%,
+    hsla(0, 0%, 100%, 0.5) 92%,
+    hsla(0, 0%, 100%, 0)
+  );
+}
+
+.champion-name {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.champion-link:hover .image-wrapper:after {
+  opacity: 1;
+  top: -35%;
+  left: -35%;
+  transition-property: left, top, opacity;
+  transition-duration: 0.7s, 0.7s, 0.15s;
+  transition-timing-function: ease;
+}
+
+@media (min-width: 1014px) {
+  .champions-container {
+    width: 1014px;
+  }
+}
+
+@media (max-width: 1200px) {
+  /* .champions-liste {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  } */
+}
+
+@media (max-width: 899px) {
+  /* .champions-liste {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  } */
+}
