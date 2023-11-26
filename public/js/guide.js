@@ -696,18 +696,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Futur test
+// Responsive create guide
 function adjustScale() {
     const windowWidth = window.innerWidth;
-    const baseWidth = 1316;
-    let scaleFactor = windowWidth / baseWidth;
-  
-    if (windowWidth < baseWidth) {
-        document.querySelector('.content').style.transform = `scale(${scaleFactor})`;
-    } else {
-        document.querySelector('.content').style.transform = 'none';
+    const maxWidth = 1316;
+    const tabletWidth = 768;
+    let scaleFactor;
+
+    if (windowWidth < maxWidth) {
+        scaleFactor = windowWidth / maxWidth;
+    } else if (windowWidth < tabletWidth) {
+        scaleFactor = windowWidth / tabletWidth;
     }
-  
+    else {
+        scaleFactor = 1;
+    }
+
+    document.getElementById('new-guide').style.transform = `scale(${scaleFactor})`;
   }
 
 // Ajuste le scale lors du chargement initial et lors du redimensionnement de la fenêtre

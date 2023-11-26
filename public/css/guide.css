@@ -1,23 +1,16 @@
 .content {
-  transform-origin: top left;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .content > :not(.header-home) {
   margin: 0;
 }
 
-
 /* Position des éléments */
-.wrapper-guide {
-  width: 100%;
-}
-
 #new-guide {
   display: flex;
-  margin-top: 1%;
   justify-content: center;
+  margin-top: 1%;
 }
 
 .creation-guide {
@@ -25,8 +18,6 @@
   width: 1316px;
   justify-content: center;
   gap: 2%;
-  box-sizing: content-box;
-  margin-top: 34px;
 }
 
 .col-left {
@@ -712,9 +703,33 @@
   transform: translateY(-50%);
 }
 
-/* Media Query */
+/* Media query pour les écrans plus petits que 1316px */
 @media (max-width: 1316px) {
+  #new-guide {
+    width: 1316px;
+    transform-origin: top left;
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .creation-guide {
-    width: 100%;
+    margin-top: 50px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+  }
+
+  .col-left{
+    height: 50%;
+    transform: scale(1.2);
+    width: 70%;
+  }
+
+  .col-right{
+    height: 50%;
+    transform: scale(1.4);
   }
 }
