@@ -1,0 +1,70 @@
+.recherche {
+  position: absolute;
+  top: 37%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 90%;
+}
+
+.icone-loupe {
+    position: absolute;
+    font-size: 25px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.logo-mini {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input-champion-search {
+  padding: 10px 60px 10px 60px;
+  width: 100%;
+  height: 60px;
+  border: none;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #5f5f7b;
+}
+
+.search-result {
+  position: absolute;
+  display: block;
+  width: 100%;
+  background-color: #fff;
+  color: #5f5f7b;
+  font-weight: 400;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.champion-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.champion-link  {
+    text-decoration: none;
+    color: #5f5f7b;
+}
+
+.champion-link:hover {
+    background-color: #c3c3e2;
+}
+
+.champion-link img {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+}
