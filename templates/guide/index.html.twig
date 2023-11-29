@@ -23,15 +23,18 @@
 
 				<h1>Liste des Guides</h1>
 
-				{{ form_start(filtre_form) }}
-				<div>
-					{{ form_row(filtre_form.champion) }}
-					<a href="{{ path('app_champions') }}">Voir la liste des champions</a>
-				</div>
-				<div>
-					{{ form_row(filtre_form.role) }}
-				</div>
-				<button type="submit">Filtrer</button>
+				{{ form_start(filtre_form, {'attr': {'id': 'form-guide-filter'}}) }}
+					<div>
+						<input type="search" id="guide-filtre-champion" class="input-champion-search" autocomplete="off">
+						<a href="{{ path('app_champions') }}">Voir les champions >></a>
+						<span id="clear-champion-btn">Effacer</span>
+						<span id="clear-btn">Effacer tout le formulaire</span>
+						<span class="search-result"></span>
+					</div>
+					<div>
+						{{ form_row(filtre_form.role) }}
+					</div>
+					{{ form_widget(filtre_form.champion) }}
 				{{ form_end(filtre_form) }}
 
 				<div class="listing-guide">
@@ -73,5 +76,7 @@
 		</div>
 
 	</div>
+
+	<script src="{{ asset('js/searchChampions.js') }}"></script>
 
 {% endblock %}
