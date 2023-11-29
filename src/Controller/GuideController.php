@@ -449,6 +449,9 @@ class GuideController extends AbstractController
         if ($request->query->has('champion')) {
             $initialData['champion'] = $request->query->get('champion');
         }
+        if ($request->query->has('role')) {
+            $initialData['role'] = $request->query->get('role');
+        }
 
         // Crée le formulaire de filtre
         $filtreForm = $this->createForm(GuideFiltreType::class, $initialData);
@@ -456,9 +459,21 @@ class GuideController extends AbstractController
         // Traite le formulaire
         $filtreForm->handleRequest($request);
 
+        if ($filtreForm->isSubmitted() && $filtreForm->isValid()) {
+            $filtres = $filtreForm->getData();
+
+            // URL de redirection
+            $redirectionUrl = $this->generateUrl('app_guide', [
+                'champion' => $filtres['champion'] ?? null,
+                'role' => $filtres['role'] ?? null
+            ]);
+
+            // Redirige vers l'URL
+            return $this->redirect($redirectionUrl);
+        }
+
         // Utilise les données du formulaire pour filtrer
         $filtres = $filtreForm->isSubmitted() && $filtreForm->isValid() ? $filtreForm->getData() : $initialData;
-
 
         // Récupère les guides + prépare l'affichage avec paginator pour la pagination
         $guides = $paginator->paginate(
@@ -471,6 +486,7 @@ class GuideController extends AbstractController
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
+        // Prépare les données pour la vue
         return $this->render('guide/index.html.twig', [
             'guides' => $guides,
             'img_url' => $img_url,
