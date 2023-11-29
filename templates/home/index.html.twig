@@ -3,21 +3,39 @@
 {% block title %}LoLGuides
 {% endblock %}
 
-{% block keyword %}League of Legends,Guide,Guides,Strategie,Strategie,LoL,League of Legends Guides,LoL Guides,Champion Guides,Champion Guides,LoL Champions,League of Legends Champion Strategie,League of Legends Champion Guides{% endblock %}
-{% block meta %}Rejoignez la communauté de League of Legends sur notre plateforme dédiée à la création et au partage de guide stratégique. Découvrez et discutez des meilleures tactiques d'équipe, stratégies individuelle et profitez d'un accès à des guides de champions approfondis. Que vous soyez débutant ou vétéran, commencez dès aujourd'hui et transformez votre façon de jouer !{% endblock %}
+{% block keyword %}League of Legends,Guide,Guides,Strategie,Strategie,LoL,League of Legends Guides,LoL Guides,Champion Guides,Champion Guides,LoL Champions,League of Legends Champion Strategie,League of Legends Champion Guides
+{% endblock %}
+{% block meta %}Rejoignez la communauté de League of Legends sur notre plateforme dédiée à la création et au partage de guide stratégique. Découvrez et discutez des meilleures tactiques d'équipe, stratégies individuelle et profitez d'un accès à des guides de champions approfondis. Que vous soyez débutant ou vétéran, commencez dès aujourd'hui et transformez votre façon de jouer !
+{% endblock %}
+
+{% block additional_css %}
+	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
 
 {% block body %}
-
 
 	<section class="header-home">
 		<div class="background-image">
 			<img class="home-bg" src="/img/home-bg-1920.webp" alt="LoLGuides Background">
 		</div>
-		{# <div class="input-recherche">
-			<input type="text">
-		</div> #}
+
+
+		<div class="recherche">
+			<img class="logo-mini" src="/img/icon-mini.webp" alt="logo LolGuides">
+			<input type="search" id="search-champion" class="input-champion-search" placeholder="Rechercher un champion" autocomplete="off">
+			<i class="fa-solid fa-magnifying-glass icone-loupe" style="color: #000000;"></i>
+			<div id="scrollable-container" class="search-result"></div>
+		</div>
+
+
 	</section>
 
 	<section class="tempo"></section>
+
+
+	<script>
+		var url = {{ img_url|json_encode|raw }};
+	</script>
+	<script src="{{ asset('js/searchChampions.js') }}"></script>
 
 {% endblock %}
