@@ -61,4 +61,11 @@ class ChampionService {
         
         return $championSpellsData;
     }
+
+    public function searchChampions($search) {
+        $searchJSON = $this->lol->searchChampions($search);
+        $searchData = json_decode($searchJSON, true)['data']['champions'];
+
+        return $searchData;
+    }
 }
