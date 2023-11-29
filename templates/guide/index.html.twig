@@ -1,17 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des guides
-
-	{% block meta %}Recherhe d'un guide
-	{% endblock %}
-
-	{% block additional_css %}
-		<link rel="stylesheet" href="{{ asset('css/guide-list.css') }}">
-	{% endblock %}
-
-
+{% block title %}Liste des Guides
 {% endblock %}
 
+{% block keyword %}League of Legends,Guide,Guides,Strategie,Strategie,LoL,League of Legends Guides,LoL Guides,Champion Guides,Champion Guides,LoL Champions,League of Legends Champion Strategie,League of Legends Champion Guides
+{% endblock %}
+{% block meta %}Trouvez le Guide du Champion de League of Legends qui vous convient. Que vous soyez débutant ou vétéran, commencez dès aujourd'hui et transformez votre façon de jouer ! Découvrez et discutez des meilleures tactiques d'équipe, stratégies individuelle.
+{% endblock %}
+
+{% block additional_css %}
+	<link rel="stylesheet" href="{{ asset('css/guide-list.css') }}">
+{% endblock %}
 {% block body %}
 
 	<div class="wrapper-recherche-guide">
@@ -24,17 +23,17 @@
 				<h1>Liste des Guides</h1>
 
 				{{ form_start(filtre_form, {'attr': {'id': 'form-guide-filter'}}) }}
-					<div>
-						<input type="search" id="guide-filtre-champion" class="input-champion-search" autocomplete="off">
-						<a href="{{ path('app_champions') }}">Voir les champions >></a>
-						<span id="clear-champion-btn">Effacer</span>
-						<span id="clear-btn">Effacer tout le formulaire</span>
-						<span class="search-result"></span>
-					</div>
-					<div>
-						{{ form_row(filtre_form.role) }}
-					</div>
-					{{ form_widget(filtre_form.champion) }}
+				<div>
+					<input type="search" id="guide-filtre-champion" class="input-champion-search" autocomplete="off">
+					<a href="{{ path('app_champions') }}">Voir les champions >></a>
+					<span id="clear-champion-btn">Effacer</span>
+					<span id="clear-btn">Effacer tout le formulaire</span>
+					<span class="search-result"></span>
+				</div>
+				<div>
+					{{ form_row(filtre_form.role) }}
+				</div>
+				{{ form_widget(filtre_form.champion) }}
 				{{ form_end(filtre_form) }}
 
 				<div class="listing-guide">
@@ -77,6 +76,5 @@
 
 	</div>
 
-	<script src="{{ asset('js/searchChampions.js') }}"></script>
-
+	<script src="{{ asset('js/searchChampionsFilter.js') }}"></script>
 {% endblock %}
