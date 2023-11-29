@@ -2,68 +2,76 @@
 
 {% block title %}Liste des guides
 
-{% block meta %}Recherhe d'un guide{% endblock %}
+	{% block meta %}Recherhe d'un guide
+	{% endblock %}
 
-{% block additional_css %}
-	<link rel="stylesheet" href="{{ asset('css/guide-list.css') }}">
-{% endblock %}
+	{% block additional_css %}
+		<link rel="stylesheet" href="{{ asset('css/guide-list.css') }}">
+	{% endblock %}
 
 
 {% endblock %}
 
 {% block body %}
 
-<div class="wrapper-recherche-guide">
+	<div class="wrapper-recherche-guide">
 
-	<div class="content-page">
-	
+		<div class="content-page">
 
-		<div class="content-guide-list left-col">
 
-			<h1>Liste des Guides</h1>
+			<div class="content-guide-list left-col">
 
-			{{ form_start(filtre_form) }}
-				{{ form_row(filtre_form.champion) }}
-				{{ form_row(filtre_form.role) }}
+				<h1>Liste des Guides</h1>
+
+				{{ form_start(filtre_form) }}
+				<div>
+					{{ form_row(filtre_form.champion) }}
+					<a href="{{ path('app_champions') }}">Voir la liste des champions</a>
+				</div>
+				<div>
+					{{ form_row(filtre_form.role) }}
+				</div>
 				<button type="submit">Filtrer</button>
-			{{ form_end(filtre_form) }}
+				{{ form_end(filtre_form) }}
 
-			<div class="listing-guide">
+				<div class="listing-guide">
 
-				{% for guide in guides %}
-					<a class="listing-item" href="/guide/{{ guide.id }}">
-						<div class="note-guide">
-							Test
-						</div>
-						<div class="champion-guide">
-							<img src="{{ img_url }}/champion/{{ guide.champion.id }}.png.webp" alt="{{ guide.champion }}">
-						</div>
-						<div class="infos-guide">
-							<h2 class="titre-guide">
-								<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="">
-								{{ guide.titre }}
-							</h2>
-							<span class="user-infos">
-								Guide créé par {{ guide.user }} {{ guide.modifiedAt ? ('modifié le ' ~ guide.modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide.createdAt|date("m/d/Y")) }}
-							</span>
-						</div>
-					</a>
-				{% endfor %}
+					{% for guide in guides %}
+						<a class="listing-item" href="/guide/{{ guide.id }}">
+							<div class="note-guide">
+								Test
+							</div>
+							<div class="champion-guide">
+								<img src="{{ img_url }}/champion/{{ guide.champion.id }}.png.webp" alt="{{ guide.champion }}">
+							</div>
+							<div class="infos-guide">
+								<h2 class="titre-guide">
+									<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="">
+									{{ guide.titre }}
+								</h2>
+								<span class="user-infos">
+									Guide créé par
+									{{ guide.user }}
+									{{ guide.modifiedAt ? ('modifié le ' ~ guide.modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide.createdAt|date("m/d/Y")) }}
+								</span>
+							</div>
+						</a>
+					{% endfor %}
 
-			</div>
+				</div>
 				{{ knp_pagination_render(guides) }}
 
-		</div>
+			</div>
 
-		<div class="right-col">
-			<div>test</div>
-			<div>test</div>
-			<div>test</div>
-			<div>test</div>
+			<div class="right-col">
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+			</div>
+
 		</div>
 
 	</div>
-
-</div>
 
 {% endblock %}
