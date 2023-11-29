@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
@@ -530,6 +531,18 @@ class GuideController extends AbstractController
         return $this->render('guide/champions.html.twig', [
             'champions' => $champions,
             'img_url' => $img_url
+        ]);
+    }
+
+    // Recherche champions
+    #[Route('/search', name: 'champions_search')]
+    public function searchChampions(Request $request, ChampionService $championService): JsonResponse
+    {
+        $search = $request->query->get('term');
+        $championDetails = $championService->searchChampions($search);
+
+        return $this->json([
+            'champions' => $championDetails
         ]);
     }
 
