@@ -57,6 +57,31 @@ class LoLHttpClient extends AbstractController
         return $response->getContent();
     }
 
+    // Recherche d'un champion
+    public function searchChampions($search)
+    {
+        $query = '
+        {
+            champions (name: "'. $search .'") {
+                idChamp
+                name
+                image
+            }
+        }';
+
+        $response = $this->httpClient->request('POST', $this->getParameter('graphql_url'), [
+            'verify_peer' => false,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'query' => $query,
+            ])
+        ]);
+
+        return $response->getContent();
+    }
+
     // Champion spécifique
     public function getChampion($champion)
     {
