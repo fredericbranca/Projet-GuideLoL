@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Proile
+{% block title %}Profile
 {% endblock %}
 
 {% block additional_css %}
@@ -8,27 +8,56 @@
 {% endblock %}
 
 {% block body %}
-	<div>
-		<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
-		<a href="{{ path('app_change_avatar') }}">Change l'avatar</a>
-		<h2>{{ user.pseudo }}</h2>
+
+	<div class="user-profile">
+		<div class="user-infos">
+			<h1>Votre Profile :
+				{{ user.pseudo }}</h1>
+			<div class="avatar-div">
+				<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
+			</div>
+
+			<div class="menu">
+				<span id="menu_image">Modifier l'image</span>
+				{% if user.isVerified %}
+					<span id="menu_pseudo">Modifier le pseudo</span>
+				{% endif %}
+				<span id="menu_mail">Modifier l'adresse mail</span>
+				<span id="menu_mdp">Modifier le mot de passe</span>
+				<span id="menu_delete_account">Supprimer mon compte</span>
+			</div>
+
+			<div class="modifier-avatar">
+				<div id="image-preview-container">
+					<img id="image-preview" class="image-preview" src="" alt="Aperçu">
+					<div>Aperçu de l'image</div>
+				</div>
+				{{ render(controller('App\\Controller\\ProfileController::changeAvatar', {'mainRequest': app.request} )) }}
+			</div>
+
+			{# Formulaire de modification du Pseudo #}
+			{% if user.isVerified %}
+				<div class="change-pseudo">
+					{{ form_start(changePseudoForm) }}
+					{{ form_label(changePseudoForm.newPseudo)}}
+					{{ form_widget(changePseudoForm.newPseudo)}}
+					{{ form_errors(changePseudoForm.newPseudo)}}
+					{{ form_end(changePseudoForm) }}
+				</div>
+			{% else %}
+				<div class="verifie-email">
+					<p>Veuillez vérifier votre email pour changer votre pseudo.
+						<a href="{{ path('app_verify_newEmail') }}">Renvoyer l'email de confirmation</a>.</p>
+					{% if verifyEmail is defined %}
+						<p>{{ verifyEmail }}</p>
+					{% endif %}
+				</div>
+			{% endif %}
+
+		</div>
+
 	</div>
 
-	{# Formulaire de modification du Pseudo #}
-	{% if user.isVerified %}
-		<div class="form-pseudo">
-			{{ form_start(changePseudoForm) }}
-                {{ form_label(changePseudoForm.newPseudo)}}
-                {{ form_widget(changePseudoForm.newPseudo)}}
-                {{ form_errors(changePseudoForm.newPseudo)}}
-			{{ form_end(changePseudoForm) }}
-		</div>
-	{% else %}
-		<p>Veuillez vérifier votre email pour changer votre pseudo.
-			<a href="{{ path('app_verify_newEmail') }}">Renvoyer l'email de confirmation</a>.</p>
-		{% if verifyEmail is defined %}
-			<p>{{ verifyEmail }}</p>
-		{% endif %}
-	{% endif %}
+	<script src="{{ asset('js/profile.js') }}"></script>
 
 {% endblock %}
