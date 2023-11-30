@@ -1,22 +1,4 @@
-{% extends 'base.html.twig' %}
+{# Changement d'Avatar #}
+{{ form_start(formAvatar, {'attr': {'id': 'avatar-form'}, 'action': path('app_change_avatar')}) }}
 
-{% block title %}Proile
-{% endblock %}
-
-{% block additional_css %}
-	<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-{% endblock %}
-
-{% block body %}
-	<div>
-		<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
-		<h2>{{ user.pseudo }}</h2>
-	</div>
-
-	{# Changement d'Avatar #}
-	{{ form_start(formAvatar) }}
-
-	{{ form_end(formAvatar) }}
-
-
-{% endblock %}
+{{ form_end(formAvatar) }}
