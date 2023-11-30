@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Imagick;
-use AvatarType;
+use App\Form\AvatarType;
 use App\Form\ChangePseudoType;
 use App\Repository\UserRepository;
 use Google\Cloud\Storage\StorageClient;
@@ -12,6 +12,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProfileController extends AbstractController
@@ -73,7 +74,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/change-avatar', name: 'app_change_avatar')]
+    #[Route('/profile/change-avatar', name: 'app_change_avatar', methods: ['POST'])]
     public function changeAvatar(Request $request, EntityManagerInterface $entityManager)
     {
         $user = $this->security->getUser();
@@ -82,6 +83,11 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['success' => true]);
+            }
+
             $file = $form['avatar']->getData();
 
             // Nom de fichier unique
@@ -115,11 +121,29 @@ class ProfileController extends AbstractController
             // Redirection + message
             $this->addFlash('success', 'Avatar mis à jour avec succès.');
             return $this->redirectToRoute('app_profile');
+
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($form);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
+
         }
 
         return $this->render('profile/change_avatar.html.twig', [
             'formAvatar' => $form->createView(),
-            'user' => $user
         ]);
+    }
+
+    // Fonction pour récupérer les erreurs de formulaire
+    private function getFormErrors($form)
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return $errors;
     }
 }
