@@ -1,5 +1,153 @@
+body {
+  background-image: url("../img/home-bg_1920.webp");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.content {
+  margin: 0 15%;
+  background-color: rgba(30, 35, 46, 0.88);
+  min-height: 100vh;
+  flex-shrink: 0;
+}
+
 /* Profil utilisateur */
+.user-profile {
+  width: 100%;
+}
+
+.avatar-div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar-div .avatar-link {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  width: 100%;
+}
+
 .avatar {
-    width: 200px;
-    height: auto;
+  width: 200px;
+  height: auto;
+}
+
+.user-infos {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 20px;
+  padding: 50px 0 20px 0;
+  color: #fff;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.menu span,
+.btn-annuler {
+  color: #fff;
+  display: block;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 8px;
+  width: 100%;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.menu span:hover,
+.btn-annuler:hover {
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  transition: all 0.2s ease-in;
+}
+
+.btn-annuler {
+  height: 100%;
+}
+
+.modifier-avatar,
+.change-pseudo {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Form Avatar */
+form[name="avatar"] {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form[name="avatar"] label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+form[name="avatar"] input[type="file"] {
+  display: block;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+form[name="avatar"] button[type="submit"] {
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 80%;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form[name="avatar"] button[type="submit"]:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.image-preview {
+  width: 200px;
+  height: auto;
+  display: none;
+}
+
+#image-preview-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-msg {
+  margin-top: 5px;
+  width: fit-content;
+  font-size: 12px;
+  color: rgb(190, 60, 60);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border-radius: 3px;
+  font-weight: 600;
 }
