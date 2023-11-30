@@ -2,11 +2,12 @@
 
 namespace App\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AvatarType extends AbstractType
 {
@@ -14,19 +15,22 @@ class AvatarType extends AbstractType
     {
         $builder
             ->add('avatar', FileType::class, [
-                'label' => 'Avatar (format image)',
+                'label' => 'Avatar (jpeg, png, gif)',
                 'constraints' => [
                     new Image([
-                        'maxSize' => '1024k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
                             'image/gif',
                         ],
-                        'mimeTypesMessage' => 'Veuillez télécharger une image valide',
+                        'mimeTypesMessage' => 'Format invalide',
+                    ]),
+                    new File([
+                        'maxSize' => '1024k',
+                        'maxSizeMessage' => 'Taille maximale : 1 Mo',
                     ])
                 ]
             ])
-            ->add('save', SubmitType::class, ['label' => 'Modifier l\'avatar']);
+            ->add('save', SubmitType::class, ['label' => 'Valider']);
     }
 }
