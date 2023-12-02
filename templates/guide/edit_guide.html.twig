@@ -83,7 +83,8 @@
 									{{ form_widget(champion) }}
 									{# génère le bouton radio #}
 									<label for="{{ champion.vars.id }}">
-										<img src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
+										<img 
+										src="{{ img_url }}/champion/{{ champions[champion.vars.value].image }}.webp" alt="{{ champions[champion.vars.value].name }}">
 									</label>
 								</div>
 							{% endfor %}

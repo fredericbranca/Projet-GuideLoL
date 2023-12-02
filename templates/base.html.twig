@@ -96,10 +96,10 @@
 
 			{% block body %}{% endblock %}
 
-			{% block javascripts %}
-				<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
-				<script src="{{ asset('js/main.js') }}"></script>
-			{% endblock %}
 		</main>
+		{% block javascripts %}
+			<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
+			<script src="{{ asset('js/main.js') }}"></script>
+		{% endblock %}
 	</body>
 </html>

@@ -12,16 +12,23 @@ function setupSortable() {
     });
 }
 
+// SortableJS (Drag-And-Drop): Fonction pour rendre manipulable les groupes d'items
 function setupSortableItem() {
+    // Sélectionne tous les éléments avec la classe 'sortable-list'
     const listes = document.querySelectorAll('.sortable-list');
+
+    // Sélectionne le conteneur de la section Items
     let container = document.querySelector('.new-guide-builder__items-container');
+
+    // Parcourt chaque liste 'sortable-list'
     listes.forEach(liste => {
+        // Crée une instance de Sortable pour chaque liste (groupe d'items)
         Sortable.create(liste, {
-            group: 'group-lists',
-            handle: '.handle',
-            animation: 200,
-            onEnd: function () {
-                updateGroupIds(container);
+            group: 'group-lists', // Définit le groupe pour le tri (les éléments peuvent être déplacés entre les listes du même groupe)
+            handle: '.handle', // Spécifie quels éléments sont ciblable s
+            animation: 200, // Durée de l'animation
+            onEnd: function () { // Fonction qui s'exécute après qu'un élément a été déplacé
+                updateGroupIds(container); // Met à jour les identifiants et la value de l'ordre des groupes
             },
         });
     });
@@ -43,7 +50,7 @@ function setupSortableOrdreItems() {
                 let inputOrdre = item.querySelectorAll('.copie-item');
                 inputOrdre.forEach((el, index) => {
                     let id = el.dataset.ordre;
-            
+
                     if (groupe.querySelector(`#${id}`)) {
                         groupe.querySelector(`#${id}`).value = index;
                     }

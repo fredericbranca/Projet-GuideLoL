@@ -769,11 +769,14 @@ content {
   }
 }
 
+/* Media query pour les écrans de 768px ou moins */
 @media screen and (max-width: 768px) {
   .creation-guide {
     margin-top: 50px;
     height: 100vh;
+    /* Flexbox pour la mise en page à l'intérieur de l'élément */
     display: flex;
+    /* Disposition en colonne pour optimiser l'apparence sur petit écran */
     flex-direction: column;
     align-items: center;
     gap: 2%;

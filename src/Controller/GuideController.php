@@ -77,8 +77,8 @@ class GuideController extends AbstractController
             $guide = new Guide();
         }
 
-        // Autorisation d'accès aux routes (appelé ici car si c'est un nouveau guide, les autorisations d'accès sont différentes)
-        $this->denyAccessUnlessGranted('guide_edit', $guide, "Vous ne pouvez qu'éditer vos propre guide.");
+        // Autorisation d'accès aux routes 
+        $this->denyAccessUnlessGranted('guide_edit', $guide, "Vous ne pouvez qu'éditer vos guides.");
 
         // Initialise la liste des champions
         $championsData = $championService->getChampions();

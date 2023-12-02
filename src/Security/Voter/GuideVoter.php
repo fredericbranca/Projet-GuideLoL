@@ -35,7 +35,7 @@ class GuideVoter extends Voter
             return $this->canCreate($guide, $user);
         }
 
-        // ... (check conditions and return true to grant permission) ...
+        // ... (vérifie les conditions et retourne vrai pour accorder la permission) ...
         switch ($attribute) {
             case self::GUIDE_EDIT:
                 // on vérifie si on peut éditer
