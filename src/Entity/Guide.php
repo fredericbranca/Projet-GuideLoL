@@ -52,6 +52,9 @@ class Guide
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: Evaluation::class)]
+    private Collection $evaluations;
+
     public function __construct()
     {
         $this->groupeSortsInvocateur = new ArrayCollection();
@@ -59,6 +62,7 @@ class Guide
         $this->groupeRunes = new ArrayCollection();
         $this->groupeEnsemblesItems = new ArrayCollection();
         $this->groupesCompetences = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +258,36 @@ class Guide
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): static
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations->add($evaluation);
+            $evaluation->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): static
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getGuide() === $this) {
+                $evaluation->setGuide(null);
+            }
+        }
 
         return $this;
     }
