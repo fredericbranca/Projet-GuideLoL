@@ -15,9 +15,10 @@
 	</div>
 
 	<div id="guide">
+
 		<div id="introduction">
 
-			<h1>Guide :
+			<h1>
 				{{ guide.champion }}
 				{{ guide.voie }}
 				-
@@ -25,106 +26,135 @@
 
 		</div>
 
-		{# Section Rune #}
-		<section id="rune">
+		<div
+			class="runes-sorts-inv">
 
-			<h2>Rune</h2>
+			{# Section Rune #}
+			<section id="Runes" class="runes-container">
+				{% set nbGroupesRunes = guide.groupeRunes|length %}
+				<div id="pagination">
+					{% for i in 1..nbGroupesRunes %}
+						<span class="page-number {{ i > 1 ? '' : 'current' }}">{{ i }}</span>
+					{% endfor %}
+				</div>
 
-			{% for groupeRunes in guide.groupeRunes %}
 
-				<div id="groupeRunes">
+				{% for groupeRunes in guide.groupeRunes %}
 
-					<div>Titre :
-						{{ groupeRunes.titre }}</div>
-					<div>Commentaire :
-						{{ groupeRunes.commentaire }}</div>
+					<div class="groupe-runes groupe" id="groupeRunes{{ loop.index0 }}" data-groupe={{ groupeRunes.ordre }} style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
-					<div id="arbre">
-						{% set primaire = [] %}
-						{% set secondaire = [] %}
-						{% set bonus = [] %}
-						{% for choixRunesPages in groupeRunes.choixRunesPages %}
-							{% for choixArbres in choixRunesPages.choixArbres %}
-								{% if choixArbres.type is same as("Primaire") %}
-									{% for rune in choixArbres.choixRunes %}
-										{% set primaire = primaire|merge([rune]) %}
+						<div>RUNES:
+							{{ groupeRunes.titre }}</div>
+						{% if groupeRunes.commentaire %}
+							<div class="note" title="{{ groupeRunes.commentaire }}">
+								<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+								Notes</div>
+						{% endif %}
+
+						<div id="arbre">
+							{% set primaire = [] %}
+							{% set secondaire = [] %}
+							{% set bonus = [] %}
+							{% for choixRunesPages in groupeRunes.choixRunesPages %}
+								{% for choixArbres in choixRunesPages.choixArbres %}
+									{% if choixArbres.type is same as("Primaire") %}
+										{% for rune in choixArbres.choixRunes %}
+											{% set primaire = primaire|merge([rune]) %}
+										{% endfor %}
+									{% else %}
+										{% for rune in choixArbres.choixRunes %}
+											{% set secondaire = secondaire|merge([rune]) %}
+										{% endfor %}
+									{% endif %}
+								{% endfor %}
+								{% for choixStatistiquesBonus in choixRunesPages.choixStatistiquesBonus %}
+									{% set bonus = bonus|merge([choixStatistiquesBonus]) %}
+								{% endfor %}
+							{% endfor %}
+
+							<div
+								id="Primaire">
+								{# Tri et affichage des runes primaires #}
+								<div class="type-arbre">
+									<span class="rune-arbre-titre">{{ primaire[groupeRunes.ordre].runeArbre }}</span>
+									<img src="{{ img_url }}/{{ runes_data[primaire[groupeRunes.ordre].runeArbre].icon}}.webp" alt="{{ runes_data[primaire[groupeRunes.ordre].runeArbre].name }}">
+								</div>
+								{% for type in ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'] %}
+									{% for rune in primaire %}
+										{% if rune.runeType == type %}
+											<div class="choix-rune" title="{{ runes_data[rune.id].shortDesc|striptags|escape('html_attr') }}">
+												<img src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
+												<span class="rune-titre">{{ runes_data[rune.id].name }}</span>
+											</div>
+										{% endif %}
 									{% endfor %}
-								{% else %}
-									{% for rune in choixArbres.choixRunes %}
-										{% set secondaire = secondaire|merge([rune]) %}
+								{% endfor %}
+							</div>
+
+							<div class="rune-2">
+								<div
+									id="Secondaire">
+									{# Tri et affichage des runes secondaires #}
+									<div class="type-arbre">
+										<span class="rune-arbre-titre">{{ secondaire[groupeRunes.ordre].runeArbre }}</span>
+										<img src="{{ img_url }}/{{ runes_data[secondaire[groupeRunes.ordre].runeArbre].icon}}.webp" alt="{{ runes_data[secondaire[groupeRunes.ordre].runeArbre].name }}">
+									</div>
+									{% for type in ['Secondary1', 'Secondary2', 'Secondary3'] %}
+										{% for rune in secondaire %}
+											{% if rune.runeType == type %}
+												<div class="choix-rune" title="{{ runes_data[rune.id].shortDesc|striptags|escape('html_attr') }}">
+													<img src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
+													<span class="rune-titre">{{ runes_data[rune.id].name }}</span>
+												</div>
+											{% endif %}
+										{% endfor %}
 									{% endfor %}
-								{% endif %}
-							{% endfor %}
-							{% for choixStatistiquesBonus in choixRunesPages.choixStatistiquesBonus %}
-								{% set bonus = bonus|merge([choixStatistiquesBonus]) %}
-							{% endfor %}
-						{% endfor %}
+								</div>
 
-						<div
-							id="Primaire">
-							{# Tri et affichage des runes primaires #}
-							{% for type in ['Primary', 'Secondary1', 'Secondary2', 'Secondary3'] %}
-								{% for rune in primaire %}
-									{% if rune.runeType == type %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
-									{% endif %}
-								{% endfor %}
-							{% endfor %}
-						</div>
-
-						<div
-							id="Secondaire">
-							{# Tri et affichage des runes secondaires #}
-							{% for type in ['Secondary1', 'Secondary2', 'Secondary3'] %}
-								{% for rune in secondaire %}
-									{% if rune.runeType == type %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ runes_data[rune.id].icon }}.webp" alt="{{ runes_data[rune.id].name }}">
-									{% endif %}
-								{% endfor %}
-							{% endfor %}
-						</div>
-
-						<div
-							id="bonus">
-							{# Tri et affichage des bonus #}
-							{% for i in 1..3 %}
-								{% for bonusData in bonus %}
-									{% if bonusData.bonusLine == i %}
-										<img style="width: 40px; height: auto" src="{{ img_url }}/{{ bonusData.icon }}.webp" alt="{{ bonusData.bonusValue }}">
-										{{ bonusData.bonusValue }}
-									{% endif %}
-								{% endfor %}
-							{% endfor %}
+								<div
+									id="bonus">
+									{# Tri et affichage des bonus #}
+									{% for i in 1..3 %}
+										{% for bonusData in bonus %}
+											{% if bonusData.bonusLine == i %}
+												<div class="choix-rune">
+													<img src="{{ img_url }}/{{ bonusData.icon }}.webp" alt="{{ bonusData.bonusValue }}">
+													<span class="rune-titre">{{ bonusData.bonusValue }}</span>
+												</div>
+											{% endif %}
+										{% endfor %}
+									{% endfor %}
+								</div>
+							</div>
 						</div>
 
 					</div>
+				{% endfor %}
 
-				</div>
-			{% endfor %}
+			</section>
 
-		</section>
+			{# Secion Sort d'invocateur #}
+			<section id="sortInvocateur">
 
-		{# Secion Sort d'invocateur #}
-		<section id="sortInvocateur">
+				<h2>Sort d'invocateur</h2>
 
-			<h2>Sort d'invocateur</h2>
+				{% for groupeSortsInvocateur in guide.groupeSortsInvocateur %}
+					<div id="groupeSortInvocateur">
 
-			{% for groupeSortsInvocateur in guide.groupeSortsInvocateur %}
-				<div id="groupeSortInvocateur">
+						<div>Titre :
+							{{ groupeSortsInvocateur.titre }}</div>
+						<div>Commentaire :
+							{{ groupeSortsInvocateur.commentaire }}</div>
 
-					<div>Titre :
-						{{ groupeSortsInvocateur.titre }}</div>
-					<div>Commentaire :
-						{{ groupeSortsInvocateur.commentaire }}</div>
+						{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
+							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}.webp" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
+						{% endfor %}
 
-					{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
-						<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}.webp" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
-					{% endfor %}
+					</div>
+				{% endfor %}
 
-				</div>
-			{% endfor %}
-
-		</section>
+			</section>
+		</div>
 
 		{# Secion Item #}
 
@@ -225,14 +255,18 @@
 	</div>
 
 	<div id="commentaire-container">
-		{% for evaluation in evaluations %}
-			<div class="commentaire">
-				{{ evaluation.user.pseudo }}
-				{{ evaluation.commentaire }}
-				{{ evaluation.createdAt|date }}
-			</div>
-		{% endfor %}
+		{% if evaluations %}
+			{% for evaluation in evaluations %}
+				<div class="commentaire">
+					{{ evaluation.user.pseudo }}
+					{{ evaluation.commentaire }}
+					{{ evaluation.createdAt|date }}
+				</div>
+			{% endfor %}
+		{% else %}
+			<div>Pas de commentaire</div>
+		{% endif %}
 	</div>
 
-	<script src="{{ asset('js/swapGuideCommentaire.js') }}"></script>
+	<script src="{{ asset('js/afficherGuide.js') }}"></script>
 {% endblock %}
