@@ -41,7 +41,7 @@
 
 				{% for groupeRunes in guide.groupeRunes %}
 
-					<div class="groupe-runes groupe" id="groupeRunes{{ loop.index0 }}" data-groupe={{ groupeRunes.ordre }} style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
+					<div class="groupe-runes groupe" id="groupeRunes{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
 						<div>RUNES:
 							{{ groupeRunes.titre }}</div>
@@ -134,21 +134,33 @@
 			</section>
 
 			{# Secion Sort d'invocateur #}
-			<section id="sortInvocateur">
+			<section id="SortInvocateur">
 
-				<h2>Sort d'invocateur</h2>
+				{% set nbGroupesSI = guide.groupeSortsInvocateur|length %}
+				<div id="pagination">
+					{% for i in 1..nbGroupesSI %}
+						<span class="page-number {{ i > 1 ? '' : 'current' }}">{{ i }}</span>
+					{% endfor %}
+				</div>
 
 				{% for groupeSortsInvocateur in guide.groupeSortsInvocateur %}
-					<div id="groupeSortInvocateur">
+					<div class="groupeSI groupe" id="groupeSortInvocateur{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
 						<div>Titre :
 							{{ groupeSortsInvocateur.titre }}</div>
-						<div>Commentaire :
-							{{ groupeSortsInvocateur.commentaire }}</div>
+						{% if groupeSortsInvocateur.commentaire %}
+							<div class="noteSI" title="{{ groupeSortsInvocateur.commentaire }}">
+								<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+								Notes</div>
+						{% endif %}
 
-						{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
-							<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}.webp" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
-						{% endfor %}
+						<div class="choixSI">
+							{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
+								<div title="{{ list_sorts_invocateur[choixSortInvocateur.id].description|striptags|escape('html_attr') }}">
+									<img src="{{ img_url }}/spell/{{ list_sorts_invocateur[choixSortInvocateur.id].image }}.webp" alt="{{ list_sorts_invocateur[choixSortInvocateur.id].name }}">
+								</div>
+							{% endfor %}
+						</div>
 
 					</div>
 				{% endfor %}
