@@ -46,6 +46,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Guide::class)]
     private Collection $guides;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Evaluation::class)]
+    private Collection $evaluations;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createAt = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
         $this->roles = ['ROLE_USER']; // Initialise avec ROLE_USER par défaut
         $this->guides = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     /**
@@ -199,5 +203,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString() {
         return $this->getPseudo();
+    }
+
+    /**
+     * @return Collection<int, Evaluation>
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): static
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations->add($evaluation);
+            $evaluation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): static
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getUser() === $this) {
+                $evaluation->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
