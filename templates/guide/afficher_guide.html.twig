@@ -4,11 +4,17 @@
 {% endblock %}
 
 {% block additional_css %}
-	<link rel="stylesheet" href="{{ asset('css/guide.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/afficher-guide.css') }}">
 {% endblock %}
 
 {% block body %}
-	<section id="guide">
+
+	<div class="menu">
+		<span class="current" id="menu_commentaires">Commentaires</span>
+		<span id="menu_guide">Guide</span>
+	</div>
+
+	<div id="guide">
 		<div id="introduction">
 
 			<h1>Guide :
@@ -216,5 +222,17 @@
 			{% endfor %}
 
 		</section>
-	</section>
+	</div>
+
+	<div id="commentaire-container">
+		{% for evaluation in evaluations %}
+			<div class="commentaire">
+				{{ evaluation.user.pseudo }}
+				{{ evaluation.commentaire }}
+				{{ evaluation.createdAt|date }}
+			</div>
+		{% endfor %}
+	</div>
+
+	<script src="{{ asset('js/swapGuideCommentaire.js') }}"></script>
 {% endblock %}
