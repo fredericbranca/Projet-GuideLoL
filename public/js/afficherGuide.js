@@ -68,6 +68,32 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+});
 
+// Gestion de la pagination avec une requête AJAX
+const container = document.getElementById('commentaire-container');
+const pagination = container.querySelector('.pagination');
+
+container.addEventListener('click', function (event) {
+    const target = event.target;
+
+    if (target.tagName !== 'A') {
+        target = target.closest('a');
+    }
+
+    if (target && target.closest('.pagination span:not(.current)')) {
+        event.preventDefault();
+        const url = target.getAttribute('href');
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+        });
+    }
 });
 

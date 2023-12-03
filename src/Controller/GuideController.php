@@ -208,8 +208,24 @@ class GuideController extends AbstractController
         SortInvocateurService $sortInvocateurService,
         ItemService $itemService,
         RuneService $runeService,
-        EvaluationRepository $evaluationRepository
+        EvaluationRepository $evaluationRepository,
+        PaginatorInterface $paginator,
+        Request $request
     ): Response {
+        // Evaluation
+        $evaluations = $paginator->paginate(
+            $evaluationRepository->findBy(['guide' => $guide->getId()], ['created_at' => 'DESC']),
+            $request->query->getInt('page', 1),
+            25,
+            ['pageParameterName' => 'page']
+        );
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('guide/template_partiel_evaluation.html.twig', [
+                'evaluations' => $evaluations
+            ]);
+        }
+
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
         // Liste des sorts d'invocateur
@@ -218,8 +234,6 @@ class GuideController extends AbstractController
         $itemsList = $itemService->getItems();
         // Liste des runes
         $runesData = $runeService->getRunesIds();
-        // Evaluation
-        $evaluations = $evaluationRepository->findBy(['guide' => $guide->getId()]);
 
         // Récupère les data du champion
         $championData = $championService->getChampion($guide->getChampion());
