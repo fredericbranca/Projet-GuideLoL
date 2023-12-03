@@ -43,13 +43,17 @@
 
 					<div class="groupe-runes groupe" id="groupeRunes{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
-						<div>RUNES:
-							{{ groupeRunes.titre }}</div>
-						{% if groupeRunes.commentaire %}
-							<div class="note" title="{{ groupeRunes.commentaire }}">
-								<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
-								Notes</div>
-						{% endif %}
+						<div class="titre">
+							<span class="">Titre :
+								{{ groupeRunes.titre }}
+							</span>
+							{% if groupeRunes.commentaire %}
+								<div class="note" title="{{ groupeRunes.commentaire }}">
+									<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+									Notes
+								</div>
+							{% endif %}
+						</div>
 
 						<div id="arbre">
 							{% set primaire = [] %}
@@ -146,13 +150,17 @@
 				{% for groupeSortsInvocateur in guide.groupeSortsInvocateur %}
 					<div class="groupeSI groupe" id="groupeSortInvocateur{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
-						<div>Titre :
-							{{ groupeSortsInvocateur.titre }}</div>
-						{% if groupeSortsInvocateur.commentaire %}
-							<div class="noteSI" title="{{ groupeSortsInvocateur.commentaire }}">
-								<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
-								Notes</div>
-						{% endif %}
+						<div class="titre">
+							<span class="">Titre :
+								{{ groupeSortsInvocateur.titre }}
+							</span>
+							{% if groupeSortsInvocateur.commentaire %}
+								<div class="note" title="{{ groupeSortsInvocateur.commentaire }}">
+									<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+									Notes
+								</div>
+							{% endif %}
+						</div>
 
 						<div class="choixSI">
 							{% for choixSortInvocateur in groupeSortsInvocateur.choixSortInvocateur %}
@@ -170,27 +178,30 @@
 
 		{# Secion Item #}
 
-		<section id="item">
-
-			<h2>Item</h2>
+		<section id="Items">
 
 			{% for groupeEnsemblesItems in guide.groupeEnsemblesItems %}
 
-				<ul id="ensemble">
+				<div class="groupe-ensemble" id="ensemble">
 
-					<h3>Ensemble</h3>
-
-					<div>Titre :
+					<div class="titre-ensemble">Titre :
 						{{ groupeEnsemblesItems.titre }}</div>
 
 					{% for itemsGroups in groupeEnsemblesItems.associationsEnsemblesItemsGroups %}
 
-						<li id="groupeItems">
+						<div class="groupe-items" id="groupeItems">
 
-							<div>Titre :
-								{{ itemsGroups.titre }}</div>
-							<div>Commentaire :
-								{{ itemsGroups.commentaire }}</div>
+							<div class="titre-groupe">
+								<span class="">Titre :
+									{{ itemsGroups.titre }}
+								</span>
+								{% if itemsGroups.commentaire %}
+									<div class="note" title="{{ itemsGroups.commentaire }}">
+										<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+										Notes
+									</div>
+								{% endif %}
+							</div>
 
 							{% set ordreItems = itemsGroups.ordreItems|sort %}
 							{% set trieItems = {} %}
@@ -201,16 +212,20 @@
 									{% endif %}
 								{% endfor %}
 							{% endfor %}
+							<div class="choix-items">
+								{% for choixItems in trieItems %}
+									<span class="item" title="{{ list_items[choixItems.id].description|striptags|escape('html_attr') }}">
+										<img src="{{ img_url }}/item/{{ list_items[choixItems.id].image }}.webp" alt="{{ list_items[choixItems.id].name }}">
+										<span></span>
+									</span>
+								{% endfor %}
+							</div>
 
-							{% for choixItems in trieItems %}
-								<img style="width: 40px; height: auto;" src="{{ img_url }}/item/{{ list_items[choixItems.id].image }}.webp" alt="{{ list_items[choixItems.id].name }}">
-							{% endfor %}
-
-						</li>
+						</div>
 
 					{% endfor %}
 
-				</ul>
+				</div>
 
 			{% endfor %}
 
