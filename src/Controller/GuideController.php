@@ -16,6 +16,7 @@ use App\Entity\CompetencesGroup;
 use App\Service\ChampionService;
 use App\Service\CompetenceService;
 use App\Entity\EnsembleItemsGroups;
+use App\Repository\EvaluationRepository;
 use App\Repository\GuideRepository;
 use App\Service\SortInvocateurService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -206,7 +207,8 @@ class GuideController extends AbstractController
         ChampionService $championService,
         SortInvocateurService $sortInvocateurService,
         ItemService $itemService,
-        RuneService $runeService
+        RuneService $runeService,
+        EvaluationRepository $evaluationRepository
     ): Response {
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
@@ -216,6 +218,8 @@ class GuideController extends AbstractController
         $itemsList = $itemService->getItems();
         // Liste des runes
         $runesData = $runeService->getRunesIds();
+        // Evaluation
+        $evaluations = $evaluationRepository->findBy(['guide' => $guide->getId()]);
 
         // Récupère les data du champion
         $championData = $championService->getChampion($guide->getChampion());
@@ -226,7 +230,8 @@ class GuideController extends AbstractController
             'list_sorts_invocateur' => $sortsInvocateurList,
             'list_items' => $itemsList,
             'runes_data' => $runesData,
-            'champion' => $championData
+            'champion' => $championData,
+            'evaluations' => $evaluations
         ]);
     }
 
