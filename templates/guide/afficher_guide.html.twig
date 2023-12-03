@@ -44,7 +44,7 @@
 					<div class="groupe-runes groupe" id="groupeRunes{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
 						<div class="titre">
-							<span class="">Titre :
+							<span class="">RUNES :
 								{{ groupeRunes.titre }}
 							</span>
 							{% if groupeRunes.commentaire %}
@@ -151,7 +151,7 @@
 					<div class="groupeSI groupe" id="groupeSortInvocateur{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
 						<div class="titre">
-							<span class="">Titre :
+							<span class="">SORTS :
 								{{ groupeSortsInvocateur.titre }}
 							</span>
 							{% if groupeSortsInvocateur.commentaire %}
@@ -184,7 +184,7 @@
 
 				<div class="groupe-ensemble" id="ensemble">
 
-					<div class="titre-ensemble">Titre :
+					<div class="titre-ensemble">ENSEMBLE :
 						{{ groupeEnsemblesItems.titre }}</div>
 
 					{% for itemsGroups in groupeEnsemblesItems.associationsEnsemblesItemsGroups %}
@@ -192,7 +192,7 @@
 						<div class="groupe-items" id="groupeItems">
 
 							<div class="titre-groupe">
-								<span class="">Titre :
+								<span class="">ITEMS :
 									{{ itemsGroups.titre }}
 								</span>
 								{% if itemsGroups.commentaire %}
@@ -232,21 +232,35 @@
 		</section>
 
 		{# Sectin compétence #}
-		<section id="competence">
+		<section id="Competences">
 
-			<h2>Compétence</h2>
+			{% set nbGroupesCompetences = guide.groupesCompetences|length %}
+			<div id="pagination">
+				{% for i in 1..nbGroupesCompetences %}
+					<span class="page-number {{ i > 1 ? '' : 'current' }}">{{ i }}</span>
+				{% endfor %}
+			</div>
 
 			{% for groupesCompetences in guide.groupesCompetences %}
 
-				<div id="groupeCompetences">
+				<div class="groupe-competences groupe" id="groupeCompetences{{ loop.index0 }}" style="{{ loop.index0 > 0 ? 'display: none;' : 'display: flex;' }}">
 
-					<div>Titre :
-						{{ groupesCompetences.titre }}</div>
-					<div>Commentaire :
-						{{ groupesCompetences.commentaire }}</div>
+					<div class="titre">
+						<span class="">COMPETENCES :
+							{{ groupesCompetences.titre }}
+						</span>
+						{% if groupesCompetences.commentaire %}
+							<div class="note" title="{{ groupesCompetences.commentaire }}">
+								<i class="fa-solid fa-pen" style="color: #ffffff;"></i>
+								Notes
+							</div>
+						{% endif %}
+					</div>
 
 					<div class="competence-passive">
-						<img src="{{ img_url }}/passive/{{ champion.passive.image.full }}.webp" alt="{{ champion.passive.name }}">
+						<div title="{{ champion.passive.description }}">
+							<img src="{{ img_url }}/passive/{{ champion.passive.image.full }}.webp" alt="{{ champion.passive.name }}">
+						</div>
 						Compétence passive :
 						{{ champion.passive.name }}
 					</div>
@@ -257,7 +271,10 @@
 							{% set index = loop.index0 %}
 
 							{% for competence in choixCompetencesNiveaux.competences %}
-								<img src="{{ img_url }}/spell/{{ champion.spells[index].image.full }}.webp" alt="{{ champion.spells[index].name }}">
+								<div class="comp" title="{{ champion.spells[index].description }}">
+									<img src="{{ img_url }}/spell/{{ champion.spells[index].image.full }}.webp" alt="{{ champion.spells[index].name }}">
+									<span>{{ champion.spells[index].name }}</span>
+								</div>
 
 								<div class="niveaux">
 									{% for niveau in 1..18 %}

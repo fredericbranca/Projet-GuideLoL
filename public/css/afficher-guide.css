@@ -7,7 +7,7 @@ body {
 }
 
 .content {
-  margin: 0 15%;
+  margin: 0 clamp(0%, (100vw - 900px) * 0.5, 15%);
   background-color: rgba(30, 35, 46, 0.88);
   min-height: 100vh;
   flex-shrink: 0;
@@ -56,28 +56,6 @@ body {
   overflow: hidden;
 }
 
-.competence {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.niveaux {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.niveaux .case {
-  width: 20px;
-  height: 20px;
-  border: 1px solid black;
-}
-
 .runes-sorts-inv {
   display: flex;
   flex-wrap: nowrap;
@@ -97,7 +75,8 @@ body {
 }
 
 .groupe-runes,
-.groupeSI {
+.groupeSI,
+.groupe-competences {
   display: flex;
   flex-direction: column;
   gap: 50px;
@@ -107,6 +86,10 @@ body {
   padding: 2px;
   margin-bottom: 13px;
   list-style: none;
+}
+
+.groupeSI {
+  gap: 20px;
 }
 
 .groupe-runes {
@@ -307,6 +290,58 @@ body {
   display: inline-block;
   vertical-align: middle;
   max-width: 80%;
+  min-height: 19px;
+}
+
+/* Competences */
+.competence-passive {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#Competences {
+  position: relative;
+}
+
+.competence {
+  display: block;
+  position: relative;
+  padding: 0 2px 0 70px;
+}
+
+.niveaux .case {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background: #152034;
+  margin-left: 2px;
+}
+
+.case.active span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  background: #1c3500;
+  color: #fff;
+  text-align: center;
+  line-height: 29px;
+}
+
+.niveaux {
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: center;
+}
+
+.comp img {
+  position: absolute;
+  width: 63px;
+  top: 0;
+  left: 0;
 }
 
 /* Pagination groupes */
@@ -363,12 +398,42 @@ body {
 
 /* Ecran inférieur à 900px */
 @media screen and (max-width: 900px) {
-  #arbre {
-    flex-direction: row;
+  .groupe-competences {
+    gap: 25px;
+  }
+
+  .content {
+    margin: 0;
   }
 
   h1 {
     font-size: 20px;
+  }
+
+  .note {
+    left: 239px;
+  }
+
+  .runes-container {
+    min-width: unset;
+  }
+
+  .niveaux .case {
+    flex: 1 1 16px;
+  }
+  .case.active span {
+    line-height: 36px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Ecran inférieur à 560 px (spécialement pour la seciton runes) */
+@media screen and (max-width: 560px) {
+  #arbre {
+    flex-direction: row;
   }
 
   #Primaire,
@@ -418,18 +483,40 @@ body {
     height: 242px;
     right: 22px;
   }
-
-  .note {
-    left: 239px;
-  }
-
-  .runes-container {
-    min-width: unset;
-  }
 }
 
 /* Ecran inférieur à 480px */
 @media screen and (max-width: 480px) {
+  .note {
+    left: 169px;
+  }
+
+  #SortInvocateur {
+    max-width: 100%;
+  }
+
+  .comp img {
+    position: unset;
+  }
+
+  .competence {
+    padding: 0 2px 0 2px;
+  }
+
+  .niveaux .case {
+    flex: 1 1 16px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .case.active span {
+    font-size: 12px;
+    line-height: 22px;
+  }
+}
+
+/* Ecran inférieur à 400px */
+@media screen and (max-width: 400px) {
   .rune-2 {
     flex-direction: column;
   }
@@ -449,13 +536,5 @@ body {
 
   #bonus::after {
     height: 113px;
-  }
-
-  .note {
-    left: 169px;
-  }
-
-  #SortInvocateur {
-    max-width: 100%;
   }
 }
