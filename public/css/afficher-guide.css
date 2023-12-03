@@ -1,0 +1,75 @@
+body {
+  background-image: url("../img/home-bg_1920.webp");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.content {
+  margin: 0 15%;
+  background-color: rgba(30, 35, 46, 0.88);
+  min-height: 100vh;
+  flex-shrink: 0;
+}
+
+/* Menu */
+.menu {
+    padding-top: 5%;
+}
+.menu span {
+  color: #fff;
+  display: none;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 8px;
+  width: 20%;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.menu span:hover {
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  transition: all 0.2s ease-in;
+}
+
+.current {
+    display: block !important;
+}
+
+/* Guide */
+
+.competence {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.niveaux .case {
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+}
+
+/* Commentaire */
+#competence {
+    display: none;
+}
