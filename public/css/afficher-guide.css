@@ -387,6 +387,81 @@ body {
 /* Commentaire */
 #commentaire-container {
   display: none;
+  flex-direction: column;
+}
+
+#commentaire-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.commentaire {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.commentaire-details {
+  flex-grow: 1;
+}
+
+.pseudo {
+  font-weight: bold;
+}
+
+.texte {
+  margin-bottom: 10px;
+}
+
+.date {
+  font-size: 0.8em;
+  color: rgb(196, 209, 231);
+}
+
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Pagination commentaire */
+.pagination {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  opacity: 0.85;
+}
+
+.pagination a,
+.pagination .current {
+  display: inline-block;
+  color: #b2bed4;
+  text-transform: uppercase;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 15px;
+  transition: 300ms;
+}
+
+.pagination a:hover {
+  background: rgba(39, 84, 149, 0.25);
+  color: white;
+}
+
+.pagination .current {
+  background: #275495;
+  color: white;
 }
 
 /* Ecran inférieur à 1240px */
