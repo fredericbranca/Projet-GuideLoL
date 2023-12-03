@@ -11,11 +11,12 @@ body {
   background-color: rgba(30, 35, 46, 0.88);
   min-height: 100vh;
   flex-shrink: 0;
+  color: #fff;
 }
 
 /* Menu */
 .menu {
-    padding-top: 5%;
+  padding-top: 60px;
 }
 .menu span {
   color: #fff;
@@ -23,7 +24,8 @@ body {
   box-sizing: border-box;
   margin: 0 auto;
   padding: 8px;
-  width: 20%;
+  min-width: 20%;
+  width: 200px;
   background: #fff;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
@@ -42,10 +44,16 @@ body {
 }
 
 .current {
-    display: block !important;
+  display: block !important;
 }
 
 /* Guide */
+#guide {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5%;
+  gap: 40px;
+}
 
 .competence {
   position: relative;
@@ -69,7 +77,153 @@ body {
   border: 1px solid black;
 }
 
+.runes-sorts-inv {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.note {
+  position: absolute;
+  top: 23px;
+  left: 435px;
+  cursor: pointer;
+  transform: scale(0.8);
+}
+
+/* Runes */
+.runes-container {
+  position: relative;
+  min-width: 60%;
+}
+
+.groupe-runes {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  position: relative;
+}
+
+#arbre {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.type-arbre {
+  position: relative;
+}
+
+.groupe-runes img {
+  width: 50px;
+  height: 50px;
+}
+
+#Primaire,
+#Secondaire,
+#bonus {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 40px;
+  position: relative;
+  width: fit-content;
+  justify-content: center;
+}
+
+#bonus {
+  gap: 0;
+}
+
+.rune-2 {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 40px;
+}
+
+#Primaire > .choix-rune:nth-child(2) img {
+  transform: scale(1.7);
+}
+
+#Primaire::after,
+#Secondaire::after,
+#bonus::after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: 44px;
+  z-index: -1;
+  height: 5px;
+  right: 30px;
+  background: #ffffff;
+  border: 1px solid #091120;
+  outline: 1px solid #273040;
+}
+
+.rune-arbre-titre {
+  position: absolute;
+  top: -25px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.choix-rune {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.rune-titre {
+  color: #bbc7da;
+  font-size: 12px;
+  display: block;
+  margin-top: 7px;
+  max-width: 80px;
+  height: 30px;
+}
+
+/* Pagination groupes */
+#pagination {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  max-width: 120px;
+  display: flex;
+  overflow: auto;
+}
+
+#pagination span {
+  width: 24px;
+  flex: 0 0 auto;
+  padding: 0 7px;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.page-number {
+  position: relative;
+  width: 24px;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  background: #e4e8ef;
+  color: #000000;
+  border-left: 2px solid #091120;
+  cursor: pointer;
+  transition: transform 300ms;
+  box-sizing: border-box;
+}
+
+.page-number:hover,
+#pagination .current {
+  background: #275495;
+  color: #fff;
+}
+
 /* Commentaire */
-#competence {
-    display: none;
+#commentaire-container {
+  display: none;
 }
