@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "menu_image": ".modifier-avatar",
         "menu_pseudo": ".change-pseudo",
         "menu_mail": ".change-email",
+        "menu_mdp": ".change-password",
     };
     const menu = document.querySelector('.menu');
 
@@ -110,8 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const avatarForm = document.getElementById('avatar-form');
     const emailForm = document.getElementById('email-form');
     const pseudoForm = document.getElementById('pseudo-form');
+    const passwordForm = document.getElementById('password-form');
 
     if (avatarForm) handleFormAjax(avatarForm);
     if (emailForm) handleFormAjax(emailForm);
     if (pseudoForm) handleFormAjax(pseudoForm);
+    if (passwordForm) handleFormAjax(passwordForm);
 });

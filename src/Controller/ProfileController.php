@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Imagick;
 use App\Form\AvatarType;
+use App\Form\ChangePasswordType;
 use App\Form\ChangePseudoType;
 use App\Form\ModifyEmailType;
 use App\Repository\UserRepository;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfileController extends AbstractController
 {
@@ -37,7 +39,7 @@ class ProfileController extends AbstractController
         $changePseudoForm->handleRequest($request);
 
         if ($changePseudoForm->isSubmitted() && $changePseudoForm->isValid()) {
-            
+
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse(['success' => true]);
             }
@@ -186,6 +188,64 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/change_email.html.twig', [
             'formEmail' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/profile/change-password', name: 'app_change_password', methods: ['POST'])]
+    public function changePassword(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasherInterface)
+    {
+        $user = $this->security->getUser();
+
+        $form = $this->createForm(ChangePasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $oldPassword = $form->get('oldPassword')->getData();
+
+            // Vérifiez si l'ancien mot de passe est correct
+            if (!$userPasswordHasherInterface->isPasswordValid($user, $oldPassword)) {
+                if ($request->isXmlHttpRequest()) {
+                    // Renvoie l'erreur pour la requête AJAX
+                    $errors = ['Erreur mot de passe actuel'];
+                    return new JsonResponse(['success' => false, 'errors' => $errors]);
+                }
+            }
+
+            $newPassword = $form->get('plainPassword')->getData();
+            // Vérifie qu'il soit différent de celui actuel
+            if ($oldPassword === $newPassword) {
+                if ($request->isXmlHttpRequest()) {
+                    // Renvoie l'erreur pour la requête AJAX
+                    $errors = ['Le mot de passe ne peut pas être  le même'];
+                    return new JsonResponse(['success' => false, 'errors' => $errors]);
+                }
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['success' => true]);
+            }
+
+            // Hash le mot de passe et l'enregistre
+            $newHashedPassword = $userPasswordHasherInterface->hashPassword($user, $newPassword);
+
+
+            $userRepository->upgradePassword($user, $newHashedPassword);
+
+            // Redirection + message
+            $this->addFlash('success', 'Mot de passe changé avec succès.');
+            return $this->redirectToRoute('app_profile');
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($form);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
+        }
+
+        return $this->render('profile/change_password.html.twig', [
+            'changePasswordForm' => $form->createView(),
         ]);
     }
 
