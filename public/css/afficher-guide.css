@@ -441,6 +441,7 @@ body {
   width: 100%;
   overflow: hidden;
   opacity: 0.85;
+  margin-bottom: 20px;
 }
 
 .pagination a,
@@ -462,6 +463,88 @@ body {
 .pagination .current {
   background: #275495;
   color: white;
+}
+
+/* Ajout de commentaire */
+#commentaire-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+#commentaire-container form {
+  margin-bottom: 30px;
+}
+
+#commentaire-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 250px;
+  resize: vertical;
+}
+
+#commentaire-container input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#commentaire-container input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+#commentaire-form {
+  position: relative;
+}
+
+#characterCount {
+  position: absolute;
+  right: 75px;
+  bottom: -26px;
+}
+
+#form-errors {
+  position: absolute;
+  left: 0;
+  bottom: -26px;
+  width: fit-content;
+  font-size: 12px;
+  color: rgb(255 97 97);
+  padding: 5px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.text-validation {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.text-validation button {
+  color: #fff;
+  padding: 8px;
+  height: 100%;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+}
+
+.text-validation button:hover {
+  text-decoration: none;
+  background: rgb(45 65 42);
+  color: #fff;
+  transition: all 0.2s ease-in;
 }
 
 /* Ecran inférieur à 1240px */
