@@ -1,9 +1,16 @@
 body {
-  min-width: 1316px;
+  background-image: url("../img/home-bg_1920.webp");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
 }
 
-content {
-  width: 100%;
+.content {
+  margin: 0 clamp(0%, (100vw - 1330px) * 0.5, 15%);
+  background-color: rgba(30, 35, 46, 0.88);
+  min-height: 100vh;
+  flex-shrink: 0;
 }
 
 /* Position des éléments */
@@ -11,6 +18,11 @@ content {
   display: flex;
   justify-content: center;
   margin-top: 1%;
+}
+
+h1 {
+  padding: 20px;
+  color: #fff;
 }
 
 .creation-guide {
@@ -769,27 +781,284 @@ content {
   }
 }
 
-/* Media query pour les écrans de 768px ou moins */
-@media screen and (max-width: 768px) {
+/* Media query pour les écrans de 1024px ou moins */
+@media screen and (max-width: 1024px) {
+  #new-guide {
+    height: fit-content;
+  }
+
   .creation-guide {
-    margin-top: 50px;
-    height: 100vh;
-    /* Flexbox pour la mise en page à l'intérieur de l'élément */
     display: flex;
-    /* Disposition en colonne pour optimiser l'apparence sur petit écran */
     flex-direction: column;
     align-items: center;
-    gap: 2%;
+    gap: 50px;
   }
 
   .col-left {
-    height: 50%;
-    transform: scale(1.2);
-    width: 70%;
+    width: 95%;
+    opacity: 0.9;
+  }
+
+  #FormGuide {
+    display: flex;
+    justify-content: center;
   }
 
   .col-right {
-    height: 50%;
-    transform: scale(1.4);
+    width: 100%;
+  }
+
+  .new-guide-sidebar__nav span {
+    padding: 30px;
+    font-size: 40px;
+  }
+
+  .new-guide-sidebar__header {
+    font-size: 30px;
+  }
+
+  .new-guide-sidebar__nav span::before {
+    font-size: 40px;
+  }
+
+  .flat-btn {
+    padding: 25px 20px;
+    font-size: 25px;
+  }
+
+  .btn-absolute {
+    bottom: -84px;
+  }
+
+  .new-guide-config {
+    width: 70%;
+  }
+
+  .new-guide-builder {
+    width: 95%;
+  }
+
+  .new-guide__block .baniere-groupe {
+    height: 120px;
+  }
+
+  .groupe-content {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .checkbox-sorts {
+    position: relative;
+    display: flex;
+    column-gap: 60px;
+    row-gap: 35px;
+    flex-wrap: wrap;
+    width: 90%;
+    margin: unset;
+    height: unset;
+    flex: unset;
+  }
+
+  .checkbox-sorts > * {
+    flex: unset;
+  }
+
+  .checkbox-sorts label img {
+    width: 120px;
+  }
+
+  .new-guide__block .baniere-groupe,
+  .new-guide__block .baniere-groupe-items {
+    height: 120px;
+    padding-left: 33px;
+  }
+
+  .new-guide__block .titre-groupe,
+  .new-guide__block .titre-groupe-item {
+    transform: scale(2);
+    top: 46px;
+    left: 180px;
+  }
+
+  .fa-solid,
+  .fas {
+    font-weight: 900;
+    transform: scale(2);
+  }
+
+  .commentaire textarea {
+    max-width: 555px;
+    min-width: 555px;
+    min-height: 200px;
+    font-size: 35px;
+  }
+
+  .commentaire textarea::placeholder {
+    font-size: 35px;
+  }
+
+  .fa-regular:focus,
+  .far:focus,
+  .fa-regular:active,
+  .far:active,
+  .fa-regular,
+  .far {
+    transform: scale(3);
+    z-index: 2;
+  }
+
+  .supprimer-groupe,
+  .supprimer-itemsGroupe {
+    top: 47px;
+    right: 47px;
+    transition: unset;
+  }
+
+  .supprimer-groupe:hover,
+  .supprimer-itemsGroupe:hover {
+    transform: scale(3);
+  }
+
+  #selectedItem {
+    height: 100px;
+  }
+
+  .copie-item {
+    width: 100px;
+    height: 100px;
+  }
+
+  .checkbox-items {
+    width: 100%;
+    height: 406px;
+  }
+
+  .checkbox-items .item {
+    flex: 0 1 223px;
+    padding: 7px 7px 19px 7px;
+  }
+
+  .checkbox-items span {
+    font-size: 30px;
+    padding: 20px 0 0 0;
+  }
+
+  .checkbox-items p {
+    top: 99px;
+    font-size: 35px;
+    padding: 3px 10px;
+  }
+
+  .checkbox-items img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .copie-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .new-guide-builder__items-container .new-guide__block {
+    margin-bottom: 120px;
+  }
+
+  .new-guide-builder__menu span {
+    height: 100px;
+    padding-top: 26px;
+    font-size: 30px;
+  }
+
+  .competence-choix-checkbox [id^="guide_groupesCompetences"] label {
+    width: 64px;
+    height: 64px;
+    font-size: 36px;
+  }
+
+  .liste-competences .competence-passive img,
+  .liste-competences .competence img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .liste-competences .competence h3,
+  .liste-competences .competence-passive {
+    font-size: 30px;
+  }
+
+  .liste-competences {
+    gap: 40px;
+  }
+
+  .open {
+    max-height: fit-content;
+  }
+
+  /* Rune */
+  .new-guide-builder__runes-container .groupe-content {
+    min-height: 930px;
+  }
+
+  .arbres {
+    margin: 30px 0 0 20px;
+  }
+
+  .arbre-runes {
+    gap: 60px;
+  }
+
+  .arbre-runes .arbre {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .bonus-lines {
+    transform: scale(2.6);
+    bottom: 487px;
+    left: 932px;
+  }
+
+  .runes-options {
+    transform: scale(1.7);
+  }
+
+  .arbre-1 {
+    left: 97px;
+    top: 438px;
+  }
+
+  .arbre-2 {
+    left: 493px;
+    top: 415px;
+  }
+
+  .sk-arbre-1 {
+    left: 49px;
+    top: 385px;
+    gap: 109px;
+  }
+
+  .sk-arbre-1 div {
+    width: 294px;
+    height: 4px;
+  }
+
+  .sk-arbre-2 {
+    left: 473px;
+    top: 383px;
+    gap: 113px;
+  }
+
+  .sk-arbre-2 div {
+    height: 4px;
+  }
+}
+
+/* Media query pour les écrans de 768px ou moins */
+@media screen and (max-width: 768px) {
+  #new-guide {
+    top: 46px;
+    left: 160px;
+    transform: scale(2);
   }
 }

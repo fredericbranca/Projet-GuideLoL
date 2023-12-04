@@ -710,16 +710,15 @@ document.addEventListener("DOMContentLoaded", function () {
 // Responsive create guide
 function adjustScale() {
     const windowWidth = window.innerWidth;
-    const maxWidth = 1316;
-    const tabletWidth = 768;
+    const maxWidth = 1330;
+    const tabletWidth = 1024;
     let scaleFactor;
 
     if (windowWidth < maxWidth) {
         scaleFactor = windowWidth / maxWidth;
     } else if (windowWidth < tabletWidth) {
         scaleFactor = windowWidth / tabletWidth;
-    }
-    else {
+    } else {
         scaleFactor = 1;
     }
 
