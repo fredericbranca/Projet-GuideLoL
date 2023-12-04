@@ -24,57 +24,146 @@ CREATE TABLE IF NOT EXISTS `associations_arbres_runes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=452 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_arbres_runes : ~6 rows (environ)
+-- Listage des données de la table guidelol.associations_arbres_runes : ~33 rows (environ)
 INSERT INTO `associations_arbres_runes` (`id`, `type`) VALUES
-	(446, 'Primaire'),
-	(447, 'Primaire'),
-	(448, 'Primaire'),
-	(449, 'Primaire'),
-	(450, 'Secondaire'),
-	(451, 'Secondaire');
+	(458, 'Primaire'),
+	(459, 'Primaire'),
+	(460, 'Primaire'),
+	(461, 'Primaire'),
+	(462, 'Secondaire'),
+	(463, 'Secondaire'),
+	(491, 'Primaire'),
+	(492, 'Primaire'),
+	(493, 'Primaire'),
+	(494, 'Primaire'),
+	(501, 'Primaire'),
+	(502, 'Primaire'),
+	(503, 'Primaire'),
+	(504, 'Primaire'),
+	(505, 'Secondaire'),
+	(506, 'Secondaire'),
+	(507, 'Primaire'),
+	(508, 'Primaire'),
+	(509, 'Primaire'),
+	(510, 'Primaire'),
+	(511, 'Secondaire'),
+	(512, 'Primaire'),
+	(513, 'Primaire'),
+	(514, 'Primaire'),
+	(515, 'Primaire'),
+	(516, 'Secondaire'),
+	(517, 'Secondaire'),
+	(518, 'Primaire'),
+	(519, 'Primaire'),
+	(520, 'Primaire'),
+	(521, 'Primaire'),
+	(522, 'Secondaire'),
+	(523, 'Secondaire');
 
 -- Listage de la structure de table guidelol. associations_competences_niveaux
 CREATE TABLE IF NOT EXISTS `associations_competences_niveaux` (
   `id` int NOT NULL AUTO_INCREMENT,
   `niveaux` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_competences_niveaux : ~8 rows (environ)
+-- Listage des données de la table guidelol.associations_competences_niveaux : ~36 rows (environ)
 INSERT INTO `associations_competences_niveaux` (`id`, `niveaux`) VALUES
-	(239, '1,7,13,17,18'),
-	(240, '2,6,8,12,14'),
-	(241, '3,5,9,11,15'),
-	(242, '4,10,16'),
-	(243, '1,2,3,4,5'),
-	(244, '6,7,8,9,10'),
-	(245, '11,12,13,14,15'),
-	(246, '16,17,18'),
 	(247, '1'),
 	(248, '3'),
 	(249, '4'),
-	(250, '6');
+	(250, '6'),
+	(259, '1,7,13,17,18'),
+	(260, '2,6,8,12,14'),
+	(261, '3,5,9,11,15'),
+	(262, '4,10,16'),
+	(263, '1,2,3,4,5'),
+	(264, '6,7,8,9,10'),
+	(265, '11,12,13,14,15'),
+	(266, '16,17,18'),
+	(291, '1,2,3,4,5'),
+	(292, '6,7,8,9,10'),
+	(293, '11,12,13,17,18'),
+	(294, '14,15,16'),
+	(295, '1,7,13,17,18'),
+	(296, '2,6,8,12,14'),
+	(297, '3,5,9,11,15'),
+	(298, '4,10,16'),
+	(299, '1,2,3,4,5'),
+	(300, '6,7,8,9,10'),
+	(301, '11,12,13,14,15'),
+	(302, '16,17,18'),
+	(303, '1,2,3,4,5'),
+	(304, '6,7,8,9,10'),
+	(305, '11,12,13,14,15'),
+	(306, '16,17,18'),
+	(307, '1,7,13,17,18'),
+	(308, '2,6,8,12,14'),
+	(309, '3,5,9,11,15'),
+	(310, '4,10,16');
 
 -- Listage de la structure de table guidelol. associations_runes_bonus
 CREATE TABLE IF NOT EXISTS `associations_runes_bonus` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=647 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=758 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.associations_runes_bonus : ~9 rows (environ)
+-- Listage des données de la table guidelol.associations_runes_bonus : ~59 rows (environ)
 INSERT INTO `associations_runes_bonus` (`id`, `type`) VALUES
-	(638, 'Rune'),
-	(639, 'Rune'),
-	(640, 'Rune'),
-	(641, 'Rune'),
-	(642, 'Rune'),
-	(643, 'Rune'),
-	(644, 'Bonus'),
-	(645, 'Bonus'),
-	(646, 'Bonus');
+	(656, 'Rune'),
+	(657, 'Rune'),
+	(658, 'Rune'),
+	(659, 'Rune'),
+	(660, 'Rune'),
+	(661, 'Rune'),
+	(662, 'Bonus'),
+	(663, 'Bonus'),
+	(664, 'Bonus'),
+	(707, 'Rune'),
+	(708, 'Rune'),
+	(709, 'Rune'),
+	(710, 'Rune'),
+	(711, 'Bonus'),
+	(712, 'Bonus'),
+	(713, 'Bonus'),
+	(723, 'Rune'),
+	(724, 'Rune'),
+	(725, 'Rune'),
+	(726, 'Rune'),
+	(727, 'Rune'),
+	(728, 'Rune'),
+	(729, 'Bonus'),
+	(730, 'Bonus'),
+	(731, 'Bonus'),
+	(732, 'Rune'),
+	(733, 'Rune'),
+	(734, 'Rune'),
+	(735, 'Rune'),
+	(736, 'Rune'),
+	(737, 'Bonus'),
+	(738, 'Bonus'),
+	(739, 'Bonus'),
+	(740, 'Rune'),
+	(741, 'Rune'),
+	(742, 'Rune'),
+	(743, 'Rune'),
+	(744, 'Rune'),
+	(745, 'Rune'),
+	(746, 'Bonus'),
+	(747, 'Bonus'),
+	(748, 'Bonus'),
+	(749, 'Rune'),
+	(750, 'Rune'),
+	(751, 'Rune'),
+	(752, 'Rune'),
+	(753, 'Rune'),
+	(754, 'Rune'),
+	(755, 'Bonus'),
+	(756, 'Bonus'),
+	(757, 'Bonus');
 
 -- Listage de la structure de table guidelol. choix_arbres
 CREATE TABLE IF NOT EXISTS `choix_arbres` (
@@ -87,14 +176,41 @@ CREATE TABLE IF NOT EXISTS `choix_arbres` (
   CONSTRAINT `FK_E36C2711C49E7A84` FOREIGN KEY (`associations_arbres_runes_id`) REFERENCES `associations_arbres_runes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_arbres : ~6 rows (environ)
+-- Listage des données de la table guidelol.choix_arbres : ~33 rows (environ)
 INSERT INTO `choix_arbres` (`associations_runes_bonus_id`, `associations_arbres_runes_id`) VALUES
-	(638, 446),
-	(639, 447),
-	(640, 448),
-	(641, 449),
-	(642, 450),
-	(643, 451);
+	(656, 458),
+	(657, 459),
+	(658, 460),
+	(659, 461),
+	(660, 462),
+	(661, 463),
+	(707, 491),
+	(708, 492),
+	(709, 493),
+	(710, 494),
+	(723, 501),
+	(724, 502),
+	(725, 503),
+	(726, 504),
+	(727, 505),
+	(728, 506),
+	(732, 507),
+	(733, 508),
+	(734, 509),
+	(735, 510),
+	(736, 511),
+	(740, 512),
+	(741, 513),
+	(742, 514),
+	(743, 515),
+	(744, 516),
+	(745, 517),
+	(749, 518),
+	(750, 519),
+	(751, 520),
+	(752, 521),
+	(753, 522),
+	(754, 523);
 
 -- Listage de la structure de table guidelol. choix_competences_niveaux
 CREATE TABLE IF NOT EXISTS `choix_competences_niveaux` (
@@ -107,20 +223,40 @@ CREATE TABLE IF NOT EXISTS `choix_competences_niveaux` (
   CONSTRAINT `FK_A3F0C9A1B1400904` FOREIGN KEY (`competences_group_id`) REFERENCES `competences_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_competences_niveaux : ~8 rows (environ)
+-- Listage des données de la table guidelol.choix_competences_niveaux : ~32 rows (environ)
 INSERT INTO `choix_competences_niveaux` (`competences_group_id`, `associations_competences_niveaux_id`) VALUES
-	(27, 239),
-	(27, 240),
-	(27, 241),
-	(27, 242),
-	(28, 243),
-	(28, 244),
-	(28, 245),
-	(28, 246),
+	(27, 259),
+	(27, 260),
+	(27, 261),
+	(27, 262),
+	(28, 263),
+	(28, 264),
+	(28, 265),
+	(28, 266),
 	(30, 247),
 	(30, 248),
 	(30, 249),
-	(30, 250);
+	(30, 250),
+	(31, 299),
+	(31, 300),
+	(31, 301),
+	(31, 302),
+	(32, 303),
+	(32, 304),
+	(32, 305),
+	(32, 306),
+	(33, 307),
+	(33, 308),
+	(33, 309),
+	(33, 310),
+	(34, 291),
+	(34, 292),
+	(34, 293),
+	(34, 294),
+	(35, 295),
+	(35, 296),
+	(35, 297),
+	(35, 298);
 
 -- Listage de la structure de table guidelol. choix_items
 CREATE TABLE IF NOT EXISTS `choix_items` (
@@ -133,24 +269,50 @@ CREATE TABLE IF NOT EXISTS `choix_items` (
   CONSTRAINT `FK_299CCA8A892F6989` FOREIGN KEY (`items_group_id`) REFERENCES `items_group` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_items : ~16 rows (environ)
+-- Listage des données de la table guidelol.choix_items : ~38 rows (environ)
 INSERT INTO `choix_items` (`items_group_id`, `data_item_id`) VALUES
-	(91, 1103),
+	(91, 1001),
+	(91, 1004),
 	(91, 2031),
-	(91, 3222),
 	(91, 3340),
-	(91, 6660),
-	(92, 1001),
-	(92, 1004),
+	(91, 3363),
+	(91, 3364),
+	(92, 1103),
 	(92, 2031),
-	(92, 3340),
-	(92, 3363),
-	(92, 3364),
+	(92, 3222),
+	(92, 6660),
 	(93, 2003),
 	(93, 2055),
 	(93, 3363),
 	(93, 3364),
-	(93, 3599);
+	(93, 3599),
+	(94, 2055),
+	(94, 2144),
+	(94, 2420),
+	(94, 3057),
+	(95, 1001),
+	(95, 1004),
+	(95, 3340),
+	(95, 3363),
+	(96, 2031),
+	(96, 2055),
+	(96, 2144),
+	(96, 2420),
+	(96, 3057),
+	(96, 3340),
+	(97, 1001),
+	(97, 1004),
+	(97, 2031),
+	(97, 2055),
+	(98, 1018),
+	(98, 1043),
+	(98, 2031),
+	(98, 2055),
+	(98, 3330),
+	(99, 1004),
+	(99, 3363),
+	(99, 3364),
+	(99, 3599);
 
 -- Listage de la structure de table guidelol. choix_runes
 CREATE TABLE IF NOT EXISTS `choix_runes` (
@@ -163,14 +325,41 @@ CREATE TABLE IF NOT EXISTS `choix_runes` (
   CONSTRAINT `FK_429C6E95C49E7A84` FOREIGN KEY (`associations_arbres_runes_id`) REFERENCES `associations_arbres_runes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_runes : ~6 rows (environ)
+-- Listage des données de la table guidelol.choix_runes : ~33 rows (environ)
 INSERT INTO `choix_runes` (`associations_arbres_runes_id`, `data_rune_id`) VALUES
-	(446, 8112),
-	(447, 8126),
-	(448, 8136),
-	(449, 8106),
-	(450, 9101),
-	(451, 8017);
+	(458, 8112),
+	(459, 8126),
+	(460, 8136),
+	(461, 8106),
+	(462, 9101),
+	(463, 8017),
+	(491, 8351),
+	(492, 8304),
+	(493, 8316),
+	(494, 8410),
+	(501, 8124),
+	(502, 8139),
+	(503, 8138),
+	(504, 8105),
+	(505, 8463),
+	(506, 8444),
+	(507, 8351),
+	(508, 8304),
+	(509, 8316),
+	(510, 8410),
+	(511, 9105),
+	(512, 8112),
+	(513, 8139),
+	(514, 8120),
+	(515, 8134),
+	(516, 8304),
+	(517, 8316),
+	(518, 8360),
+	(519, 8304),
+	(520, 8316),
+	(521, 8410),
+	(522, 8226),
+	(523, 8234);
 
 -- Listage de la structure de table guidelol. choix_runes_pages
 CREATE TABLE IF NOT EXISTS `choix_runes_pages` (
@@ -183,17 +372,59 @@ CREATE TABLE IF NOT EXISTS `choix_runes_pages` (
   CONSTRAINT `FK_456D40878E20FAE3` FOREIGN KEY (`associations_runes_bonus_id`) REFERENCES `associations_runes_bonus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_runes_pages : ~9 rows (environ)
+-- Listage des données de la table guidelol.choix_runes_pages : ~51 rows (environ)
 INSERT INTO `choix_runes_pages` (`runes_page_id`, `associations_runes_bonus_id`) VALUES
-	(39, 638),
-	(39, 639),
-	(39, 640),
-	(39, 641),
-	(39, 642),
-	(39, 643),
-	(39, 644),
-	(39, 645),
-	(39, 646);
+	(39, 656),
+	(39, 657),
+	(39, 658),
+	(39, 659),
+	(39, 660),
+	(39, 661),
+	(39, 662),
+	(39, 663),
+	(39, 664),
+	(40, 732),
+	(40, 733),
+	(40, 734),
+	(40, 735),
+	(40, 736),
+	(40, 737),
+	(40, 738),
+	(40, 739),
+	(41, 740),
+	(41, 741),
+	(41, 742),
+	(41, 743),
+	(41, 744),
+	(41, 745),
+	(41, 746),
+	(41, 747),
+	(41, 748),
+	(42, 707),
+	(42, 708),
+	(42, 709),
+	(42, 710),
+	(42, 711),
+	(42, 712),
+	(42, 713),
+	(43, 749),
+	(43, 750),
+	(43, 751),
+	(43, 752),
+	(43, 753),
+	(43, 754),
+	(43, 755),
+	(43, 756),
+	(43, 757),
+	(44, 723),
+	(44, 724),
+	(44, 725),
+	(44, 726),
+	(44, 727),
+	(44, 728),
+	(44, 729),
+	(44, 730),
+	(44, 731);
 
 -- Listage de la structure de table guidelol. choix_sort_invocateur
 CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
@@ -206,14 +437,24 @@ CREATE TABLE IF NOT EXISTS `choix_sort_invocateur` (
   CONSTRAINT `FK_1487B837A207090` FOREIGN KEY (`sort_invocateur_id`) REFERENCES `sort_invocateur` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_sort_invocateur : ~4 rows (environ)
+-- Listage des données de la table guidelol.choix_sort_invocateur : ~16 rows (environ)
 INSERT INTO `choix_sort_invocateur` (`sort_invocateur_id`, `data_sort_invocateur_id`) VALUES
 	(86, 'SummonerExhaust'),
-	(86, 'SummonerSmite'),
+	(86, 'SummonerMana'),
 	(87, 'SummonerBarrier'),
 	(87, 'SummonerHaste'),
 	(88, 'SummonerDot'),
-	(88, 'SummonerMana');
+	(88, 'SummonerMana'),
+	(89, 'SummonerBoost'),
+	(89, 'SummonerHeal'),
+	(90, 'SummonerBoost'),
+	(90, 'SummonerTeleport'),
+	(91, 'SummonerFlash'),
+	(91, 'SummonerSnowball'),
+	(92, 'SummonerFlash'),
+	(92, 'SummonerTeleport'),
+	(93, 'SummonerDot'),
+	(93, 'SummonerMana');
 
 -- Listage de la structure de table guidelol. choix_statistiques_bonus
 CREATE TABLE IF NOT EXISTS `choix_statistiques_bonus` (
@@ -226,11 +467,26 @@ CREATE TABLE IF NOT EXISTS `choix_statistiques_bonus` (
   CONSTRAINT `FK_68A8F9E08E20FAE3` FOREIGN KEY (`associations_runes_bonus_id`) REFERENCES `associations_runes_bonus` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.choix_statistiques_bonus : ~3 rows (environ)
+-- Listage des données de la table guidelol.choix_statistiques_bonus : ~18 rows (environ)
 INSERT INTO `choix_statistiques_bonus` (`associations_runes_bonus_id`, `data_statistique_bonus_id`) VALUES
-	(644, 1),
-	(645, 6),
-	(646, 7);
+	(662, 1),
+	(663, 6),
+	(664, 7),
+	(711, 1),
+	(712, 5),
+	(713, 9),
+	(729, 3),
+	(730, 5),
+	(731, 8),
+	(737, 1),
+	(738, 4),
+	(739, 9),
+	(746, 2),
+	(747, 4),
+	(748, 9),
+	(755, 1),
+	(756, 5),
+	(757, 9);
 
 -- Listage de la structure de table guidelol. competences
 CREATE TABLE IF NOT EXISTS `competences` (
@@ -243,20 +499,40 @@ CREATE TABLE IF NOT EXISTS `competences` (
   CONSTRAINT `FK_DB2077CEE4340981` FOREIGN KEY (`data_competence_id`) REFERENCES `data_competence` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.competences : ~8 rows (environ)
+-- Listage des données de la table guidelol.competences : ~32 rows (environ)
 INSERT INTO `competences` (`associations_competences_niveaux_id`, `data_competence_id`) VALUES
-	(239, 'AkaliQ'),
-	(240, 'AkaliW'),
-	(241, 'AkaliE'),
-	(242, 'AkaliR'),
-	(243, 'AkaliQ'),
-	(244, 'AkaliW'),
-	(245, 'AkaliE'),
-	(246, 'AkaliR'),
 	(247, 'BriarQ'),
 	(248, 'BriarW'),
 	(249, 'BriarE'),
-	(250, 'BriarR');
+	(250, 'BriarR'),
+	(259, 'AkaliQ'),
+	(260, 'AkaliW'),
+	(261, 'AkaliE'),
+	(262, 'AkaliR'),
+	(263, 'AkaliQ'),
+	(264, 'AkaliW'),
+	(265, 'AkaliE'),
+	(266, 'AkaliR'),
+	(291, 'AkaliQ'),
+	(292, 'AkaliW'),
+	(293, 'AkaliE'),
+	(294, 'AkaliR'),
+	(295, 'FlashFrost'),
+	(296, 'Crystallize'),
+	(297, 'Frostbite'),
+	(298, 'GlacialStorm'),
+	(299, 'AhriQ'),
+	(300, 'AhriW'),
+	(301, 'AhriE'),
+	(302, 'AhriR'),
+	(303, 'AkaliQ'),
+	(304, 'AkaliW'),
+	(305, 'AkaliE'),
+	(306, 'AkaliR'),
+	(307, 'AkaliQ'),
+	(308, 'AkaliW'),
+	(309, 'AkaliE'),
+	(310, 'AkaliR');
 
 -- Listage de la structure de table guidelol. competences_group
 CREATE TABLE IF NOT EXISTS `competences_group` (
@@ -268,13 +544,18 @@ CREATE TABLE IF NOT EXISTS `competences_group` (
   PRIMARY KEY (`id`),
   KEY `IDX_A6069EADD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_A6069EADD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.competences_group : ~3 rows (environ)
+-- Listage des données de la table guidelol.competences_group : ~6 rows (environ)
 INSERT INTO `competences_group` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
 	(27, 104, NULL, NULL, 0),
 	(28, 104, NULL, NULL, 1),
-	(30, 105, NULL, NULL, 0);
+	(30, 105, NULL, NULL, 0),
+	(31, 110, NULL, NULL, 0),
+	(32, 113, 'ici ça test le titre 2', 'les commentaires très très très très long', 0),
+	(33, 113, 'ici ça test le titre', 'les commentaires très très très très long', 1),
+	(34, 115, NULL, NULL, 0),
+	(35, 116, NULL, NULL, 0);
 
 -- Listage de la structure de table guidelol. data_champion
 CREATE TABLE IF NOT EXISTS `data_champion` (
@@ -1558,12 +1839,89 @@ CREATE TABLE IF NOT EXISTS `ensemble_items_groups` (
   PRIMARY KEY (`id`),
   KEY `IDX_68A1E5FBD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_68A1E5FBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.ensemble_items_groups : ~0 rows (environ)
+-- Listage des données de la table guidelol.ensemble_items_groups : ~5 rows (environ)
 INSERT INTO `ensemble_items_groups` (`id`, `titre`, `ordre`, `guide_id`) VALUES
 	(67, NULL, 0, 104),
-	(68, NULL, 1, 104);
+	(68, NULL, 1, 104),
+	(69, NULL, 0, 110),
+	(70, NULL, 0, 113),
+	(71, NULL, 1, 113),
+	(72, NULL, 0, 115),
+	(73, NULL, 0, 116);
+
+-- Listage de la structure de table guidelol. evaluation
+CREATE TABLE IF NOT EXISTS `evaluation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `guide_id` int DEFAULT NULL,
+  `notation` int DEFAULT NULL,
+  `commentaire` longtext COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+  PRIMARY KEY (`id`),
+  KEY `IDX_1323A575A76ED395` (`user_id`),
+  KEY `IDX_1323A575D7ED1D4B` (`guide_id`),
+  CONSTRAINT `FK_1323A575A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_1323A575D7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Listage des données de la table guidelol.evaluation : ~47 rows (environ)
+INSERT INTO `evaluation` (`id`, `user_id`, `guide_id`, `notation`, `commentaire`, `created_at`) VALUES
+	(1, 24, 113, 10, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 00:22:28'),
+	(2, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:28'),
+	(3, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:28'),
+	(4, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:29'),
+	(5, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:30'),
+	(6, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:30'),
+	(7, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:42:34'),
+	(8, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:16'),
+	(9, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:17'),
+	(10, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:18'),
+	(11, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:18'),
+	(12, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:18'),
+	(13, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:19'),
+	(14, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:19'),
+	(15, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:19'),
+	(16, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:20'),
+	(17, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:20'),
+	(18, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:21'),
+	(19, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:22'),
+	(20, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:22'),
+	(21, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:22'),
+	(22, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:23'),
+	(23, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2022-12-03 22:49:23'),
+	(24, 24, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:27'),
+	(25, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:27'),
+	(26, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:27'),
+	(27, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:28'),
+	(28, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:28'),
+	(29, 24, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:28'),
+	(30, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:29'),
+	(31, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:29'),
+	(32, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:30'),
+	(33, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:30'),
+	(34, 25, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:49:31'),
+	(35, 24, 113, NULL, 'test test test test test test test test test test test test test test test test test test test test test test test test test ', '2023-12-03 22:43:05'),
+	(36, 24, 113, NULL, NULL, '2023-12-04 00:01:07'),
+	(37, 24, 113, NULL, NULL, '2023-12-04 00:01:13'),
+	(38, 24, 113, NULL, NULL, '2023-12-04 00:01:26'),
+	(39, 24, 113, NULL, NULL, '2023-12-04 00:02:05'),
+	(40, 24, 113, NULL, 'test', '2023-12-04 00:05:00'),
+	(41, 24, 113, NULL, 'allo', '2023-12-04 00:05:23'),
+	(42, 24, 113, NULL, 'test', '2023-12-04 00:06:19'),
+	(43, 24, 113, NULL, 'test', '2023-12-04 00:06:48'),
+	(44, 24, 113, NULL, 'oui', '2023-12-04 00:10:52'),
+	(45, 24, 113, NULL, 'non', '2023-12-04 00:11:35'),
+	(46, 24, 113, NULL, 'ohlala', '2023-12-04 00:12:53'),
+	(47, 24, 113, NULL, 'herzahazeheazvrzrz vrze', '2023-12-04 00:14:30'),
+	(48, 24, 113, NULL, 'hhechece', '2023-12-04 00:14:58'),
+	(49, 24, 113, NULL, 'axzdczacx', '2023-12-04 00:15:34'),
+	(50, 24, 113, NULL, 'salut c\'était bien', '2023-12-04 00:16:02'),
+	(51, 24, 113, NULL, 'ver verv rever', '2023-12-04 00:46:34'),
+	(52, 24, 113, NULL, 'cczer zer', '2023-12-04 00:58:05'),
+	(53, 24, 113, NULL, 'cez cez ze cze', '2023-12-04 01:13:35'),
+	(54, 24, 113, NULL, 'yo', '2023-12-04 18:51:26');
 
 -- Listage de la structure de table guidelol. guide
 CREATE TABLE IF NOT EXISTS `guide` (
@@ -1579,16 +1937,23 @@ CREATE TABLE IF NOT EXISTS `guide` (
   KEY `IDX_CA9EC735A76ED395` (`user_id`),
   CONSTRAINT `FK_CA9EC735A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_CA9EC735FA7FD7EB` FOREIGN KEY (`champion_id`) REFERENCES `data_champion` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.guide : ~0 rows (environ)
+-- Listage des données de la table guidelol.guide : ~9 rows (environ)
 INSERT INTO `guide` (`id`, `champion_id`, `titre`, `voie`, `created_at`, `modified_at`, `user_id`) VALUES
-	(104, 'Akali', 'fezfze', 'Bottom', '2023-11-19 19:43:08', '2023-11-19 21:54:55', 24),
-	(105, 'Briar', 'test', 'Bottom', '2023-11-20 10:47:10', NULL, 24),
+	(104, 'Akali', 'Akali 1vs9 mission', 'Mid', '2023-11-19 19:43:08', '2023-11-21 15:50:14', 24),
+	(105, 'Briar', 'Test du nouveau champion ?', 'Jungle', '2023-11-20 10:47:10', NULL, 24),
 	(106, 'Aatrox', 'htyh', 'Top', '2023-11-20 15:15:08', NULL, 24),
 	(107, 'Aatrox', 'cezzce', 'Jungle', '2023-11-20 15:15:45', NULL, 24),
 	(108, 'Ahri', '2', 'Top', '2023-11-20 15:16:16', NULL, 24),
-	(109, 'Ahri', 'cece', 'Jungle', '2023-11-20 15:50:22', NULL, 24);
+	(109, 'Ahri', 'cece', 'Jungle', '2023-11-20 15:50:22', NULL, 25),
+	(110, 'Ahri', 'test2', 'Top', '2023-11-21 16:04:13', '2023-11-26 04:07:42', 24),
+	(111, 'Ahri', '3', 'Top', '2023-11-22 10:54:58', NULL, 24),
+	(112, 'Fiora', 'cezczecezc', 'Top', '2023-11-22 11:22:53', NULL, 24),
+	(113, 'Akali', 'bnytrnby', 'Top', '2023-11-22 13:48:15', '2023-12-04 18:51:08', 24),
+	(114, 'Akali', 'vrfbvdfg', 'Bottom', '2023-11-22 14:36:51', NULL, 24),
+	(115, 'Akali', 'brtbt', 'Top', '2023-11-22 14:37:36', NULL, 24),
+	(116, 'Anivia', 'vfvref', 'Bottom', '2023-11-26 02:41:00', NULL, 24);
 
 -- Listage de la structure de table guidelol. items_group
 CREATE TABLE IF NOT EXISTS `items_group` (
@@ -1601,13 +1966,19 @@ CREATE TABLE IF NOT EXISTS `items_group` (
   PRIMARY KEY (`id`),
   KEY `IDX_691C8E7E5D08CDBE` (`ensemble_items_groups_id`),
   CONSTRAINT `FK_691C8E7E5D08CDBE` FOREIGN KEY (`ensemble_items_groups_id`) REFERENCES `ensemble_items_groups` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.items_group : ~0 rows (environ)
+-- Listage des données de la table guidelol.items_group : ~7 rows (environ)
 INSERT INTO `items_group` (`id`, `ensemble_items_groups_id`, `titre`, `commentaire`, `ordre`, `ordre_items`) VALUES
-	(91, 67, NULL, NULL, 0, '{"1103": 4, "2031": 3, "3222": 2, "3340": 0, "6660": 1}'),
-	(92, 67, NULL, NULL, 1, '{"1001": 3, "1004": 4, "2031": 5, "3340": 0, "3363": 1, "3364": 2}'),
-	(93, 68, NULL, NULL, 0, '{"2003": 0, "2055": 1, "3363": 2, "3364": 3, "3599": 4}');
+	(91, 67, NULL, NULL, 0, '{"1001": 3, "1004": 4, "2031": 5, "3340": 0, "3363": 1, "3364": 2}'),
+	(92, 67, NULL, NULL, 1, '{"1103": 3, "2031": 2, "3222": 1, "6660": 0}'),
+	(93, 68, NULL, NULL, 0, '{"2003": 0, "2055": 1, "3363": 2, "3364": 3, "3599": 4}'),
+	(94, 69, NULL, NULL, 0, '{"2055": 0, "2144": 1, "2420": 3, "3057": 2}'),
+	(95, 70, 'test 123', 'oui ici ça test les com', 0, '{"1001": 3, "1004": 2, "3340": 0, "3363": 1}'),
+	(96, 71, 'test test test', 'oui ici ça test les com', 0, '{"2031": 2, "2055": 1, "2144": 3, "2420": 5, "3057": 4, "3340": 0}'),
+	(97, 71, NULL, NULL, 1, '{"1001": 3, "1004": 2, "2031": 1, "2055": 0}'),
+	(98, 72, NULL, NULL, 0, '{"1018": 3, "1043": 4, "2031": 2, "2055": 1, "3330": 0}'),
+	(99, 73, NULL, NULL, 0, '{"1004": 2, "3363": 0, "3364": 1, "3599": 3}');
 
 -- Listage de la structure de table guidelol. messenger_messages
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
@@ -1636,11 +2007,16 @@ CREATE TABLE IF NOT EXISTS `runes_page` (
   PRIMARY KEY (`id`),
   KEY `IDX_B55624CBD7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_B55624CBD7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.runes_page : ~0 rows (environ)
+-- Listage des données de la table guidelol.runes_page : ~6 rows (environ)
 INSERT INTO `runes_page` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
-	(39, 104, 'btrebt', 'vcezrvrzbrz', 0);
+	(39, 104, 'btrebt', 'vcezrvrzbrz', 0),
+	(40, 110, NULL, NULL, 0),
+	(41, 113, 'Test titre', 'On test les commentaires ici', 0),
+	(42, 104, 'Test titre 2', 'ouais ouais', 0),
+	(43, 113, 'Test titre 2', 'ouais ouais', 1),
+	(44, 116, NULL, NULL, 0);
 
 -- Listage de la structure de table guidelol. sort_invocateur
 CREATE TABLE IF NOT EXISTS `sort_invocateur` (
@@ -1652,13 +2028,18 @@ CREATE TABLE IF NOT EXISTS `sort_invocateur` (
   PRIMARY KEY (`id`),
   KEY `IDX_CEBB8376D7ED1D4B` (`guide_id`),
   CONSTRAINT `FK_CEBB8376D7ED1D4B` FOREIGN KEY (`guide_id`) REFERENCES `guide` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.sort_invocateur : ~0 rows (environ)
+-- Listage des données de la table guidelol.sort_invocateur : ~6 rows (environ)
 INSERT INTO `sort_invocateur` (`id`, `guide_id`, `titre`, `commentaire`, `ordre`) VALUES
 	(86, 104, NULL, NULL, 0),
 	(87, 104, NULL, 'test', 1),
-	(88, 105, NULL, NULL, 0);
+	(88, 105, NULL, NULL, 0),
+	(89, 110, NULL, NULL, 0),
+	(90, 113, 'Test de titre assez long', 'ohlala', 0),
+	(91, 113, 'Test2', 'oui oui', 1),
+	(92, 115, NULL, NULL, 0),
+	(93, 116, NULL, NULL, 0);
 
 -- Listage de la structure de table guidelol. user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -1673,12 +2054,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`),
   UNIQUE KEY `UNIQ_8D93D64986CC499D` (`pseudo`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table guidelol.user : ~2 rows (environ)
+-- Listage des données de la table guidelol.user : ~3 rows (environ)
 INSERT INTO `user` (`id`, `email`, `password`, `pseudo`, `avatar`, `roles`, `create_at`, `is_verified`) VALUES
-	(24, 'test@gmail.com', '$2y$13$Wx8vmLAtyiwyGoQYytMNP.y0u0HMJPht9gjeU5kibQfXS4shLVStO', 'Snoux', 'avatar_24_1700082239.webp', '["ROLE_USER"]', '2023-11-14 13:14:05', 1),
-	(25, 'test2@gmail.com', '$2y$13$rZj3SNjxT79nmq8LQRo3yeHwitCvACt1.eCkr8TunWRYY1BdDxajS', 'user2', 'asunacloud.webp', '["ROLE_USER"]', '2023-11-14 16:06:21', 1);
+	(24, 'test@gmail.com', '$2y$13$LLzV2UED5mF66JCZ9gTrnuwMqJqECMTvBfJ8GyOIdvD9bGYCLyV1W', 'Snoux', 'avatar_24_1701654121.webp', '["ROLE_USER"]', '2023-11-14 13:14:05', 1),
+	(25, 'test2@gmail.com', '$2y$13$rZj3SNjxT79nmq8LQRo3yeHwitCvACt1.eCkr8TunWRYY1BdDxajS', 'user00002', 'asunacloud.webp', '["ROLE_USER"]', '2023-11-14 16:06:21', 1),
+	(26, 'test9@gmail.com', '$2y$13$HcNDuRTyF4zz/Y5qPii27ezjWcA1E22K7b9Ah3CSOZAK7eKo/42HC', 'user00003', 'asunacloud.webp', '["ROLE_USER"]', '2023-12-04 12:13:11', 0),
+	(27, 'test28@gmail.com', '$2y$13$NAFz0I.52ioSO9LhM8qcPe7XKu.R1UY3h1UgzVOwrmJbICMDq53n2', 'user00004', 'asunacloud.webp', '["ROLE_USER"]', '2023-12-04 12:17:04', 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
