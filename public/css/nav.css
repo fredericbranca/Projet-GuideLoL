@@ -9,6 +9,14 @@
   box-shadow: inset 0 2px 0 0 #dac286, inset 0 -2px 0 0 #dac286;
 }
 
+@media screen and (min-width: 491px) {
+  header .menu,
+  header .menu--bottom-left,
+  header #menu_bottom_left {
+    display: none;
+  }
+}
+
 .navbar-nav-left {
   list-style: none;
   display: flex;
@@ -217,14 +225,173 @@
   }
 }
 
-/* Styles pour les écrans jusqu'à 480px (mobiles) */
+/* Styles pour les écrans jusqu'à 490px (mobiles) */
 @media screen and (max-width: 490px) {
-  .nav-links,
-  .nav-auth {
+  .navbar {
+    display: none;
+  }
+  /* .navbar .nav-links,
+  .navbar .nav-auth {
     gap: 20px;
   }
 
-  .navbar-nav-left {
+  .navbar .login-link {
+    transform: scale(0.7);
+  }
+
+  .navbar .navbar-nav-right {
+    gap: 10px;
+  }
+
+  .navbar .navbar-nav-left {
     display: none;
   }
+
+  .navbar .navbar-nav-right {
+    margin-right: 0px;
+  }
+
+  .navbar a {
+    font-size: 15px;
+  } */
+
+  /* Menu burger */
+  header .menu {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 100%;
+  }
+  header .menu.active .menu__list {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition: transform 0.3s, visibility 0s 0s;
+  }
+  header .menu.active .menu__list li a {
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    opacity: 1;
+  }
+  header .menu.active .menu__list li:nth-child(1) a {
+    transition-delay: 0s;
+  }
+  header .menu.active .menu__list li:nth-child(2) a {
+    transition-delay: 0.1s;
+  }
+  header .menu.active .menu__list li:nth-child(3) a {
+    transition-delay: 0.2s;
+  }
+  header .menu.active .menu__list li:nth-child(4) a {
+    transition-delay: 0.3s;
+  }
+  header .menu.active .menu__list li:nth-child(5) a {
+    transition-delay: 0.4s;
+  }
+  header .menu.active .menu__list li:nth-child(6) a {
+    transition-delay: 0.5s;
+  }
+  header .menu.active .menu__list li:nth-child(7) a {
+    transition-delay: 0.6s;
+  }
+  header .menu.active .menu__list li:nth-child(8) a {
+    transition-delay: 0.7s;
+  }
+  header .menu.active .menu__list li:nth-child(9) a {
+    transition-delay: 0.8s;
+  }
+  header .menu.active .menu__list li:nth-child(10) a {
+    transition-delay: 0.9s;
+  }
+  header .menu .menu__btn {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 4px;
+    background: linear-gradient(
+      0deg,
+      rgba(22, 9, 240, 1) 0%,
+      rgba(49, 110, 244, 1) 100%
+    );
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  }
+  header .menu .menu__btn i {
+    color: #fff;
+  }
+  header .menu .menu__list {
+    list-style: none;
+    overflow: hidden;
+    display: flex;
+    flex-flow: column;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 5px 0;
+    border-radius: 4px;
+    transform: scale(0);
+    transform-origin: top left;
+    transition: transform 0.3s, visibility 0s 0s;
+    background: linear-gradient(0deg, #1609f0 0%, #316ef4 100%);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+  }
+  header .menu .menu__list li {
+    display: flex;
+    align-items: center;
+  }
+  header .menu .menu__list li a {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 15px 25px;
+    color: #fff;
+    text-decoration: none;
+    opacity: 0;
+  }
+  header .menu .menu__list li a:hover {
+    color: #000;
+    transition: 0.25s !important;
+    transition-delay: 0s;
+  }
+
+  header .menu.menu--bottom-left {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+  }
+  header .menu.menu--bottom-left.active .menu__list {
+    transform: scale(1);
+  }
+  header .menu.menu--bottom-left.active .menu__list li a {
+    transform: translateX(0);
+  }
+  header .menu.menu--bottom-left .menu__btn {
+    background-color: rgba(30, 35, 46, 0.88);
+    background-image: linear-gradient(315deg, rgba(30, 35, 46, 0.88), rgba(30, 35, 46, 0.88) 74%);
+  }
+  header .menu.menu--bottom-left .menu__list {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scale(0);
+    transform-origin: bottom left;
+    background-color: rgba(30, 35, 46, 0.88);
+    background-image: linear-gradient(315deg, rgba(30, 35, 46, 0.88) 0%, rgba(30, 35, 46, 0.88) 74%);
+  }
+  header .menu.menu--bottom-left .menu__list li a {
+    transform: translateX(-10px);
+  }
+
+  /* FIN MENU BURGER */
 }
