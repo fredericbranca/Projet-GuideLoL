@@ -63,6 +63,11 @@
 				{{ render(controller('App\\Controller\\ProfileController::changeEmail', {'mainRequest': app.request} )) }}
 			</div>
 
+			{# Modifier le mot de passe #}
+			<div class="change-password">
+				{{ render(controller('App\\Controller\\ProfileController::changePassword', {'mainRequest': app.request} )) }}
+			</div>
+
 		</div>
 
 	</div>
