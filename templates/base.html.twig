@@ -20,86 +20,130 @@
 	</head>
 	<body id="body">
 		<header>
-			<nav class="navbar">
-				<ul
-					class="navbar-nav-left ">
-					<!-- Premier groupe de liens -->
-					<li class="nav-item">
-						<div class="nav-links">
-							<a href="{{ path('app_home') }}" class="nav-link">HOME</a>
-						</div>
+			<div class="menu menu--bottom-left" id="menu_bottom_left">
+				<a class="menu__btn" dd-nav-expand="menu_bottom_left">
+					<i class="fa fa-bars"></i>
+				</a>
+				<ul class="menu__list">
+					<li>
+						<a href="{{ path('app_home') }}">HOME</a>
 					</li>
-					<li class="nav-item">
-						<div class="nav-links">
-							<a href="{{ path('app_guide') }}" class="nav-link">GUIDES</a>
-						</div>
+					<li>
+						<a href="{{ path('app_guide') }}">GUIDES</a>
 					</li>
-					<li class="nav-item">
-						<div class="nav-links">
-							<a href="{{ path('new_guide') }}" class="nav-link">CREATION</a>
-						</div>
+					<li>
+						<a href="{{ path('new_guide') }}">CREATION</a>
 					</li>
-					<li class="nav-item">
-						<div class="nav-links">
-							<a href="{{ path('app_champions') }}" class="nav-link">CHAMPIONS</a>
-						</div>
+					<li>
+						<a href="{{ path('app_champions') }}">CHAMPIONS</a>
 					</li>
-				</ul>
-				<!-- Authentification -->
-				<ul class="navbar-nav-right">
 					{% if app.user %}
-						<li class="nav-item">
-							<div class="nav-auth">
-								<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
-							</div>
+						<li>
+							<a href="{{ path('app_profile') }}">{{ app.user.pseudo }}</a>
 						</li>
-						<li class="nav-item">
-							<div class="nav-auth">
-								<a href="{{ path('app_logout') }}" class="login-link wrapper-logout">DECONNEXION</a>
-							</div>
+						<li>
+							<a href="{{ path('app_logout') }}">DECONNEXION</a>
 						</li>
 					{% else %}
-						<li class="nav-item">
-							<div class="nav-auth">
-								<a href="{{ path('app_register') }}" class="nav-link">INSCRIPTION</a>
-							</div>
+						<li>
+							<a href="{{ path('app_register') }}">INSCRIPTION</a>
 						</li>
-						<li class="nav-item">
-							<div class="nav-auth">
-								<a href="{{ path('app_login') }}" class="login-link wrapper">LOGIN</a>
-							</div>
+						<li>
+							<a href="{{ path('app_login') }}">LOGIN</a>
 						</li>
 					{% endif %}
-				</ul>
-				<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
-			</nav>
-		</header>
-		<main class="content">
-
-			{% for message in app.flashes('success') %}
-				<div class="alert alert-success flash-message">
-					{{ message }}
 				</div>
-			{% endfor %}
+				<nav
+					class="navbar">
+					{# Hamburger  #}
+					<ul
+						class="navbar-nav-left ">
+						<!-- Premier groupe de liens -->
+						<li class="nav-item">
+							<div class="nav-links">
+								<a href="{{ path('app_home') }}" class="nav-link">HOME</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="nav-links">
+								<a href="{{ path('app_guide') }}" class="nav-link">GUIDES</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="nav-links">
+								<a href="{{ path('new_guide') }}" class="nav-link">CREATION</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<div class="nav-links">
+								<a href="{{ path('app_champions') }}" class="nav-link">CHAMPIONS</a>
+							</div>
+						</li>
+					</ul>
+					<!-- Authentification -->
+					<ul class="navbar-nav-right">
+						{% if app.user %}
+							<li class="nav-item">
+								<div class="nav-auth">
+									<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
+								</div>
+							</li>
+							<li class="nav-item">
+								<div class="nav-auth">
+									<a href="{{ path('app_logout') }}" class="login-link wrapper-logout">DECONNEXION</a>
+								</div>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<div class="nav-auth">
+									<a href="{{ path('app_register') }}" class="nav-link">INSCRIPTION</a>
+								</div>
+							</li>
+							<li class="nav-item">
+								<div class="nav-auth">
+									<a href="{{ path('app_login') }}" class="login-link wrapper">LOGIN</a>
+								</div>
+							</li>
+						{% endif %}
+					</ul>
+					<img class="nav-logo" src="/img/logo.webp" alt="LoLGuides Logo">
+				</nav>
+			</header>
+			<main class="content">
 
-			{% for message in app.flashes('note') %}
-				<div class="alert alert-note flash-message">
-					{{ message }}
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-success flash-message">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{% for message in app.flashes('note') %}
+					<div class="alert alert-note flash-message">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{% for message in app.flashes('error') %}
+					<div class="alert alert-error flash-message">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{% block body %}{% endblock %}
+
+			</main>
+
+			<footer>
+				<div class="footer-content">
+					<a href="">Termes et conditions d'utilisation</a>
 				</div>
-			{% endfor %}
+			</footer>
 
-			{% for message in app.flashes('error') %}
-				<div class="alert alert-error flash-message">
-					{{ message }}
-				</div>
-			{% endfor %}
-
-			{% block body %}{% endblock %}
-
-		</main>
-		{% block javascripts %}
-			<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
-			<script src="{{ asset('js/main.js') }}"></script>
-		{% endblock %}
+			{% block javascripts %}
+				<script src="https://kit.fontawesome.com/de7e6c09fa.js" crossorigin="anonymous"></script>
+				<script src="{{ asset('js/main.js') }}"></script>
+				<script src="{{ asset('js/hamburger.js') }}"></script>
+			{% endblock %}
+		</body>
 	</body>
 </html>
