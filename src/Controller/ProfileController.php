@@ -5,6 +5,7 @@ namespace App\Controller;
 use Imagick;
 use App\Form\AvatarType;
 use App\Form\ChangePseudoType;
+use App\Form\ModifyEmailType;
 use App\Repository\UserRepository;
 use Google\Cloud\Storage\StorageClient;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +37,14 @@ class ProfileController extends AbstractController
         $changePseudoForm->handleRequest($request);
 
         if ($changePseudoForm->isSubmitted() && $changePseudoForm->isValid()) {
+            
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['success' => true]);
+            }
+
+            // Vérifie si l'user a l'autorisation de modifier son pseudo
+            $this->denyAccessUnlessGranted('pseudo_edit', $user, "Vous devez être vérifier pour modifier votre pseudo");
+
             // Récupérer les données du formulaire
             $formData = $changePseudoForm->getData();
             $newPseudo = $formData['newPseudo'];
@@ -66,6 +75,13 @@ class ProfileController extends AbstractController
 
             // Redirige vers le profile
             return $this->redirectToRoute('app_profile');
+        } elseif ($changePseudoForm->isSubmitted() && !$changePseudoForm->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($changePseudoForm);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
         }
 
         return $this->render('profile/index.html.twig', [
@@ -121,7 +137,6 @@ class ProfileController extends AbstractController
             // Redirection + message
             $this->addFlash('success', 'Avatar mis à jour avec succès.');
             return $this->redirectToRoute('app_profile');
-
         } elseif ($form->isSubmitted() && !$form->isValid()) {
 
             if ($request->isXmlHttpRequest()) {
@@ -129,11 +144,48 @@ class ProfileController extends AbstractController
                 $errors = $this->getFormErrors($form);
                 return new JsonResponse(['success' => false, 'errors' => $errors]);
             }
-
         }
 
         return $this->render('profile/change_avatar.html.twig', [
             'formAvatar' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/profile/change-email', name: 'app_change_email', methods: ['POST'])]
+    public function changeEmail(Request $request, EntityManagerInterface $entityManager)
+    {
+        $user = $this->security->getUser();
+
+        $form = $this->createForm(ModifyEmailType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['success' => true]);
+            }
+
+            // Met à jour l'email et réinitialise isVerified
+            $user->setEmail($form->get('email')->getData());
+            $user->setIsVerified(false);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Redirection + message
+            $this->addFlash('success', 'Email changé avec succès.');
+            return $this->redirectToRoute('app_profile');
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($form);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
+        }
+
+        return $this->render('profile/change_email.html.twig', [
+            'formEmail' => $form->createView(),
         ]);
     }
 
