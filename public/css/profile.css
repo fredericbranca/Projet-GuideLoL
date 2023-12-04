@@ -11,6 +11,7 @@ body {
   background-color: rgba(30, 35, 46, 0.88);
   min-height: 100vh;
   flex-shrink: 0;
+  padding-bottom: 50px;
 }
 
 /* Profil utilisateur */
@@ -48,13 +49,13 @@ body {
   margin: 0 4px;
 }
 
-.menu {
+.content .menu {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.menu span,
+.content .menu span,
 .btn-annuler {
   color: #fff;
   display: block;
@@ -72,7 +73,7 @@ body {
   cursor: pointer;
 }
 
-.menu span:hover,
+.content .menu span:hover,
 .btn-annuler:hover {
   text-decoration: none;
   background: rgba(0, 0, 0, 0.6);
