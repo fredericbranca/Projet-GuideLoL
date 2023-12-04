@@ -11,9 +11,9 @@
 
 				<div class="liste-competences">
 					<div class="competence-passive">
-						<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
+						<img src="{{ img_url }}/passive/{{ champ[0].passive.image.full }}.webp" alt="{{ champ[0].passive.name }}">
 						Compétence passive :
-						{{ champ.passive.name }}
+						{{ champ[0].passive.name }}
 					</div>
 
 					{% set letterMap = {'A': 'Q', 'Z': 'W', 'E': 'E', 'R': 'R'} %}
@@ -27,11 +27,11 @@
 						{# On vérifie si le champ est une instance de ChoiceType #}
 						{% if competenceField.vars.block_prefixes is defined and 'choice' in competenceField.vars.block_prefixes %}
 							<div class="competence">
-								<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
+								<img src="{{ img_url }}/spell/{{ champ[0].spells[spellIndex].image.full }}.webp" alt="{{ champ[0].spells[spellIndex].name }}">
 								{{ form_label(competenceField) }}
 								<div class="competence-titre-checkbox">
 									<div class="competence-titre">
-										<h3>{{ champ.spells[spellIndex].name }}</h3>
+										<h3>{{ champ[0].spells[spellIndex].name }}</h3>
 									</div>
 									<div class="competence-choix-checkbox">
 										{{ form_widget(competenceField) }}
@@ -69,9 +69,9 @@
 
 			<div class="liste-competences">
 				<div class="competence-passive">
-					<img src="{{ img_url }}/passive/{{ champ.passive.image.full }}.webp" alt="{{ champ.passive.name }}">
+					<img src="{{ img_url }}/passive/{{ champ[0].passive.image.full }}.webp" alt="{{ champ[0].passive.name }}">
 					Compétence passive :
-					{{ champ.passive.name }}
+					{{ champ[0].passive.name }}
 				</div>
 
 				{% set letterMap = {'A': 'Q', 'Z': 'W', 'E': 'E', 'R': 'R'} %}
@@ -85,11 +85,11 @@
 					{# On vérifie si le champ est une instance de ChoiceType #}
 					{% if competenceField.vars.block_prefixes is defined and 'choice' in competenceField.vars.block_prefixes %}
 						<div class="competence">
-							<img src="{{ img_url }}/spell/{{ champ.spells[spellIndex].image.full }}.webp" alt="{{ champ.spells[spellIndex].name }}">
+							<img src="{{ img_url }}/spell/{{ champ[0].spells[spellIndex].image.full }}.webp" alt="{{ champ[0].spells[spellIndex].name }}">
 							{{ form_label(competenceField) }}
 							<div class="competence-titre-checkbox">
 								<div class="competence-titre">
-									<h3>{{ champ.spells[spellIndex].name }}</h3>
+									<h3>{{ champ[0].spells[spellIndex].name }}</h3>
 								</div>
 								<div class="competence-choix-checkbox">
 									{{ form_widget(competenceField) }}

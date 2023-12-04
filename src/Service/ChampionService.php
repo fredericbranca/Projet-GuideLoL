@@ -57,7 +57,7 @@ class ChampionService {
 
     public function getChampionSpells($idChamp) {
         $championSpellsData = $this->lol->getChampionSpells($idChamp);
-        $championSpellsData = json_decode($championSpellsData, true)['data']['champion'];
+        $championSpellsData = json_decode($championSpellsData, true)['data']['champions'];
         
         return $championSpellsData;
     }

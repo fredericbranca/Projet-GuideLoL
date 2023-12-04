@@ -120,14 +120,14 @@ class LoLHttpClient extends AbstractController
     public function getChampionSpells($idChamp)
     {
         $query = '
-            query GetChampion($idChamp: String!) {
-                champion(idChamp: $idChamp) {
-                    idChamp
-                    name
-                    spells
-                    passive
-                }
-        }';
+                {
+                    champions (idChamp: "'. $idChamp .'") {
+                        idChamp
+                        name
+                        spells
+                        passive
+                    }
+                }';
 
         $response = $this->httpClient->request('POST', $this->getParameter('graphql_url'), [
             'verify_peer' => false,
@@ -135,10 +135,7 @@ class LoLHttpClient extends AbstractController
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode([
-                'query' => $query,
-                'variables' => [
-                    'idChamp' => $idChamp,
-                ],
+                'query' => $query
             ])
         ]);
 
