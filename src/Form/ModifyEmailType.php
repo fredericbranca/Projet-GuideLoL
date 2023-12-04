@@ -28,7 +28,10 @@ class ModifyEmailType extends AbstractType
                         'mode' => 'strict' // conforme aux standards RFC (Request for Comments)
                     ]),
                 ],
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Nouvelle adresse mail...',
+                ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
