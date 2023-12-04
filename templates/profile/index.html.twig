@@ -16,6 +16,10 @@
 			<div class="avatar-div">
 				<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
 			</div>
+			<div>
+				Vote adresse mail :
+				{{ user.email }}
+			</div>
 
 			<div class="menu">
 				<span id="menu_image">Modifier l'image</span>
@@ -38,7 +42,7 @@
 			{# Formulaire de modification du Pseudo #}
 			{% if user.isVerified %}
 				<div class="change-pseudo">
-					{{ form_start(changePseudoForm) }}
+					{{ form_start(changePseudoForm, {'attr': {'id': 'pseudo-form'}}) }}
 					{{ form_label(changePseudoForm.newPseudo)}}
 					{{ form_widget(changePseudoForm.newPseudo)}}
 					{{ form_errors(changePseudoForm.newPseudo)}}
@@ -53,6 +57,11 @@
 					{% endif %}
 				</div>
 			{% endif %}
+
+			{# Modifier l'adresse mail #}
+			<div class="change-email">
+				{{ render(controller('App\\Controller\\ProfileController::changeEmail', {'mainRequest': app.request} )) }}
+			</div>
 
 		</div>
 
