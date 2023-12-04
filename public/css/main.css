@@ -70,3 +70,46 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Footer */
+footer {
+  height: 100px;
+  background-color: rgba(30, 35, 46, 0.945);
+  color: #afbbce;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.footer-content a {
+  text-decoration: none;
+  color: #afbbce;
+}
+
+@media screen and (max-width: 1600px) {
+  .background-image::after {
+    height: 180px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .background-image::after {
+    height: 100px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .background-image::after {
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .background-image::after {
+    height: 40px;
+  }
+}
