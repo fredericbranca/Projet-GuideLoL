@@ -709,15 +709,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Responsive create guide
 function adjustScale() {
-    const windowWidth = window.innerWidth;
+    const screenWidth = screen.width;
     const maxWidth = 1330;
     const tabletWidth = 1024;
     let scaleFactor;
 
-    if (windowWidth < maxWidth) {
-        scaleFactor = windowWidth / maxWidth;
-    } else if (windowWidth < tabletWidth) {
-        scaleFactor = windowWidth / tabletWidth;
+    if (screenWidth < maxWidth) {
+        scaleFactor = screenWidth / maxWidth;
+    } else if (screenWidth < tabletWidth) {
+        scaleFactor = screenWidth / tabletWidth;
     } else {
         scaleFactor = 1;
     }
@@ -726,7 +726,7 @@ function adjustScale() {
 }
 
 // Ajuste le scale lors du chargement initial et lors du redimensionnement de la fenêtre
-window.addEventListener('load', adjustScale);
+window.addEventListener('DOMContentLoaded', adjustScale);
 window.addEventListener('resize', adjustScale);
 
 // Recherche d'un champion
