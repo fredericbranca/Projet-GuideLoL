@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "menu_mail": ".change-email",
         "menu_mdp": ".change-password",
     };
-    const menu = document.querySelector('.menu');
+    const menu = document.querySelector('.content .menu');
 
     Object.keys(mappingMenu).forEach(function (menuId) {
         const menuElement = document.getElementById(menuId);
