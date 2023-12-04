@@ -68,8 +68,15 @@
 					{# Choix du rôle #}
 					<div class="new-guide-config__role">
 						{{ form_label(form.voie)}}
-						{{ form_widget(form.voie)}}
-						{{ form_errors(form.voie)}}
+						<div class="choix-role">
+							{% for choice in form.voie %}
+								<input type="radio" id="{{ choice.vars.id }}" name="{{ choice.vars.full_name }}" value="{{ choice.vars.value }}"{{ choice.vars.checked ? ' checked' : '' }}>
+								<label for="{{ choice.vars.id }}">
+									<img src="/img/role/{{ choice.vars.label }}.webp" alt="{{ choice.vars.label }}">
+								</label>
+							{% endfor %}
+							{{ form_errors(form.voie)}}
+						</div>
 					</div>
 
 					{# Choix du Champion #}
@@ -78,7 +85,7 @@
 					</div>
 					
 					<div class="search-container">
-						<input type="text" id="searchChampion" placeholder="Recherche un champion...">
+						<input type="text" id="searchChampion" autocomplete="off" placeholder="Recherche un champion...">
 					</div>
 					<div class="new-guide-config__champion">
 						<div class="liste-champions">

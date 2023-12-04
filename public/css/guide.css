@@ -11,6 +11,7 @@ body {
   background-color: rgba(30, 35, 46, 0.88);
   min-height: 100vh;
   flex-shrink: 0;
+  color: #fff;
 }
 
 /* Position des éléments */
@@ -51,6 +52,48 @@ h1 {
 
 .new-guide-builder__items-container .new-guide-builder_container {
   margin-bottom: 30px;
+}
+
+.new-guide-config__title,
+.new-guide-config__role {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.new-guide-config__title label,
+.new-guide-config__role label {
+  font-size: 25px;
+}
+
+.new-guide-config__role {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.new-guide-config__role img {
+  width: 80px;
+  height: 80px;
+}
+
+.new-guide-config__role input[type="radio"]:checked + label img {
+  box-shadow: 0px 0px 4px 2px #dac286;
+  background: #0308116c;
+}
+
+.new-guide-config__role img:hover {
+  background: #0308116c;
+  cursor: pointer;
+}
+
+.choix-role {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.new-guide-config__role input[type="radio"] {
+  display: none;
 }
 
 /* Configuration */
@@ -227,8 +270,32 @@ h1 {
 }
 
 /* Champions */
+#guide_titre {
+  padding: 10px;
+  width: 60%;
+  height: 60px;
+  border: none;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #5f5f7b;
+}
+
 .liste-champions div {
   display: none;
+}
+
+#searchChampion {
+  padding: 10px;
+  width: 35%;
+  height: 60px;
+  border: none;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #5f5f7b;
 }
 
 .liste-champions div.initial-display {
@@ -245,7 +312,7 @@ h1 {
 }
 
 .champ-select > span.empty {
-  background: #0b1727;
+  background: #ffffffba;
   background-image: url(../img/new-guide__champType.webp);
   background-repeat: no-repeat;
   background-size: 26px;
@@ -831,7 +898,7 @@ h1 {
   }
 
   .new-guide-config {
-    width: 70%;
+    width: 95%;
   }
 
   .new-guide-builder {
@@ -1051,6 +1118,30 @@ h1 {
 
   .sk-arbre-2 div {
     height: 4px;
+  }
+
+  /* Premiere section */
+  .new-guide-config__title label,
+  .new-guide-config__role label {
+    font-size: 50px;
+  }
+
+  #guide_titre,
+  #searchChampion {
+    height: 83px;
+    font-size: 30px;
+  }
+
+  .new-guide-config__role img,
+  .champ-select > span.empty,
+  .champ-select > span.empty img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .liste-champions img {
+    width: 150px;
+    height: 150px;
   }
 }
 
