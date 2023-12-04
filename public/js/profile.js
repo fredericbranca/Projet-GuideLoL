@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const mappingMenu = {
         "menu_image": ".modifier-avatar",
         "menu_pseudo": ".change-pseudo",
+        "menu_mail": ".change-email",
     };
     const menu = document.querySelector('.menu');
 
@@ -71,41 +72,46 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-let formAvatarStatut = false;
-// Requete AJAX pour le form Avatar
-if (!formAvatarStatut) {
-    let avatarForm = document.getElementById('avatar-form');
-    avatarForm.addEventListener('submit', function (event) {
+// Fonction pour gérer les erreurs des formulaires en AJAX
+function handleFormAjax(form) {
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        avatarForm.querySelectorAll('.error-msg').forEach(message => {
+        form.querySelectorAll('.error-msg').forEach(message => {
             message.remove();
-        })
+        });
 
-        var formData = new FormData(this);
-        fetch(this.action, {
+        var formData = new FormData(form);
+        fetch(form.action, {
             method: 'POST',
             body: formData,
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.errors) {
-
-                    data.errors.forEach(error => {
-                        let errorMsg = document.createElement('div');
-                        errorMsg.classList.add('error-msg');
-                        errorMsg.textContent = error;
-                        avatarForm.appendChild(errorMsg);
-                    });
-
-                } else {
-                    avatarForm.submit();
-                    formAvatarStatut = true;
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                data.errors.forEach(error => {
+                    let errorMsg = document.createElement('div');
+                    errorMsg.classList.add('error-msg');
+                    errorMsg.textContent = error;
+                    form.appendChild(errorMsg);
+                });
+            } else {
+                form.submit();
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const avatarForm = document.getElementById('avatar-form');
+    const emailForm = document.getElementById('email-form');
+    const pseudoForm = document.getElementById('pseudo-form');
+
+    if (avatarForm) handleFormAjax(avatarForm);
+    if (emailForm) handleFormAjax(emailForm);
+    if (pseudoForm) handleFormAjax(pseudoForm);
+});
