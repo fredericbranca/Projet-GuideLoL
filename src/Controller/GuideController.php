@@ -16,6 +16,8 @@ use App\Entity\CompetencesGroup;
 use App\Service\ChampionService;
 use App\Service\CompetenceService;
 use App\Entity\EnsembleItemsGroups;
+use App\Entity\Evaluation;
+use App\Form\CommentaireType;
 use App\Repository\EvaluationRepository;
 use App\Repository\GuideRepository;
 use App\Service\SortInvocateurService;
@@ -210,8 +212,46 @@ class GuideController extends AbstractController
         RuneService $runeService,
         EvaluationRepository $evaluationRepository,
         PaginatorInterface $paginator,
-        Request $request
+        Request $request,
+        EntityManagerInterface $em
     ): Response {
+        // Création et traitement du formulaire de commentaire
+        $commentaire = new Evaluation();
+        $commentaireForm = $this->createForm(CommentaireType::class, $commentaire);
+        $commentaireForm->handleRequest($request);
+
+        if ($commentaireForm->isSubmitted() && $commentaireForm->isValid()) {
+            if ($request->isXmlHttpRequest()) {
+                // Ajout des informations supplémentaires
+                $commentaire->setGuide($guide);
+                $commentaire->setUser($this->security->getUser());
+
+                // Enregistrement du commentaire
+                $em->persist($commentaire);
+                $em->flush();
+
+                // Récupération des commentaires mis à jour
+                $evaluations = $paginator->paginate(
+                    $evaluationRepository->findBy(['guide' => $guide->getId()], ['created_at' => 'DESC']),
+                    $request->query->getInt('page', 1),
+                    25,
+                    ['pageParameterName' => 'page']
+                );
+
+                // Renvoi de la vue mise à jour
+                return $this->render('guide/template_partiel_evaluation.html.twig', [
+                    'evaluations' => $evaluations
+                ]);
+            }
+        } elseif ($commentaireForm->isSubmitted() && !$commentaireForm->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($commentaireForm);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
+        }
+
         // Evaluation
         $evaluations = $paginator->paginate(
             $evaluationRepository->findBy(['guide' => $guide->getId()], ['created_at' => 'DESC']),
@@ -245,7 +285,8 @@ class GuideController extends AbstractController
             'list_items' => $itemsList,
             'runes_data' => $runesData,
             'champion' => $championData,
-            'evaluations' => $evaluations
+            'evaluations' => $evaluations,
+            'commentaireForm' => $commentaireForm
         ]);
     }
 
@@ -631,5 +672,15 @@ class GuideController extends AbstractController
             'list' => $list,
             'img_url' => $img_url,
         ];
+    }
+
+    // Fonction pour récupérer les erreurs de formulaire
+    private function getFormErrors($form)
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return $errors;
     }
 }

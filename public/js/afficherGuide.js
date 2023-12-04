@@ -68,16 +68,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Script pour compter le nombre de caractère du textarea
+    const textarea = document.getElementById('commentaire_commentaire');
+    const characterCount = document.getElementById('characterCount');
+
+    textarea.addEventListener('input', function () {
+        const currentLength = textarea.value.length;
+        const maxLength = textarea.getAttribute('maxlength');
+        characterCount.textContent = `${currentLength}/${maxLength}`;
+    });
 });
 
 // Gestion de la pagination avec une requête AJAX
-const container = document.getElementById('commentaire-container');
+const container = document.getElementById('commentaires-users');
 const pagination = container.querySelector('.pagination');
 
 container.addEventListener('click', function (event) {
     const target = event.target;
 
-    if (target.tagName !== 'A') {
+    if (target.tagName !== 'A' && target.closest('.pagination span:not(.current)')) {
         target = target.closest('a');
     }
 
@@ -90,10 +100,66 @@ container.addEventListener('click', function (event) {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => response.text())
-        .then(html => {
-            container.innerHTML = html;
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+            });
+    }
+});
+
+// Gestion du formulaire avec une requete AJAX
+const form = document.getElementById('commentaire-form');
+const commentaireContainer = document.getElementById('commentaires-users');
+const characterCount = document.getElementById('characterCount');
+const textarea = document.getElementById('commentaire_commentaire');
+const maxLength = textarea.getAttribute('maxlength');
+
+form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const errorsContainer = document.getElementById('form-errors');
+    errorsContainer.innerHTML = ''; // Efface les erreurs précédentes
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
+
+        // Vérifie le type de contenu de la réponse
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType && contentType.includes('application/json')) {
+            const json = await response.json();
+            if (json.errors) {
+                json.errors.forEach(error => {
+                    const errorElement = document.createElement('div');
+                    errorElement.textContent = error;
+                    errorsContainer.appendChild(errorElement);
+                });
+
+                // Masque les erreurs après 5s ec
+                setTimeout(() => {
+                    errorsContainer.innerHTML = '';
+                }, 5000);
+
+                return; // Arrête l'exécution en cas d'erreur
+            }
+        }
+
+        // Si la réponse est OK et de type HTML
+        if (contentType && contentType.includes('text/html')) {
+            const html = await response.text();
+            commentaireContainer.innerHTML = html;
+            form.querySelector('#commentaire_commentaire').value = "";
+            characterCount.textContent = `0/${maxLength}`;
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
 });
 
