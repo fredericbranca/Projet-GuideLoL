@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "951ebbb6e25ad58b3e7417e9c7c49e5c",
+    "content-hash": "3f6b554129c6f706ecd5bee2c7aca8d3",
     "packages": [
         {
             "name": "async-aws/core",
@@ -131,6 +131,65 @@
                 }
             ],
             "time": "2023-08-07T20:00:50+00:00"
+        },
+        {
+            "name": "beberlei/doctrineextensions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/DoctrineExtensions.git",
+                "reference": "67f32c184e80085e170b6e4e8f4f94bc92394c72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/67f32c184e80085e170b6e4e8f4f94bc92394c72",
+                "reference": "67f32c184e80085e170b6e4e8f4f94bc92394c72",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.7",
+                "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.11",
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "nesbot/carbon": "*",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+                "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
+                "zf1/zend-date": "^1.12",
+                "zf1/zend-registry": "^1.12"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DoctrineExtensions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Steve Lacey",
+                    "email": "steve@steve.ly"
+                }
+            ],
+            "description": "A set of extensions to Doctrine 2 that add support for additional query functions available in MySQL, Oracle, PostgreSQL and SQLite.",
+            "keywords": [
+                "database",
+                "doctrine",
+                "orm"
+            ],
+            "support": {
+                "source": "https://github.com/beberlei/DoctrineExtensions/tree/master"
+            },
+            "time": "2023-02-25T19:57:36+00:00"
         },
         {
             "name": "brick/math",
@@ -2437,6 +2496,53 @@
                 "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v6.3.0"
             },
             "time": "2023-11-19T08:15:37+00:00"
+        },
+        {
+            "name": "mapado/mysql-doctrine-functions",
+            "version": "v1.1.3",
+            "target-dir": "Mapado/MysqlDoctrineFunctions",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mapado/MysqlDoctrineFunctions.git",
+                "reference": "b673a1ce348bb6a1fd6ed2feb8134a771a3036db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mapado/MysqlDoctrineFunctions/zipball/b673a1ce348bb6a1fd6ed2feb8134a771a3036db",
+                "reference": "b673a1ce348bb6a1fd6ed2feb8134a771a3036db",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mapado\\MysqlDoctrineFunctions": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Julien Deniau",
+                    "email": "julien.deniau@mapado.com"
+                }
+            ],
+            "description": "MySQL Function for Doctrine : RAND(), ROUND() DATE(), DATE_FORMAT()...",
+            "keywords": [
+                "doctrine",
+                "function",
+                "mapado",
+                "mysql"
+            ],
+            "support": {
+                "issues": "https://github.com/mapado/MysqlDoctrineFunctions/issues",
+                "source": "https://github.com/mapado/MysqlDoctrineFunctions/tree/master"
+            },
+            "time": "2015-08-15T15:18:09+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -11173,7 +11279,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "beberlei/doctrineextensions": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -11182,5 +11290,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
