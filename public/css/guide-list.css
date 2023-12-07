@@ -1,9 +1,18 @@
+body {
+  background-image: url("../img/home-bg_1920.webp");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
 .content {
   min-height: 100vh;
-  width: 100%;
-  margin: 0;
   display: flex;
   justify-content: center;
+  margin: 0 clamp(0%, (100vw - 1025px) * 0.5, 15%);
+  background-color: rgba(30, 35, 46, 0.88);
+  color: #fff;
 }
 
 .wrapper-recherche-guide {
@@ -40,8 +49,14 @@
 .listing-item {
   width: 100%;
   margin-bottom: 4px;
-  background: #1c2a45;
   display: flex;
+  background: #17172e78;
+  border: 1px solid #2c2c40;
+}
+
+.listing-item:hover {
+  transform: scale(1.01);
+  background: #17172e88;
 }
 
 .note-guide {
@@ -49,6 +64,98 @@
   display: flex;
   flex: 0 0 147px;
   max-width: 147px;
+  color: #fff;
+  border: 2px solid #091120;
+  display: flex;
+  justify-content: center;
+}
+
+
+.search-result {
+  margin-top: 3px;
+  z-index: 10;
+  top: 100%;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+}
+
+.div-search-filter {
+  position: relative;
+}
+
+.fa-spinner {
+  font-size: 22px;
+}
+
+.note-guide span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ffd591;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.note-guide span::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 9px);
+  bottom: -9px;
+  width: 18px;
+  height: 18px;
+  transform: rotate(45deg);
+  background: linear-gradient(-45deg, #544325 0%, #544325 50%, #866032 100%);
+}
+
+.champion-div {
+  display: flex;
+  flex-wrap: nowrap;
+  text-align: center;
+  align-items: center;
+  background-color: #313d49;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.champion-div:hover {
+  background-color: #41505f;
+}
+
+.input-champion-search {
+  padding: 10px;
+  width: 220px;
+  height: 43px;
+  border: none;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #5f5f7b;
+}
+
+.input-champion-search::placeholder {
+  font-size: 15px;
+}
+
+.champion-name {
+  padding: 0 10px;
+}
+
+.image-wrapper {
+  display: flex;
+}
+
+.image-wrapper img {
+  width: 40px;
+  height: 40px;
 }
 
 .champion-guide {
@@ -74,7 +181,6 @@
   flex-direction: column;
   justify-content: center;
   padding: 0 10px;
-  background: #233148;
 }
 
 .infos-guide .titre-guide {
@@ -103,7 +209,8 @@
 
 .pagination {
   display: flex;
-  background: #152034;
+  background: #17172e78;
+  border: 1px solid #2c2c40;
   justify-content: center;
   width: 100%;
   overflow: hidden;
@@ -159,7 +266,6 @@
   }
 
   .listing-item {
-    background: #233148;
     border-radius: 4px;
     padding: 5px;
     align-items: center;
@@ -169,4 +275,10 @@
     max-width: 60px;
     padding: 0 10px;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper-recherche-guide {
+    padding: 10px;
+}
 }
