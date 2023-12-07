@@ -23,11 +23,11 @@
 				<h1>Liste des Guides</h1>
 
 				{{ form_start(filtre_form, {'attr': {'id': 'form-guide-filter'}}) }}
-				<div>
-					<input type="search" id="guide-filtre-champion" class="input-champion-search" autocomplete="off">
+				<div class="div-search-filter">
+					<input type="search" id="guide-filtre-champion" class="input-champion-search" placeholder="Recherche un champion..." autocomplete="off">
 					<a href="{{ path('app_champions') }}">Voir les champions >></a>
 					<span id="clear-champion-btn">Effacer</span>
-					<span id="clear-btn">Effacer tout le formulaire</span>
+					<span id="clear-btn">Effacer tout</span>
 					<span class="search-result"></span>
 				</div>
 				<div>
@@ -37,11 +37,16 @@
 				{{ form_end(filtre_form) }}
 
 				<div class="listing-guide">
-
 					{% for guide in guides %}
 						<a class="listing-item" href="/guide/{{ guide.id }}">
 							<div class="note-guide">
-								Test
+								<span>
+									{% if moyenne[guide.id] is defined %}
+										{{ moyenne[guide.id]['moyenne'] }}
+									{% else %}
+										<i class="fa-solid fa-spinner" style="color: #ffffff;"></i>
+									{% endif %}
+								</span>
 							</div>
 							<div class="champion-guide">
 								<img src="{{ img_url }}/champion/{{ guide.champion.id }}.png.webp" alt="{{ guide.champion }}">
@@ -76,5 +81,8 @@
 
 	</div>
 
+	<script>
+		var url = {{ img_url|json_encode|raw }};
+	</script>
 	<script src="{{ asset('js/searchChampionsFilter.js') }}"></script>
 {% endblock %}
