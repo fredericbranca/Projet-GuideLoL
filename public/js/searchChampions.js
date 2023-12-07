@@ -1,43 +1,50 @@
 const searchInput = document.getElementById('search-champion');
-
+var searchTimer;
 // Script pour rechercher des champions et afficher le résultat
 document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', function () {
-        var searchTerm = searchInput.value;
-        // div qui affiche les résultats
-        var div = document.querySelector('.search-result');
+        clearTimeout(searchTimer);
 
-        if (searchTerm !== "") {
+        searchTimer = setTimeout(() => {
 
-            fetch('/search?term=' + encodeURIComponent(searchTerm))
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    // Efface la recherche précédente
-                    div.innerHTML = '';
+            var searchTerm = searchInput.value;
+            // div qui affiche les résultats
+            var div = document.querySelector('.search-result');
 
-                    // Ajoute chaque champion
-                    // Ecouteur d'évènement sur un champion pour valider le form avec le filtre du champion
-                    Object.keys(data.champions).forEach(function (championKey) {
-                        var champion = data.champions[championKey];
-                        div.innerHTML += `
+            if (searchTerm !== "") {
+
+                fetch('/search?term=' + encodeURIComponent(searchTerm))
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // Efface la recherche précédente
+                        div.innerHTML = '';
+
+                        // Ajoute chaque champion
+                        // Ecouteur d'évènement sur un champion pour valider le form avec le filtre du champion
+                        Object.keys(data.champions).forEach(function (championKey) {
+                            var champion = data.champions[championKey];
+                            div.innerHTML += `
                             <a class="champion-link" href="/guides?champion=${champion.name}">
                                 <div class="image-wrapper">
                                     <img src="${url}/champion/${champion.idChamp}.png.webp" alt="${champion.name}">
                                 </div>
                                 <div class="champion-name">${champion.name}</div>
                             </a>`;
+                        });
+                    })
+                    .catch(function (error) {
+                        // Gestion d'erreurs
+                        console.error(error);
                     });
-                })
-                .catch(function (error) {
-                    // Gestion d'erreurs
-                    console.error(error);
-                });
 
-        } else {
-            div.innerHTML = '';
-        }
+            } else {
+                div.innerHTML = '';
+                div.append();
+            }
+
+        }, 300);
     });
 });
 

@@ -1,45 +1,57 @@
 const searchInput = document.getElementById('guide-filtre-champion');
-
+var searchTimer;
 // Script pour rechercher des champions et afficher le résultat
 document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('input', function () {
-        var searchTerm = searchInput.value;
-        // Span qui affiche les résultats
-        var span = document.querySelector('.search-result');
+        clearTimeout(searchTimer);
 
-        if (searchTerm !== "") {
+        searchTimer = setTimeout(() => {
 
-            fetch('/search?term=' + encodeURIComponent(searchTerm))
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    // Efface la recherche précédente
-                    span.innerHTML = '';
+            var searchTerm = searchInput.value;
+            // Span qui affiche les résultats
+            var span = document.querySelector('.search-result');
 
-                    // Ajoute chaque champion
-                    // Ecouteur d'évènement sur un champion pour valider le form avec le filtre du champion
-                    Object.keys(data.champions).forEach(function (championKey) {
-                        var champion = data.champions[championKey];
-                        var div = document.createElement('div');
-                        div.textContent = champion.name;
-                        div.classList.add('champion-div');
-                        div.addEventListener('click', function () {
-                            document.getElementById('guide_filtre_champion').value = champion.name; // Met à jour la valeur du champ
-                            document.getElementById('form-guide-filter').submit(); // Soumet le formulaire
+            if (searchTerm !== "") {
+
+                fetch('/search?term=' + encodeURIComponent(searchTerm))
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // Efface la recherche précédente
+                        span.innerHTML = '';
+
+                        // Ajoute chaque champion
+                        // Ecouteur d'évènement sur un champion pour valider le form avec le filtre du champion
+                        Object.keys(data.champions).forEach(function (championKey) {
+                            var champion = data.champions[championKey];
+                            var div = document.createElement('div');
+                            div.innerHTML += `
+                            <div class="image-wrapper">
+                                <img src="${url}/champion/${champion.idChamp}.png.webp" alt="${champion.name}">
+                            </div>
+                            <div class="champion-name">${champion.name}</div>`;
+                            div.classList.add('champion-div');
+                            div.addEventListener('click', function () {
+                                document.getElementById('guide_filtre_champion').value = champion.name; // Met à jour la valeur du champ
+                                document.getElementById('form-guide-filter').submit(); // Soumet le formulaire
+                            });
+                            if (span !== '') {
+                                span.appendChild(div);
+                            }
                         });
-                        span.appendChild(div);
+                    })
+                    .catch(function (error) {
+                        // Gestion d'erreurs
+                        console.error(error);
                     });
-                })
-                .catch(function (error) {
-                    // Gestion d'erreurs
-                    console.error(error);
-                });
 
-        } else {
-            span.innerHTML = '';
-            span.appendChild();
-        }
+            } else {
+                span.innerHTML = "";
+                span.append();
+            }
+
+        }, 300);
     });
 });
 
