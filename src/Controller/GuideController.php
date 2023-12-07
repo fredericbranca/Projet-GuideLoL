@@ -503,7 +503,8 @@ class GuideController extends AbstractController
         GuideRepository $guideRepository,
         ChampionService $championService,
         PaginatorInterface $paginator,
-        Request $request
+        Request $request,
+        EvaluationRepository $evaluationRepository
     ): Response {
         // Prépare les données pour le formulaire (avec les données initiales)
         $initialData = [];
@@ -544,6 +545,9 @@ class GuideController extends AbstractController
             ['pageParameterName' => 'page']
         );
 
+        // Moyenne des guides
+        $moyenneGuide = $evaluationRepository->getMoyenneGuides();
+
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
@@ -552,6 +556,7 @@ class GuideController extends AbstractController
             'guides' => $guides,
             'img_url' => $img_url,
             'filtre_form' => $filtreForm->createView(),
+            'moyenne' => $moyenneGuide
         ]);
     }
 

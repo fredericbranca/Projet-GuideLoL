@@ -21,28 +21,38 @@ class EvaluationRepository extends ServiceEntityRepository
         parent::__construct($registry, Evaluation::class);
     }
 
-//    /**
-//     * @return Evaluation[] Returns an array of Evaluation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Notation Float - Retourne la moyenne du guide
+     */
+    public function getMoyenneGuides(): array
+    {
+        $query = $this->createQueryBuilder('e')
+            ->select('g.id', 'ROUND(AVG(e.notation),1) AS moyenne')
+            ->join('App\Entity\Guide', 'g')
+            ->where('g.id = e.guide')
+            ->andwhere('e.notation IS NOT NULL')
+            ->groupBy('e.guide')
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Evaluation
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $moyennes = $query->getResult();
+
+        $moyennesGuides = [];
+    
+        foreach ($moyennes as $moyenne) {
+            $id = $moyenne['id'];
+            $moyennesGuides[$id] = $moyenne;
+        }
+
+        return $moyennesGuides;
+    }
+
+    //    public function findOneBySomeField($value): ?Evaluation
+    //    {
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
