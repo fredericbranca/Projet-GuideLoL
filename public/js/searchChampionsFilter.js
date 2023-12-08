@@ -56,11 +56,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Execute le formulaire au clic sur un role
-divRoles = document.getElementById('guide_filtre_role');
+divRoles = document.getElementById(`guide_filtre_role`);
 
 divRoles.addEventListener('click', function (event) {
     // Vérifie si l'élément cliqué est un label
-    if (event.target.tagName === 'LABEL') {
+    if (event.target.tagName === 'IMG'|| event.target.tagName === 'LABEL') {
         // Temporisation pour permettre à l'input radio d'être coché
         setTimeout(function () {
 
