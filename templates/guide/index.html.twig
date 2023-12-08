@@ -38,28 +38,28 @@
 
 				<div class="listing-guide">
 					{% for guide in guides %}
-						<a class="listing-item" href="/guide/{{ guide.id }}">
+						<a class="listing-item" href="/guide/{{ guide[0].id }}">
 							<div class="note-guide">
 								<span>
-									{% if moyenne[guide.id] is defined %}
-										{{ moyenne[guide.id]['moyenne'] }}
+									{% if guide.moyenne is not null %}
+										{{ guide.moyenne }}
 									{% else %}
 										<i class="fa-solid fa-spinner" style="color: #ffffff;"></i>
 									{% endif %}
 								</span>
 							</div>
 							<div class="champion-guide">
-								<img src="{{ img_url }}/champion/{{ guide.champion.id }}.png.webp" alt="{{ guide.champion }}">
+								<img src="{{ img_url }}/champion/{{ guide[0].champion.id }}.png.webp" alt="{{ guide[0].champion }}">
 							</div>
 							<div class="infos-guide">
 								<h2 class="titre-guide">
-									<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="">
-									{{ guide.titre }}
+									<img src="{{ img_url }}/role/{{ guide[0].voie }}.webp" alt="">
+									{{ guide[0].titre }}
 								</h2>
 								<span class="user-infos">
 									Guide créé par
-									{{ guide.user }}
-									{{ guide.modifiedAt ? ('modifié le ' ~ guide.modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide.createdAt|date("m/d/Y")) }}
+									{{ guide[0].user }}
+									{{ guide[0].modifiedAt ? ('modifié le ' ~ guide[0].modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide[0].createdAt|date("m/d/Y")) }}
 								</span>
 							</div>
 						</a>

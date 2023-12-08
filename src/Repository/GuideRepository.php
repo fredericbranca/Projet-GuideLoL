@@ -21,8 +21,8 @@ class GuideRepository extends ServiceEntityRepository
         parent::__construct($registry, Guide::class);
     }
 
-    // Récupère la liste des guides par date (modifié ou création) + gère les filtres champion et voie (role)
-    public function findByDateWithFilters($filters)
+    // Récupère la liste des guides par note ou par date (modifié ou création) + gère les filtres champion et voie (role)
+    public function findByNoteOrDateWithFilters($filters)
     {
         $qb = $this->createQueryBuilder('g');
 
@@ -37,8 +37,10 @@ class GuideRepository extends ServiceEntityRepository
                 ->setParameter('voie', $filters['role']);
         }
 
-        // Trie par date de modification si elle existe sinon par date de création
-        $qb->orderBy('CASE WHEN g.modified_at IS NOT NULL THEN g.modified_at ELSE g.created_at END', 'DESC');
+        $qb->leftJoin('g.evaluations', 'e')
+            ->addSelect('(SELECT ROUND(AVG(e_sub.notation), 1) FROM App\Entity\Evaluation e_sub WHERE e_sub.guide = g AND e_sub.notation IS NOT NULL) AS moyenne')
+            ->orderBy('moyenne', 'DESC')
+            ->addOrderBy('CASE WHEN g.modified_at IS NOT NULL THEN g.modified_at ELSE g.created_at END', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

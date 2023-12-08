@@ -539,14 +539,11 @@ class GuideController extends AbstractController
 
         // Récupère les guides + prépare l'affichage avec paginator pour la pagination
         $guides = $paginator->paginate(
-            $guideRepository->findByDateWithFilters($filtres),
+            $guideRepository->findByNoteOrDateWithFilters($filtres),
             $request->query->getInt('page', 1),
             5,
             ['pageParameterName' => 'page']
         );
-
-        // Moyenne des guides
-        $moyenneGuide = $evaluationRepository->getMoyenneGuides();
 
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
@@ -555,8 +552,7 @@ class GuideController extends AbstractController
         return $this->render('guide/index.html.twig', [
             'guides' => $guides,
             'img_url' => $img_url,
-            'filtre_form' => $filtreForm->createView(),
-            'moyenne' => $moyenneGuide
+            'filtre_form' => $filtreForm->createView()
         ]);
     }
 
