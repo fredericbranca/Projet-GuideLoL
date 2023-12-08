@@ -23,18 +23,28 @@
 				<h1>Liste des Guides</h1>
 
 				{{ form_start(filtre_form, {'attr': {'id': 'form-guide-filter'}}) }}
-				<div class="div-search-filter">
-					<input type="search" id="guide-filtre-champion" class="input-champion-search" placeholder="Recherche un champion..." autocomplete="off">
-					<a href="{{ path('app_champions') }}">Voir les champions >></a>
-					<span id="clear-champion-btn">Effacer</span>
-					<span id="clear-btn">Effacer tout</span>
-					<span class="search-result"></span>
-				</div>
-				<div>
-					{{ form_row(filtre_form.role) }}
-				</div>
-				{{ form_widget(filtre_form.champion) }}
-				{{ form_end(filtre_form) }}
+					<div class="div-search-filter">
+						<input type="search" id="guide-filtre-champion" class="input-champion-search" placeholder="Recherche un champion..." autocomplete="off">
+						<a href="{{ path('app_champions') }}">Voir les champions >></a>
+						<span id="clear-champion-btn">Effacer</span>
+						<span id="clear-btn">Effacer tout</span>
+						<span class="search-result"></span>
+					</div>
+					<div>
+						<div class="choix-role" id="guide_filtre_role">
+							{% for choice in filtre_form.role %}
+								<input type="radio" id="{{ choice.vars.id }}" name="{{ choice.vars.full_name }}" value="{{ choice.vars.value }}" {{ choice.vars.checked ? ' checked' : '' }}>
+								<label for="{{ choice.vars.id }}">
+									<img src="/img/role/{{ choice.vars.label }}.webp" alt="{{ choice.vars.label }}">
+									{{ choice.vars.label }}
+								</label>
+							{% endfor %}
+							{{ form_errors(filtre_form.role)}}
+						</div>
+					</div>
+					{{ form_widget(filtre_form.champion) }}
+					{{ form_widget(filtre_form._token) }}
+				</form>
 
 				<div class="listing-guide">
 					{% for guide in guides %}
@@ -53,7 +63,7 @@
 							</div>
 							<div class="infos-guide">
 								<h2 class="titre-guide">
-									<img src="{{ img_url }}/role/{{ guide[0].voie }}.webp" alt="">
+									<img src="{{ img_url }}/role/{{ guide[0].voie }}.webp" alt="Rôle {{ guide[0].voie }}">
 									{{ guide[0].titre }}
 								</h2>
 								<span class="user-infos">
