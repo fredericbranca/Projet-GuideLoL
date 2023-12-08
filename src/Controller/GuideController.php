@@ -504,7 +504,7 @@ class GuideController extends AbstractController
         ChampionService $championService,
         PaginatorInterface $paginator,
         Request $request,
-        EvaluationRepository $evaluationRepository
+
     ): Response {
         // Prépare les données pour le formulaire (avec les données initiales)
         $initialData = [];
