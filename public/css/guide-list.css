@@ -131,7 +131,7 @@ body {
 
 .input-champion-search {
   padding: 10px;
-  width: 220px;
+  width: 210px;
   height: 43px;
   border: none;
   font-size: 20px;
@@ -139,6 +139,21 @@ body {
   border-radius: 3px;
   background-color: #fff;
   color: #5f5f7b;
+}
+
+.div-search-filter a {
+  color: #fff;
+}
+
+#clear-champion-btn,
+#clear-btn {
+  cursor: pointer;
+}
+
+#clear-champion-btn:hover,
+#clear-btn:hover,
+.div-search-filter a:hover {
+  color: #dac286;
 }
 
 .input-champion-search::placeholder {
@@ -181,6 +196,39 @@ body {
   flex-direction: column;
   justify-content: center;
   padding: 0 10px;
+}
+
+.choix-role label img {
+  cursor: pointer;
+}
+
+.choix-role label img:hover {
+  background-color: #17172e88;
+}
+
+.choix-role input[type="radio"]:checked + label img {
+  background-color: #275495 !important;
+}
+
+.choix-role input[type="radio"] {
+  display: none;
+}
+
+.choix-role {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  text-align: center;
+}
+
+.choix-role label {
+  display: flex;
+  flex-direction: column;
+}
+
+.choix-role img {
+  width: 60px;
+  height: 60px;
 }
 
 .infos-guide .titre-guide {
@@ -280,5 +328,14 @@ body {
 @media screen and (max-width: 480px) {
   .wrapper-recherche-guide {
     padding: 10px;
-}
+  }
+
+  .choix-role img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .choix-role label {
+    font-size: 12px;
+  }
 }
