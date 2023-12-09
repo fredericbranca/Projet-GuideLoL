@@ -29,7 +29,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Veuillez entrer une adresse email',
                     ]),
                     new Email([
-                        'message' => 'L\'adresse email fournie n\'est pas valide.',
+                        'message' => 'L\'adresse email fournie n\'est pas valide',
                         'mode' => 'strict' // conforme aux standards RFC (Request for Comments)
                     ]),
                 ],
@@ -39,14 +39,15 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Vous devez accepter nos conditions.',
+                        'message' => 'Vous devez accepter nos conditions',
                     ]),
                 ],
-                'required' => true
+                'label' => 'J\'ai lu et j\'accepte les conditions d\'inscription',
+                'required' => true,
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent correspondre.',
+                'invalid_message' => 'Les mots de passe doivent correspondre',
                 'options' => ['attr' => ['autocomplete' => 'new-password']],
                 'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],
