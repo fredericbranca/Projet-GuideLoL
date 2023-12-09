@@ -1,23 +1,45 @@
 {% extends 'base.html.twig' %}
 
+{% block additional_css %}
+	<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
 {% block title %}Register
 {% endblock %}
 
 {% block body %}
-	{% for flash_error in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-	{% endfor %}
+	<div class="login-container">
 
-	<h1>Register</h1>
+		<h1>Inscription</h1>
 
-	{{ form_errors(registrationForm, {'attr': {'id': 'register-form'}}) }}
+		{{ form_start(registrationForm, {'attr': {'id': 'register-form'}}) }}
+		<div class="champs">
+			{{ form_label(registrationForm.email) }}
+			{{ form_widget(registrationForm.email) }}
+			{{ form_errors(registrationForm.email) }}
+		</div>
+		<div class="champs">
+			{{ form_label(registrationForm.plainPassword.first) }}
+			{{ form_widget(registrationForm.plainPassword.first) }}
+			{{ form_errors(registrationForm.plainPassword.first) }}
+		</div>
+		<div class="champs">
+			{{ form_label(registrationForm.plainPassword.second) }}
+			{{ form_widget(registrationForm.plainPassword.second) }}
+			{{ form_errors(registrationForm.plainPassword.second) }}
+		</div>
 
-	{{ form_start(registrationForm) }}
-	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.plainPassword) }}
-	{{ form_row(registrationForm.agreeTerms) }}
+		<div class="condition">
+			{{ form_widget(registrationForm.agreeTerms) }}
+			{{ form_label(registrationForm.agreeTerms) }}
+			{{ form_errors(registrationForm.agreeTerms) }}
+		</div>
 
-	<button type="submit" class="btn">S'inscrire</button>
-	{{ form_end(registrationForm) }}
+		<button type="submit" class="btn">S'inscrire</button>
+		{{ form_end(registrationForm) }}
+
+	</div>
+
+	<script src="{{ asset('js/login.js') }}"></script>
 
 {% endblock %}
