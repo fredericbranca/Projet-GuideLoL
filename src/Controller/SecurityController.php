@@ -6,12 +6,21 @@ use App\Form\LoginType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Security\AppAuthenticator;
 
 class SecurityController extends AbstractController
 {
+    private $authenticator;
+
+    public function __construct(AppAuthenticator $authenticator)
+    {
+        $this->authenticator = $authenticator;
+    }
+
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -20,14 +29,10 @@ class SecurityController extends AbstractController
         // Récupérer l'erreur de connexion s'il y en a une
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        $form = $this->createForm(LoginType::class, [
-            'email' => $authenticationUtils->getLastUsername(),
-        ]);
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
-            'error' => $error,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
