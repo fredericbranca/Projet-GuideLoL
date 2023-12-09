@@ -213,7 +213,8 @@ class GuideController extends AbstractController
         EvaluationRepository $evaluationRepository,
         PaginatorInterface $paginator,
         Request $request,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        GuideRepository $guideRepository
     ): Response {
         // Création et traitement du formulaire de commentaire
         $commentaire = new Evaluation();
@@ -266,6 +267,8 @@ class GuideController extends AbstractController
             ]);
         }
 
+        // Moyenne du guide
+        $moyenne = $guideRepository->findGuideWithNote($guide);
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
         // Liste des sorts d'invocateur
@@ -286,7 +289,8 @@ class GuideController extends AbstractController
             'runes_data' => $runesData,
             'champion' => $championData,
             'evaluations' => $evaluations,
-            'commentaireForm' => $commentaireForm
+            'commentaireForm' => $commentaireForm,
+            'moyenne' => $moyenne[0]
         ]);
     }
 

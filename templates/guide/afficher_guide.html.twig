@@ -15,14 +15,24 @@
 	</div>
 
 	<div id="guide">
+		<div class="createur">
+			<a href="/guides?champion={{ guide.champion }}">{{ guide.champion }}
+				Guide</a>
+			par
+			{{ guide.user.pseudo }}</div>
 
-		<div id="introduction">
+		<div id="introduction" style="background-image:url({{ img_url }}/splash/Akali_1.jpg.webp);">
+			<div class="description-guide">
+				<h1>
+					<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="Rôle {{ guide.voie }}">
+					<span>{{ guide.titre }}</span>
+				</h1>
+				<span class="date-guide" title="{{ guide.modifiedAt|format_datetime(pattern="d MMMM Y 'à' H'h'm", locale='fr') }}">{{ guide.modifiedAt ? ('Modifié le ' ~ guide.modifiedAt|format_datetime(pattern="d MMMM Y", locale='fr')) : ('Créé le ' ~ guide.createdAt|format_datetime(pattern="d MMMM Y", locale='fr')) }}</span>
 
-			<h1>
-				{{ guide.champion }}
-				{{ guide.voie }}
-				-
-				{{ guide.titre }}</h1>
+				<div class="note-guide">
+					<span>{{ moyenne.moyenne }}</span>
+				</div>
+			</div>
 
 		</div>
 
