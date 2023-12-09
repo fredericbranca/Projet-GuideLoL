@@ -45,6 +45,19 @@ class GuideRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    // Fonction pour trouver la moyenne d'un guide
+    public function findGuideWithNote($guide)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+
+        $qb->select('(SELECT ROUND(AVG(e.notation), 1) FROM App\Entity\Evaluation e WHERE e.guide = :guide AND e.notation IS NOT NULL) AS moyenne')
+            ->setParameter('guide', $guide)
+            ->where('g = :guide');
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Guide[] Returns an array of Guide objects
     //     */
