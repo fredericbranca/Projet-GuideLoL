@@ -5,16 +5,18 @@
 tarteaucitron.services.rememberme = {
     "key": "rememberme",
     "type": "other",
-    "name": "RememberMe",
+    "name": "Se souvenir de moi",
     "needConsent": true,
     "cookies": ['REMEMBERME'],
+    "uri": "",
     "js": function () {
         "use strict";
     },
     "fallback": function () {
         "use strict";
-        // Code pour supprimer le cookie si l'utilisateur refuse
-        document.cookie = 'REMEMBERME' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        fetch('/clearRememberme', {
+            method: 'POST'
+        })
     }
 };
 
