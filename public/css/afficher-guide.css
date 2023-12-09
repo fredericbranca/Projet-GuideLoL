@@ -49,11 +49,28 @@ body {
 
 /* Guide */
 #guide {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 20px 1%;
   gap: 40px;
   overflow: hidden;
+}
+
+.createur {
+  position: absolute;
+  top: -2px;
+  left: 18px;
+  font-size: 14px;
+}
+
+.createur a {
+  text-decoration: none;
+  color: #dac286;
+}
+
+.createur a:hover {
+  text-decoration: underline;
 }
 
 .runes-sorts-inv {
@@ -66,6 +83,90 @@ body {
   cursor: pointer;
   width: fit-content;
   transform: scale(0.8);
+}
+
+.skin {
+  width: 1200px;
+}
+
+#introduction {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 250px;
+  overflow: hidden;
+  background-position: 200px -120px;
+  /* background-size: 100%; */
+  opacity: 0.85;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.note-guide {
+  padding: 9px 9px 8px;
+  display: flex;
+  flex: 0 0 147px;
+  max-width: fit-content;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  margin-top: 46px;
+}
+
+.note-guide span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ffd591;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.note-guide span::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 9px);
+  bottom: -9px;
+  width: 18px;
+  height: 18px;
+  transform: rotate(45deg);
+  background: linear-gradient(-45deg, #544325 0%, #544325 50%, #866032 100%);
+}
+
+.description-guide {
+  background: #152034;
+  padding: 13px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 450px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 170px) 100%, 0% 100%);
+}
+
+.date-guide {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #a8b5ce;
+  margin-bottom: 15px;
+}
+
+h1 {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.description-guide img {
+  width: 24px;
+}
+
+.description-guide span:not(.date-guide) {
+  font-size: 16px;
 }
 
 /* Runes */
@@ -588,6 +689,17 @@ body {
   }
 }
 
+/* Ecran inférieur à 900 px (spécialement pour la seciton runes) */
+@media screen and (max-width: 900px) {
+  #introduction {
+    background-position: 135px 0px;
+  }
+
+  .description-guide {
+    width: 350px;
+  }
+}
+
 /* Ecran inférieur à 560 px (spécialement pour la seciton runes) */
 @media screen and (max-width: 560px) {
   #arbre {
@@ -645,6 +757,14 @@ body {
 
 /* Ecran inférieur à 480px */
 @media screen and (max-width: 480px) {
+  .description-guide {
+    width: 310px;
+  }
+
+  #introduction {
+    background-position: 110px 0px;
+  }
+
   .note {
     left: 169px;
   }
