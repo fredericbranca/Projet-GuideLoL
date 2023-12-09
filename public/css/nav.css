@@ -227,10 +227,7 @@
 
 /* Styles pour les écrans jusqu'à 490px (mobiles) */
 @media screen and (max-width: 490px) {
-  .navbar {
-    display: none;
-  }
-  /* .navbar .nav-links,
+  .navbar .nav-links,
   .navbar .nav-auth {
     gap: 20px;
   }
@@ -253,7 +250,7 @@
 
   .navbar a {
     font-size: 15px;
-  } */
+  }
 
   /* Menu burger */
   header .menu {
@@ -321,11 +318,7 @@
     height: 50px;
     text-align: center;
     border-radius: 4px;
-    background: linear-gradient(
-      0deg,
-      rgba(22, 9, 240, 1) 0%,
-      rgba(49, 110, 244, 1) 100%
-    );
+    background: #06070c;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
   }
   header .menu .menu__btn i {
@@ -343,7 +336,7 @@
     transform: scale(0);
     transform-origin: top left;
     transition: transform 0.3s, visibility 0s 0s;
-    background: linear-gradient(0deg, #1609f0 0%, #316ef4 100%);
+    background: #06070c;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
   }
   header .menu .menu__list li {
@@ -360,36 +353,30 @@
     opacity: 0;
   }
   header .menu .menu__list li a:hover {
-    color: #000;
+    color: #ffffff;
     transition: 0.25s !important;
     transition-delay: 0s;
   }
 
-  header .menu.menu--bottom-left {
-    position: fixed;
-    bottom: 15px;
+  header .menu.menu--top-left {
+    position: absolute;
     left: 15px;
+    top: 7px;
+    text-align: left;
   }
-  header .menu.menu--bottom-left.active .menu__list {
+  header .menu.menu--top-left.active .menu__list {
     transform: scale(1);
   }
-  header .menu.menu--bottom-left.active .menu__list li a {
+  header .menu.menu--top-left.active .menu__list li a {
     transform: translateX(0);
   }
-  header .menu.menu--bottom-left .menu__btn {
-    background-color: rgba(30, 35, 46, 0.88);
-    background-image: linear-gradient(315deg, rgba(30, 35, 46, 0.88), rgba(30, 35, 46, 0.88) 74%);
-  }
-  header .menu.menu--bottom-left .menu__list {
+  header .menu.menu--top-left .menu__list {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     transform: scale(0);
-    transform-origin: bottom left;
-    background-color: rgba(30, 35, 46, 0.88);
-    background-image: linear-gradient(315deg, rgba(30, 35, 46, 0.88) 0%, rgba(30, 35, 46, 0.88) 74%);
   }
-  header .menu.menu--bottom-left .menu__list li a {
+  header .menu.menu--top-left .menu__list li a {
     transform: translateX(-10px);
   }
 
