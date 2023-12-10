@@ -99,6 +99,16 @@ body {
   text-decoration: underline;
 }
 
+.report {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
 .runes-sorts-inv {
   display: flex;
   flex-wrap: nowrap;
