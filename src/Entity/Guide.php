@@ -52,7 +52,7 @@ class Guide
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: Evaluation::class)]
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: Evaluation::class, cascade: ['persist', 'remove'])]
     private Collection $evaluations;
 
     public function __construct()
