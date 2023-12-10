@@ -217,7 +217,7 @@ class ProfileController extends AbstractController
             if ($oldPassword === $newPassword) {
                 if ($request->isXmlHttpRequest()) {
                     // Renvoie l'erreur pour la requête AJAX
-                    $errors = ['Le mot de passe ne peut pas être  le même'];
+                    $errors = ['Le mot de passe ne peut pas être le même'];
                     return new JsonResponse(['success' => false, 'errors' => $errors]);
                 }
             }
