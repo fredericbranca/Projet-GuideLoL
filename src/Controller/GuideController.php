@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Guide;
 use App\Form\GuideType;
 use App\Entity\RunesPage;
-use App\Entity\ChoixItems;
 use App\Entity\ItemsGroup;
 use App\Service\ItemService;
 use App\Service\RuneService;
@@ -18,6 +17,7 @@ use App\Service\CompetenceService;
 use App\Entity\EnsembleItemsGroups;
 use App\Entity\Evaluation;
 use App\Form\CommentaireType;
+use App\Form\NotationType;
 use App\Repository\EvaluationRepository;
 use App\Repository\GuideRepository;
 use App\Service\SortInvocateurService;
@@ -291,6 +291,39 @@ class GuideController extends AbstractController
             'evaluations' => $evaluations,
             'commentaireForm' => $commentaireForm,
             'moyenne' => $moyenne[0]
+        ]);
+    }
+
+    // Route pour noter un guide
+    #[Route('/guide/{id}/note', name: "note_guide", methods: ['POST'])]
+    public function noteGuide(Guide $guide, Request $request, EntityManagerInterface $em)
+    {
+        $evaluation = new Evaluation();
+        $notationForm = $this->createForm(NotationType::class, $evaluation, [
+            'action' => $this->generateUrl('note_guide', ['id' => $guide->getId()]),
+        ]);
+        $notationForm->handleRequest($request);
+
+        if ($notationForm->isSubmitted() && $notationForm->isValid()) {
+            // Autorisation d'accès
+            $this->denyAccessUnlessGranted('guide_note', $guide, "Vous avez déjà voté");
+
+            $evaluation->setUser($this->security->getUser());
+            $evaluation->setGuide($guide);
+
+            $em->persist($evaluation);
+            $em->flush();
+
+            return $this->redirectToRoute('get_guide_byId', ['id' => $guide->getId()]);
+        } else if ($notationForm->isSubmitted() && !$notationForm->isValid()) {
+            foreach ($notationForm->getErrors(true) as $error) {
+                $this->addFlash('error-form-notation', $error->getMessage());
+            }
+            return $this->redirectToRoute('get_guide_byId', ['id' => $guide->getId()]);
+        }
+
+        return $this->render('guide/notationForm.html.twig', [
+            'form' => $notationForm,
         ]);
     }
 
