@@ -36,11 +36,36 @@ body {
   cursor: pointer;
 }
 
+#menu_edit,
+#menu_delete {
+  display: block !important;
+  margin-top: 20px;
+}
+
+#menu_delete button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit; 
+  cursor: pointer;
+  outline: inherit;
+}
+
+#menu_edit a {
+  text-decoration: none;
+  color: #fff;
+}
+
 .menu span:hover {
   text-decoration: none;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
   transition: all 0.2s ease-in;
+}
+
+#menu_delete:hover {
+  background: rgba(179, 50, 50, 0.6);
 }
 
 .current {
