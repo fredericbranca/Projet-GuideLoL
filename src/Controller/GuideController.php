@@ -594,7 +594,7 @@ class GuideController extends AbstractController
     }
 
     // Route pour qu'un utilisateur supprime un guide qu'il a créé par son id
-    #[Route('/guide/{id}/delete', name: 'user_delete_guide', methods: ["POST"])]
+    #[Route('/guide/{id}/delete', name: 'user_delete_guide', methods: ['POST'])]
     public function deleteGuide(
         EntityManagerInterface $em,
         Guide $guide,
@@ -612,6 +612,7 @@ class GuideController extends AbstractController
         $em->remove($guide);
         $em->flush();
 
+        $this->addFlash('success', 'Le guide a été supprimé avec succès');
         return $this->redirectToRoute('app_guide');
     }
 
