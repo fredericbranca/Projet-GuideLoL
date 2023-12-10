@@ -356,6 +356,11 @@
 								<div class="pseudo">{{ evaluation.user.pseudo }}</div>
 								|
 								<div class="date">{{ evaluation.createdAt|date('d F Y à H:\i') }}</div>
+								{% if app.user != evaluation.user %}
+									<span id="report-message" class="report" data-id="{{ evaluation.id }}">
+										<i class="fa-solid fa-exclamation" style="color: #ff0000;"></i>
+									</span>
+								{% endif %}
 							</div>
 							<div class="texte">{{ evaluation.commentaire }}</div>
 						</div>
