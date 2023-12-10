@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const mappingMenu = {
         "menu_commentaires": "commentaire-container",
         "menu_guide": "guide",
-        // Ajoutez d'autres mappages ici si nécessaire
     };
 
     const allContainers = Object.values(mappingMenu).map(id => document.getElementById(id));
@@ -78,6 +77,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const maxLength = textarea.getAttribute('maxlength');
         characterCount.textContent = `${currentLength}/${maxLength}`;
     });
+
+    // Confirmation de suppression d'un guide
+    document.getElementById('menu_delete').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        var result = confirm('Êtes-vous sûr de vouloir supprimer ce guide ?');
+        if (result) {
+            document.getElementById('delete-guide').submit();
+        }
+    })
 });
 
 // Gestion de la pagination avec une requête AJAX
