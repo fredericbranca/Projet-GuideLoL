@@ -29,9 +29,13 @@ class Evaluation
     #[ORM\ManyToOne(inversedBy: 'evaluations')]
     private ?Guide $guide = null;
 
+    #[ORM\Column]
+    private ?bool $report = null;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable(); // Permet de mettre la date de creation à created_at lors de la création de l'objet
+        $this->report = 0;
     }
 
     public function getId(): ?int
@@ -95,6 +99,18 @@ class Evaluation
     public function setGuide(?Guide $guide): static
     {
         $this->guide = $guide;
+
+        return $this;
+    }
+
+    public function isReport(): ?bool
+    {
+        return $this->report;
+    }
+
+    public function setReport(bool $report): static
+    {
+        $this->report = $report;
 
         return $this;
     }
