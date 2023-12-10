@@ -112,19 +112,19 @@
 			<main class="content">
 
 				{% for message in app.flashes('success') %}
-					<div class="alert alert-success flash-message">
+					<div class="flash-success flash-message active">
 						{{ message }}
 					</div>
 				{% endfor %}
 
 				{% for message in app.flashes('note') %}
-					<div class="alert alert-note flash-message">
+					<div class="flash-note flash-message active">
 						{{ message }}
 					</div>
 				{% endfor %}
 
 				{% for message in app.flashes('error') %}
-					<div class="alert alert-error flash-message">
+					<div class="flash-error flash-message active">
 						{{ message }}
 					</div>
 				{% endfor %}
