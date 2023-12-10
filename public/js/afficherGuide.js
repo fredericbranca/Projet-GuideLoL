@@ -87,6 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('delete-guide').submit();
         }
     })
+
+    // Ouverture lien édition guide
+    document.getElementById('menu_edit').addEventListener('click', function (e) {
+        this.querySelector('a').click();
+    })
 });
 
 // Gestion de la pagination avec une requête AJAX

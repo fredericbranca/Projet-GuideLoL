@@ -331,27 +331,32 @@ class GuideController extends AbstractController
     // Routes vers les composants pour la création et l'édition de Guide
 
     // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur ou sa version avec les données du guide
+    // Route composant formulaire pour ajouter un groupe de Sorts d'Invocateur ou sa version avec les données du guide
     #[Route('/groupe-sorts-invocateur/create', name: "create_groupe_sorts_invocateur")]
-    #[Route('/groupe-sorts-invocateur/edit/{id}', name: "edit_groupe_sorts_invocateur")]
-    public function createOrEditGroupeSortsInvocateur(Request $request, Guide $guide = null): Response
+    #[Route('/groupe-sorts-invocateur/edit/{idGuide}', name: "edit_groupe_sorts_invocateur")]
+    public function createOrEditGroupeSortsInvocateur(Request $request, int $idGuide = null): Response
     {
+        $index = null;
+
         // Récupérer les données soumises
         $data = json_decode($request->getContent(), true);
         if ($data != null) {
             $data = $data['guide']['groupeSortsInvocateur'];
         }
 
-        $isNewGuide = ($guide === null);
-
-        if ($isNewGuide) {
-            $guide = new Guide();
+        // Initialisation ou récupération du Guide
+        $guide = $idGuide ? $this->entityManager->getRepository(Guide::class)->find($idGuide) : new Guide();
+        if (!$idGuide) {
             $guide->addGroupeSortsInvocateur(new SortInvocateur());
+            if ($data == null) {
+                $index = 0;
+            }
         }
 
         // Appel de la méthode globale pour créer le formulaire
-        $formInfo = $this->createGuideForm($guide, 'sorts', !$isNewGuide ? null : ($data ? null : 0), null, $data);
+        $formInfo = $this->createGuideForm($guide, 'sorts', $index, null, $data);
 
-        if ($isNewGuide && $data == null) {
+        if (!$idGuide && $data == null) {
             return $this->render('guide/groupe-sorts-invocateur.html.twig', [
                 'form' => $formInfo['form'],
                 'list_sorts_invocateur' => $formInfo['list'],
