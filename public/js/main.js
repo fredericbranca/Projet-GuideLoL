@@ -2,11 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sélectionne tous les messages flash
     const flashMessages = document.querySelectorAll('.flash-message');
 
-    // Masque le message au bout de 5sec
+    window.setTimeout(function () {
+        document.querySelector('.flash-message').classList.remove('active');
+    }, 5000);
+
     flashMessages.forEach((msg) => {
         setTimeout(() => {
-            msg.style.display = 'none';
-        }, 5000);
+            msg.remove();
+        }, 6000);
     });
 });
 
