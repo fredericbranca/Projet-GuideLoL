@@ -30,8 +30,20 @@
 				<span class="date-guide" title="{{ guide.modifiedAt|format_datetime(pattern="d MMMM Y 'à' H'h'm", locale='fr') }}">{{ guide.modifiedAt ? ('Modifié le ' ~ guide.modifiedAt|format_datetime(pattern="d MMMM Y", locale='fr')) : ('Créé le ' ~ guide.createdAt|format_datetime(pattern="d MMMM Y", locale='fr')) }}</span>
 
 				<div class="note-guide">
-					<span>{{ moyenne.moyenne }}</span>
+					<span>
+						{% if moyenne.moyenne is not null %}
+							{{ moyenne.moyenne }}
+						{% else %}
+							<i class="fa-solid fa-spinner" style="color: #ffffff;"></i>
+						{% endif %}
+					</span>
 				</div>
+				
+				{{ render(controller('App\\Controller\\GuideController::noteGuide', {'mainRequest': app.request, 'id': guide.id} )) }}
+
+				{% for message in app.flashes('error-form-notation') %}
+					<div class="error-message">{{ message }}</div>
+				{% endfor %}
 			</div>
 
 		</div>
