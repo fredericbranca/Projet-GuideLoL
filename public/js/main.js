@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function displayMessage() {
     // Sélectionne tous les messages flash
     const flashMessages = document.querySelectorAll('.flash-message');
 
@@ -11,5 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
             msg.remove();
         }, 6000);
     });
-});
+}
+
+displayMessage();
+
 
