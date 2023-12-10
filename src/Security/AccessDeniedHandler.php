@@ -20,7 +20,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
         $errorMessage = $accessDeniedException->getMessage();
         $request->getSession()->getFlashBag()->add('error', $errorMessage);
 
-        if ($errorMessage === "Vous ne pouvez pas noter votre propre guide" || $errorMessage === "Vous avez déjà voté") {
+        if ($errorMessage === "Vous ne pouvez pas noter votre propre guide" || $errorMessage === "Vous avez déjà voté" || $errorMessage === "Vous ne pouvez qu'éditer vos guides.") {
             // Redirige erreur formulaire notation (depuis le Voter)
             $id = $request->attributes->get('_route_params')['id'];
 
