@@ -15,6 +15,7 @@ body {
 .content {
   min-height: 100%;
   color: black;
+  position: relative;
 }
 
 .header-home {
@@ -88,6 +89,37 @@ footer {
 .footer-content a {
   text-decoration: none;
   color: #afbbce;
+}
+
+.flash-message {
+  position: fixed;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: top 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+.flash-message.active {
+  top: 20px;
+}
+
+.flash-success {
+  background-color: #e2f8d7;
+  color: #1c7232;
+}
+
+.flash-note {
+  background-color: #d7e2f8;
+  color: #1c2c72;
+}
+
+.flash-error {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 @media screen and (max-width: 1600px) {
