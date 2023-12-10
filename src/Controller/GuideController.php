@@ -327,6 +327,35 @@ class GuideController extends AbstractController
         ]);
     }
 
+    // Route pour signaler un message
+    #[Route('/report/message/{id}', name: "report_message")]
+    public function reportMessage(Evaluation $evaluation, Request $request, EntityManagerInterface $em)
+    {
+        if ($evaluation) {
+
+            if ($request->isXmlHttpRequest()) {
+
+                $user = $this->security->getUser();
+                if ($evaluation->getUser() == $user) {
+                    return new JsonResponse(['success' => false, 'message' => 'Vous ne pouvez pas signaler votre propre guide']);
+                }
+
+                if (!$evaluation->isReport()) {
+                    $evaluation->setReport(true);
+                    $em->persist($evaluation);
+                    $em->flush();
+                }
+
+                $this->addFlash('success', 'Merci de votre signalement !');
+                return new JsonResponse(['success' => true, 'message' => 'Merci de votre signalement']);
+            }
+        }
+
+        $this->addFlash('error', 'Une erreur est survenue');
+
+        return $this->redirectToRoute('app_home');
+    }
+
 
     // Routes vers les composants pour la création et l'édition de Guide
 
