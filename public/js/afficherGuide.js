@@ -177,3 +177,46 @@ form.addEventListener('submit', async function (event) {
     }
 });
 
+// Signaler le message d'un utilisateur
+const signal = document.getElementById('report-message');
+signal.addEventListener('click', async function () {
+
+    var result = confirm('Voulez-vous signaler ce message ?');
+    if (result) {
+        let id = signal.dataset.id;
+
+        try {
+            const response = await fetch('/report/message/' + id, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            // Vérifie le type de contenu de la réponse
+            const contentType = response.headers.get('Content-Type');
+
+            if (contentType && contentType.includes('application/json')) {
+                const json = await response.json();
+                const container = document.querySelector('.content');
+                if (json.success) {
+                    const element = document.createElement('div');
+                    element.classList.add('flash-message', 'flash-success', 'active');
+                    element.textContent = json.message;
+                    container.appendChild(element);
+                    displayMessage();
+                    return;
+                } else {
+                    const element = document.createElement('div');
+                    element.classList.add('flash-message', 'flash-error', 'active');
+                    element.textContent = json.message;
+                    container.appendChild(element);
+                    displayMessage();
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+})
