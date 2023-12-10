@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Security;
 
@@ -17,6 +17,18 @@ class AuthenticationEntryPoint implements AuthenticationEntryPointInterface
 
     public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
+        $code = $authException->getPrevious()->getCode();
+
+        if ($code = 403) {
+            $message = $authException->getPrevious()->getMessage();;
+
+            if ($request->attributes->get('_route') === "note_guide") {
+                $request->getSession()->getFlashBag()->add('note', $message);
+                $id = $request->attributes->get('_route_params')['id'];
+
+                return new RedirectResponse($this->urlGenerator->generate('get_guide_byId', ['id' => $id]));
+            }
+        }
         // add a custom flash message and redirect to the login page
         $request->getSession()->getFlashBag()->add('note', 'Vous devez vous connecter pour accéder à cette page.');
 
