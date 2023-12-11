@@ -19,17 +19,6 @@
 
 			<img class="home-bg" src="/img/home-bg-1920.webp" alt="LoLGuides Background">
 
-		{# <img class="home-bg" src="/img/home-bg-1920.webp" 
-						srcset="/img/home-bg-480.webp 480w, 
-						        /img/home-bg-768.webp 768w,
-						        /img/home-bg-1080.webp 1080w,
-						        /img/home-bg-1920.webp 1920w" 
-						sizes="	(max-width: 480px) 480px,
-						    	(max-width: 768px) 768px,
-						        (max-width: 1080px) 1080px,
-						        1920px" 
-						alt="LoLGuides Background"> #}
-
 		</div>
 
 
@@ -43,7 +32,93 @@
 
 	</section>
 
-	<section class="tempo"></section>
+	<section class="home-content">
+
+		<div class="listes-guide">
+			<h2>Meilleures Guides</h2>
+
+			<div class="listing-guide">
+				{% for guide in best_guides %}
+					<a class="listing-item" href="/guide/{{ guide[0].id }}">
+						<div class="note-guide">
+							<span>
+								{{ guide.moyenne }}
+							</span>
+						</div>
+						<div class="champion-guide">
+							<img src="{{ img_url }}/champion/{{ guide[0].champion.id }}.png.webp" alt="{{ guide[0].champion }}">
+						</div>
+						<div class="infos-guide">
+							<h2 class="titre-guide">
+								<img src="{{ img_url }}/role/{{ guide[0].voie }}.webp" alt="Rôle {{ guide[0].voie }}">
+								{{ guide[0].titre }}
+							</h2>
+							<span class="user-infos">
+								Guide créé par
+								<span class="pseudo">
+									{{ guide[0].user ? guide[0].user.getDisplayName : '[Anonyme]' }}
+								</span>
+								{{ guide[0].modifiedAt ? ('modifié le ' ~ guide[0].modifiedAt|date("d/m/Y")) : ('créé le ' ~ guide[0].createdAt|date("m/d/Y")) }}
+							</span>
+							<div class="items">
+								{% for item in guide[0].groupeEnsemblesItems[0].AssociationsEnsemblesItemsGroups[0].choixItems %}
+									<img src="{{ img_url }}/item/{{ list_items[item.id].image }}.webp" alt="{{ list_items[item.id].name }}">
+								{% endfor %}
+							</div>
+						</div>
+					</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="right-col">
+			<h2>Creation de guide</h2>
+			<a class="creation-guide" href="{{ path('new_guide') }}">Créer ton Guide</a>
+			<h2>Commentaires</h2>
+			<div class="commentaires">
+				{% for commentaire in commentaires %}
+					<div class="commentaire">
+						<div class="date">
+							{{ commentaire.user }}
+							le
+							{{ commentaire.createdAt|format_datetime(pattern="d MMMM Y", locale='fr') }}
+						</div>
+						<div class="guide">
+							Guide :
+							<a href="/guide/{{ commentaire.guide.id }}">{{ commentaire.guide.titre }}</a>
+						</div>
+						<div class="message">
+							{{ commentaire.commentaire }}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+	</section>
+
+	<section class="lore">
+		<h2>Dernier Champion</h2>
+		<div class="last-champion">
+			<div class="skin">
+				<h3>{{ last_champ.name }}</h3>
+				<h4>{{ last_champ.title }}</h4>
+				<img id="championImage" src="/img/{{ last_champ.name }}.webp" alt="{{ last_champ.name }}">
+				<img id="championImageSmall" src="{{ img_url }}/champion/Briar.png.webp" alt="{{ last_champ.name }}">
+			</div>
+			<div class="infos-champ">
+				<p>{{ last_champ.lore }}</p>
+				<div class="spells">
+					{% for spell in last_champ.spells %}
+						<div class="spell">
+							<h5>{{ spell.name }}</h5>
+							<img src="/img/{{ spell.id }}.webp" alt="{{ last_champ.name }} {{ spell.id }}">
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</section>
 
 
 	<script>
