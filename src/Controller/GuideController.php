@@ -575,6 +575,7 @@ class GuideController extends AbstractController
         ChampionService $championService,
         PaginatorInterface $paginator,
         Request $request,
+        EvaluationRepository $evaluationRepository
 
     ): Response {
         // Prépare les données pour le formulaire (avec les données initiales)
@@ -619,11 +620,15 @@ class GuideController extends AbstractController
         // URL pour récupérer les images
         $img_url = $championService->getChampionImageURL();
 
+        // Récupère les derniers commentaires
+        $commentaires = $evaluationRepository->getDerniersCommentaires();
+
         // Prépare les données pour la vue
         return $this->render('guide/index.html.twig', [
             'guides' => $guides,
             'img_url' => $img_url,
-            'filtre_form' => $filtreForm->createView()
+            'filtre_form' => $filtreForm->createView(),
+            'commentaires' => $commentaires
         ]);
     }
 
