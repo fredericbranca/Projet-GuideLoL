@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use Imagick;
 use App\Form\AvatarType;
+use App\Entity\Evaluation;
 use App\Form\ModifyEmailType;
 use App\Form\ChangePseudoType;
 use App\Form\DeleteAccountType;
 use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use Google\Cloud\Storage\StorageClient;
+use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +31,8 @@ class ProfileController extends AbstractController
     private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        Security $security, UrlGeneratorInterface $urlGenerator
+        Security $security,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->security = $security;
         $this->urlGenerator = $urlGenerator;
@@ -36,8 +40,13 @@ class ProfileController extends AbstractController
 
     // Route pour afficher le profile de l'utilisateur et insertion du formulaire de changement de Pseudo
     #[Route('/profile', name: 'app_profile')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        PaginatorInterface $paginator,
+        EvaluationRepository $evaluationRepository
+    ): Response {
         $user = $this->security->getUser();
 
         // Création du formulaire de changement de pseudo
@@ -92,10 +101,27 @@ class ProfileController extends AbstractController
             }
         }
 
-        return $this->render('profile/index.html.twig', [
+        // Variables communes
+        $variablesTemplate = [
             'user' => $user,
-            'changePseudoForm' => $changePseudoForm
-        ]);
+            'changePseudoForm' => $changePseudoForm,
+        ];
+
+        // Section administration
+        if ($this->isGranted('ROLE_ADMIN')) {
+            // Récupération des commentaires signalé
+            $commentaires = $paginator->paginate(
+                $evaluationRepository->findBy(['report' => true], ['created_at' => 'DESC']),
+                $request->query->getInt('page', 1),
+                5,
+                ['pageParameterName' => 'page']
+            );
+
+            // Ajoute les données supplémentaires pour l'administrateur
+            $variablesTemplate['signalements'] = $commentaires;
+        }
+
+        return $this->render('profile/index.html.twig', $variablesTemplate);
     }
 
     #[Route('/profile/change-avatar', name: 'app_change_avatar', methods: ['POST'])]
@@ -302,6 +328,30 @@ class ProfileController extends AbstractController
         return $this->render('profile/delete_account.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    // Route pour la gestion des messages signalé
+    #[Route('/admin/gestion-message-signale/{id}', name: 'admin_gestion_message_signale')]
+    public function gestionMessageSignale(Request $request, Evaluation $evaluation, EntityManagerInterface $em): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $decision = $data['decision'];
+
+        if ($decision === 'supprimer') {
+            $evaluation->setCommentaire('Message supprimé par l\'administrateur');
+            $evaluation->setReport(false);
+            $em->persist($evaluation);
+            $em->flush();
+
+            return new JsonResponse(['status' => 'success', 'message' => 'Le message a bien été supprimé', 'redirect' => $this->generateUrl('app_profile')]);
+        } else if ($decision === 'annuler') {
+            $evaluation->setReport(false);
+            $em->persist($evaluation);
+            $em->flush();
+            return new JsonResponse(['status' => 'success', 'message' => 'Le message n\'a pas été supprimé', 'redirect' => $this->generateUrl('app_profile')]);
+        } else {
+            return new JsonResponse(['status' => 'error', 'message' => 'Une erreur s\'est produite']);
+        }
     }
 
     // Fonction pour récupérer les erreurs de formulaire
