@@ -12,7 +12,7 @@
 	<div class="menu">
 		<span class="current" id="menu_commentaires">Commentaires</span>
 		<span id="menu_guide">Guide</span>
-		{% if app.user == guide.user %}
+		{% if app.user and app.user == guide.user %}
 			<span id="menu_edit">
 				<a href="{{ path('edit_guide', {'id': guide.id}) }}">Editer</a>
 			</span>
@@ -50,7 +50,9 @@
 					</span>
 				</div>
 
-				{{ render(controller('App\\Controller\\GuideController::noteGuide', {'mainRequest': app.request, 'id': guide.id} )) }}
+				{% if app.user %}
+					{{ render(controller('App\\Controller\\GuideController::noteGuide', {'mainRequest': app.request, 'id': guide.id} )) }}
+				{% endif %}
 
 				{% for message in app.flashes('error-form-notation') %}
 					<div class="error-message">{{ message }}</div>
@@ -332,18 +334,20 @@
 	</div>
 
 	<div id="commentaire-container">
+	
+		{% if app.user %}
+			{{ form_start(commentaireForm, {'attr': {'id': 'commentaire-form'}}) }}
+			{{ form_label(commentaireForm.commentaire) }}
+			{{ form_errors(commentaireForm.commentaire) }}
+			<div class="text-validation">
+				{{ form_widget(commentaireForm.commentaire) }}
+				{{ form_row(commentaireForm.submit) }}
+			</div>
 
-		{{ form_start(commentaireForm, {'attr': {'id': 'commentaire-form'}}) }}
-		{{ form_label(commentaireForm.commentaire) }}
-		{{ form_errors(commentaireForm.commentaire) }}
-		<div class="text-validation">
-			{{ form_widget(commentaireForm.commentaire) }}
-			{{ form_row(commentaireForm.submit) }}
-		</div>
-
-		<div id="characterCount">0/500</div>
-		<div id="form-errors"></div>
-		{{ form_end(commentaireForm) }}
+			<div id="characterCount">0/500</div>
+			<div id="form-errors"></div>
+			{{ form_end(commentaireForm) }}
+		{% endif %}
 
 		<div id="commentaires-users">
 			{{ knp_pagination_render(evaluations) }}
@@ -355,7 +359,7 @@
 							<div class="flex">
 								<div class="pseudo">{{ evaluation.user ? evaluation.user.getDisplayName :'Anonyme' }}</div>
 								|
-								<div class="date">{{ evaluation.createdAt|date('d F Y à H:\i') }}</div>
+								<div class="date">{{ evaluation.createdAt|format_datetime(pattern="d MMMM Y", locale='fr') }}</div>
 								{% if app.user and app.user != evaluation.user %}
 									<span id="report-message" class="report" data-id="{{ evaluation.id }}">
 										<i class="fa-solid fa-exclamation" style="color: #ff0000;"></i>
