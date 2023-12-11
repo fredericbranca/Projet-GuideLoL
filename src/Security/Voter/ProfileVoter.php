@@ -10,8 +10,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class ProfileVoter extends Voter
 {
     public const USER_EDIT_PSEUDO = 'pseudo_edit';
-    
-    // public const GUIDE_DELETE = 'guide_delete';
 
     protected function supports(string $attribute, mixed $guide): bool
     {
