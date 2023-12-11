@@ -88,7 +88,8 @@ body {
 .modifier-avatar,
 .change-pseudo,
 .change-email,
-.change-password {
+.change-password,
+.delete-account {
   display: none;
   flex-direction: column;
   gap: 20px;
@@ -98,7 +99,8 @@ body {
 form[name="avatar"],
 form[name="change_pseudo"],
 form[name="change_password"],
-form[name="modify_email"] {
+form[name="modify_email"],
+form[name="delete_account"] {
   background-color: rgba(255, 255, 255, 0.15);
   padding: 20px;
   border-radius: 8px;
@@ -111,6 +113,7 @@ form[name="modify_email"] {
 
 form[name="avatar"] label,
 form[name="change_password"] label,
+form[name="delete_account"] label,
 form[name="change_pseudo"] label {
   display: block;
   margin-bottom: 10px;
@@ -120,6 +123,7 @@ form[name="change_pseudo"] label {
 form[name="avatar"] input[type="file"],
 form[name="modify_email"] input[type="email"],
 form[name="change_password"] input[type="password"],
+form[name="delete_account"] input[type="password"],
 form[name="change_pseudo"] input[type="text"] {
   display: block;
   margin-bottom: 20px;
@@ -131,6 +135,7 @@ form[name="change_pseudo"] input[type="text"] {
 form[name="avatar"] button[type="submit"],
 form[name="modify_email"] button[type="submit"],
 form[name="change_password"] button[type="submit"],
+form[name="delete_account"] button[type="submit"],
 form[name="change_pseudo"] button[type="submit"] {
   background-color: rgba(0, 0, 0, 0.7);
   opacity: 80%;
@@ -147,6 +152,10 @@ form[name="modify_email"] button[type="submit"]:hover,
 form[name="change_password"] button[type="submit"]:hover,
 form[name="change_pseudo"] button[type="submit"]:hover {
   background: rgb(45 65 42);
+}
+
+form[name="delete_account"] button[type="submit"]:hover {
+  background: rgba(179, 50, 50, 0.6);
 }
 
 .image-preview {
@@ -184,4 +193,7 @@ form[name="change_pseudo"] button[type="submit"]:hover {
   padding: 5px;
   border-radius: 3px;
   font-weight: 600;
+}
+#menu_delete_account:hover {
+  background: rgba(179, 50, 50, 0.6);
 }
