@@ -30,6 +30,14 @@ class ChangePseudoType extends AbstractType
                     new Regex([
                         'pattern' => '/^(?!user\d+$).*/i',
                         'message' => 'Votre pseudo ne peut pas être sous la forme "user" suivi de chiffres.'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?!user).*/i',
+                        'message' => 'Votre pseudo ne peut pas être "user"'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?!anonyme).*/i',
+                        'message' => 'Votre pseudo ne peut pas être "anonyme"'
                     ])
                 ],
                 'required' => true,
