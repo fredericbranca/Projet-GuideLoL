@@ -37,13 +37,41 @@ class EvaluationRepository extends ServiceEntityRepository
         $moyennes = $query->getResult();
 
         $moyennesGuides = [];
-    
+
         foreach ($moyennes as $moyenne) {
             $id = $moyenne['id'];
             $moyennesGuides[$id] = $moyenne;
         }
 
         return $moyennesGuides;
+    }
+
+    // Requete pour retourner les 30 dernières évaluations s'il elle a un commentaire
+    public function getDerniersCommentaires(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.commentaire IS NOT NULL')
+            ->orderBy('e.created_at', 'ASC')
+            ->setMaxResults(30)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Guide les mieux notés
+     */
+    public function getBestGuides(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('g', 'ROUND(AVG(e.notation),1) AS moyenne')
+            ->join('App\Entity\Guide', 'g')
+            ->where('g.id = e.guide')
+            ->andwhere('e.notation IS NOT NULL')
+            ->orderBy('moyenne', 'DESC')
+            ->groupBy('e.guide')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 
     //    public function findOneBySomeField($value): ?Evaluation
