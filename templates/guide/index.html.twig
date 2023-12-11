@@ -68,7 +68,7 @@
 								</h2>
 								<span class="user-infos">
 									Guide créé par
-									{{ guide[0].user }}
+									{{ guide[0].user ? guide[0].user.getDisplayName : 'Anonyme' }}
 									{{ guide[0].modifiedAt ? ('modifié le ' ~ guide[0].modifiedAt|date("m/d/Y")) : ('créé le ' ~ guide[0].createdAt|date("m/d/Y")) }}
 								</span>
 							</div>

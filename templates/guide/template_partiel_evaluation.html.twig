@@ -2,10 +2,10 @@
 {% if evaluations %}
 	{% for evaluation in evaluations %}
 		<div class="commentaire">
-			<img src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ evaluation.user.avatar }}" alt="Avatar de {{ evaluation.user.pseudo }}" class="avatar">
+			<img src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ evaluation.user ? evaluation.user.avatar :'Anonyme.webp' }}" alt="Avatar de {{ evaluation.user ? evaluation.user.pseudo :'Anonyme' }}" class="avatar">
 			<div class="commentaire-details">
 				<div class="flex">
-					<div class="pseudo">{{ evaluation.user.pseudo }}</div>
+					<div class="pseudo">{{ evaluation.user ? evaluation.user.pseudo :'Anonyme' }}</div>
 					|
 					<div class="date">{{ evaluation.createdAt|date('d F Y à H:\i') }}</div>
 				</div>

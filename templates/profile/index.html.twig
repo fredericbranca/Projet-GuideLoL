@@ -12,7 +12,7 @@
 	<div class="user-profile">
 		<div class="user-infos">
 			<h1>Votre Profile :
-				{{ user.pseudo }}</h1>
+				{{ app.user.getDisplayName }}</h1>
 			<div class="avatar-div">
 				<img class="avatar" src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ user.avatar }}" alt="Avatar"/>
 			</div>
@@ -66,6 +66,10 @@
 			{# Modifier le mot de passe #}
 			<div class="change-password">
 				{{ render(controller('App\\Controller\\ProfileController::changePassword', {'mainRequest': app.request} )) }}
+			</div>
+
+			<div class="delete-account">
+				{{ render(controller('App\\Controller\\ProfileController::deleteAccount', {'mainRequest': app.request} )) }}
 			</div>
 
 		</div>

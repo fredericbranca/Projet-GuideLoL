@@ -85,7 +85,7 @@
 						{% if app.user %}
 							<li class="nav-item">
 								<div class="nav-auth">
-									<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.pseudo }}</a>
+									<a href="{{ path('app_profile') }}" class="nav-link">{{ app.user.getDisplayName }}</a>
 								</div>
 							</li>
 							<li class="nav-item">
