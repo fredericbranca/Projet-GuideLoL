@@ -49,7 +49,7 @@ class Guide
     private Collection $groupesCompetences;
 
     #[ORM\ManyToOne(inversedBy: 'guides')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'guide', targetEntity: Evaluation::class, cascade: ['persist', 'remove'])]
