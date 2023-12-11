@@ -134,3 +134,39 @@ document.addEventListener('DOMContentLoaded', function () {
     if (passwordForm) handleFormAjax(passwordForm);
     if (deleteAccountForm) handleFormAjax(deleteAccountForm);
 });
+
+// Gestion des messages signalé
+const signalement = document.getElementById('infos-message');
+signalement.addEventListener('click', function (e) {
+
+    let idMessage = signalement.dataset.id;
+    let decision;
+
+    if (e.target.id == 'supprimer') {
+        decision = 'supprimer';
+    } else if (e.target.id == 'annuler') {
+        decision = 'annuler';
+    } else {
+        return;
+    }
+
+    fetch('/admin/gestion-message-signale/' + idMessage, {
+        method: 'POST',
+        body: JSON.stringify({ decision: decision }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            window.location.href = data.redirect;
+        } else {
+            throw new Error(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+})
