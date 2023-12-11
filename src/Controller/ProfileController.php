@@ -4,28 +4,34 @@ namespace App\Controller;
 
 use Imagick;
 use App\Form\AvatarType;
-use App\Form\ChangePasswordType;
-use App\Form\ChangePseudoType;
 use App\Form\ModifyEmailType;
+use App\Form\ChangePseudoType;
+use App\Form\DeleteAccountType;
+use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use Google\Cloud\Storage\StorageClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfileController extends AbstractController
 {
     private $security;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        Security $security
+        Security $security, UrlGeneratorInterface $urlGenerator
     ) {
         $this->security = $security;
+        $this->urlGenerator = $urlGenerator;
     }
 
     // Route pour afficher le profile de l'utilisateur et insertion du formulaire de changement de Pseudo
@@ -246,6 +252,55 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/change_password.html.twig', [
             'changePasswordForm' => $form->createView(),
+        ]);
+    }
+
+    // Supprimer son compte
+    #[Route('/profile/delete-account', name: 'delete_account')]
+    public function deleteAccount(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(DeleteAccountType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            // Vérifiez si le mot de passe saisi est correct
+            if ($userPasswordHasherInterface->isPasswordValid($user, $data->getPassword())) {
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse(['success' => true]);
+                }
+                // suppression de l'utilisateur
+                $em->remove($user);
+                $em->flush();
+
+                // Suppression de la session et remember me
+                $response = new RedirectResponse($this->urlGenerator->generate('app_home'));
+                $response->headers->clearCookie('PHPSESSID');
+                $response->headers->clearCookie('REMEMBERME');
+                $messageCookie = new Cookie('messagetempo', 'Votre compte a été supprimé', 0, '/', null, false, false);
+                $response->headers->setCookie($messageCookie);
+
+                // Redirection après la suppression du compte
+                return $response;
+            } else {
+                if ($request->isXmlHttpRequest()) {
+                    // Ajoute un message d'erreur si le mot de passe est incorrect
+                    return new JsonResponse(['success' => true, 'incorrectPass' => ['Mot de passe incorrect']]);
+                }
+            }
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
+
+            if ($request->isXmlHttpRequest()) {
+                // Renvoie les erreurs du formulaire pour la requête AJAX
+                $errors = $this->getFormErrors($form);
+                return new JsonResponse(['success' => false, 'errors' => $errors]);
+            }
+        }
+
+        return $this->render('profile/delete_account.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
