@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "menu_pseudo": ".change-pseudo",
         "menu_mail": ".change-email",
         "menu_mdp": ".change-password",
+        "menu_delete_account": ".delete-account",
     };
     const menu = document.querySelector('.content .menu');
 
@@ -19,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
                 menu.style.display = 'none'; // Cache le menu
+
+                var verifyEmail = document.querySelector('.verifie-email');
+                if (verifyEmail) {
+                    verifyEmail.style.display = "none";
+                }
 
                 // Affiche le conteneur correspondant
                 const containerToShow = document.querySelector(mappingMenu[menuId]);
@@ -39,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     btnAnnuler.addEventListener('click', function () {
                         containerToShow.style.display = 'none';
                         menu.style.display = 'flex';
+                        if (verifyEmail) {
+                            verifyEmail.style.display = "flex";
+                        }
                     });
                 }
 
@@ -90,31 +99,38 @@ function handleFormAjax(form) {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.errors) {
-                data.errors.forEach(error => {
+            .then(response => response.json())
+            .then(data => {
+                if (data.incorrectPass) {
                     let errorMsg = document.createElement('div');
                     errorMsg.classList.add('error-msg');
-                    errorMsg.textContent = error;
+                    errorMsg.textContent = data.incorrectPass;
                     form.appendChild(errorMsg);
-                });
-            } else {
-                form.submit();
-            }
-        })
-        .catch(error => console.error('Error:', error));
+                } else if (data.errors) {
+                    data.errors.forEach(error => {
+                        let errorMsg = document.createElement('div');
+                        errorMsg.classList.add('error-msg');
+                        errorMsg.textContent = error;
+                        form.appendChild(errorMsg);
+                    });
+                } else {
+                    form.submit();
+                }
+            })
+            .catch(error => console.error('Error:', error));
     });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const avatarForm = document.getElementById('avatar-form');
     const emailForm = document.getElementById('email-form');
     const pseudoForm = document.getElementById('pseudo-form');
     const passwordForm = document.getElementById('password-form');
+    const deleteAccountForm = document.getElementById('delete-account-form');
 
     if (avatarForm) handleFormAjax(avatarForm);
     if (emailForm) handleFormAjax(emailForm);
     if (pseudoForm) handleFormAjax(pseudoForm);
     if (passwordForm) handleFormAjax(passwordForm);
+    if (deleteAccountForm) handleFormAjax(deleteAccountForm);
 });
