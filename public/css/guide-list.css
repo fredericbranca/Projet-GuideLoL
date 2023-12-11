@@ -35,11 +35,63 @@ body {
   flex: 0 0 300px;
   max-width: 300px;
   margin-left: 18px;
+  max-height: 500px;
+  overflow: auto;
+  padding-right: 5px;
+  margin-top: 4%;
+}
+
+.commentaires {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.commentaire {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid #2c2c40;
+  padding: 5px;
+  background: #17172e78;
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+}
+
+.commentaire .guide {
+  color: #dac286;
+  font-size: 13px;
+  line-height: 1em;
+  width: 100%;
+}
+
+.commentaire .guide a {
+  text-decoration: none;
+  color: #dac286;
+}
+
+.commentaire .guide a:hover {
+  text-decoration: underline;
+}
+
+.commentaire .date {
+  color: #c2d0e9;
+  font-size: 13px;
+  line-height: 1em;
+  width: 100%;
+}
+
+.commentaire .message {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1em;
+  width: 100%;
 }
 
 .listing-guide {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 
 .listing-guide * {
@@ -59,17 +111,6 @@ body {
   background: #17172e88;
 }
 
-.note-guide {
-  padding: 9px 9px 8px;
-  display: flex;
-  flex: 0 0 147px;
-  max-width: 147px;
-  color: #fff;
-  border: 2px solid #091120;
-  display: flex;
-  justify-content: center;
-}
-
 
 .search-result {
   margin-top: 3px;
@@ -80,7 +121,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 .div-search-filter {
@@ -89,6 +130,17 @@ body {
 
 .fa-spinner {
   font-size: 22px;
+}
+
+.note-guide {
+  padding: 9px 9px 8px;
+  display: flex;
+  flex: 0 0 147px;
+  max-width: 147px;
+  color: #fff;
+  border: 2px solid #091120;
+  display: flex;
+  justify-content: center;
 }
 
 .note-guide span {
@@ -173,6 +225,10 @@ body {
   height: 40px;
 }
 
+.wrapper-recherche-guide a {
+  text-decoration: none;
+}
+
 .champion-guide {
   flex: 0 0 85px;
   max-width: 85px;
@@ -180,22 +236,8 @@ body {
   position: relative;
 }
 
-.wrapper-recherche-guide a {
-  text-decoration: none;
-}
-
 .champion-guide img {
   width: 100%;
-}
-
-.infos-guide {
-  flex: 0 0 calc(100% - 232px);
-  max-width: calc(100% - 232px);
-  border-left: 4px solid #091120;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 10px;
 }
 
 .choix-role label img {
@@ -229,6 +271,16 @@ body {
 .choix-role img {
   width: 60px;
   height: 60px;
+}
+
+.infos-guide {
+  flex: 0 0 calc(100% - 232px);
+  max-width: calc(100% - 232px);
+  border-left: 4px solid #091120;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10px;
 }
 
 .infos-guide .titre-guide {
