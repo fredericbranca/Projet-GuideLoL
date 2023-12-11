@@ -21,6 +21,8 @@
 				{{ user.email }}
 			</div>
 
+			<h2>Menu</h2>
+
 			<div class="menu">
 				<span id="menu_image">Modifier l'image</span>
 				{% if user.isVerified %}
@@ -51,7 +53,8 @@
 			{% else %}
 				<div class="verifie-email">
 					<p>Veuillez vérifier votre email pour changer votre pseudo.
-						<a href="{{ path('app_verify_newEmail') }}">Renvoyer l'email de confirmation</a></p>
+						<a href="{{ path('app_verify_newEmail') }}">Renvoyer l'email de confirmation</a>
+					</p>
 					{% if verifyEmail is defined %}
 						<p>{{ verifyEmail }}</p>
 					{% endif %}
@@ -74,7 +77,43 @@
 
 		</div>
 
+		{% if is_granted('ROLE_ADMIN') %}
+
+			<div class="administration">
+				<h2>Administration</h2>
+
+				<h3>Messages signalés</h3>
+
+				<div class="signalements">
+					{% if signalements.items is not empty %}
+						{% for signalement in signalements %}
+							<div class="infos-message" id="infos-message" data-id="{{ signalement.id }}">
+								<div>
+									Utilisateur :
+									{{ signalement.user ? signalement.user : "[Anonyme]" }}
+								</div>
+								<div>{{ signalement.commentaire }}</div>
+								<div>Date :
+									{{ signalement.createdAt|format_datetime(pattern="d MMMM Y 'à' H'h'm", locale='fr') }}</div>
+								<div class="bouton-message-admin">
+									<span id="supprimer" class="supprimer">
+										<i id="supprimer" class="fa-solid fa-ban" style="color: #ff0000;"></i>
+									</span>
+									<span id="annuler" class="annuler">Annuler</span>
+								</div>
+							</div>
+						{% endfor %}
+					{% else %}
+						<div>Pas de commentaire signalé</div>
+					{% endif %}
+					{{ knp_pagination_render(signalements) }}
+				</div>
+
+			</div>
+
+		{% endif %}
 	</div>
+
 
 	<script src="{{ asset('js/profile.js') }}"></script>
 
