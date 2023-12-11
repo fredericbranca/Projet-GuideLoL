@@ -14,12 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (menuElement) {
             menuElement.addEventListener('click', function () {
                 // Affiche les boutons d'éditions et suppression de guide uniquement en mode guide
-                if (menuElement.id == "menu_commentaires") {
-                    document.getElementById('menu_edit').style.cssText = "display: none !important;";
-                    document.getElementById('menu_delete').style.cssText = "display: none !important;";
-                } else {
-                    document.getElementById('menu_edit').style.cssText = "display: block !important;";
-                    document.getElementById('menu_delete').style.cssText = "display: block !important;";
+                if (document.getElementById('menu_edit') && document.getElementById('menu_delete')) {
+                    if (menuElement.id == "menu_commentaires") {
+
+                        document.getElementById('menu_edit').style.cssText = "display: none !important;";
+                        document.getElementById('menu_delete').style.cssText = "display: none !important;";
+                    } else {
+                        document.getElementById('menu_edit').style.cssText = "display: block !important;";
+                        document.getElementById('menu_delete').style.cssText = "display: block !important;";
+                    }
                 }
 
 
