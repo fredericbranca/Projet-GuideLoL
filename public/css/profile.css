@@ -16,7 +16,10 @@ body {
 
 /* Profil utilisateur */
 .user-profile {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
+  justify-content: space-around;
 }
 
 .avatar-div {
@@ -38,7 +41,8 @@ body {
   height: auto;
 }
 
-.user-infos {
+.user-infos,
+.administration {
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -93,6 +97,26 @@ body {
   display: none;
   flex-direction: column;
   gap: 20px;
+}
+
+.infos-message {
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid black;
+  backdrop-filter: blur(5px);
+}
+
+.bouton-message-admin {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bouton-message-admin .supprimer:hover,
+.bouton-message-admin .annuler:hover {
+  background-color: #dbdbdb9a;
 }
 
 /* Form Avatar */
@@ -175,7 +199,7 @@ form[name="delete_account"] button[type="submit"]:hover {
 }
 
 .verifie-email p a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #image-preview-container {
@@ -196,4 +220,34 @@ form[name="delete_account"] button[type="submit"]:hover {
 }
 #menu_delete_account:hover {
   background: rgba(179, 50, 50, 0.6);
+}
+
+.pagination {
+  display: flex;
+  background: #17172e78;
+  border: 1px solid #2c2c40;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pagination a,
+.pagination .current {
+  display: inline-block;
+  color: #8092b3;
+  text-transform: uppercase;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 15px;
+  transition: 300ms;
+}
+
+.pagination a:hover {
+  background: rgba(39, 84, 149, 0.25);
+  color: white;
+}
+
+.pagination .current {
+  background: #275495;
+  color: white;
 }
