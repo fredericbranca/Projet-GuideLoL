@@ -29,6 +29,14 @@ class ExceptionListener
             $response->setStatusCode(Response::HTTP_NOT_FOUND);
 
             $event->setResponse($response);
+        } else if ($exception->getStatusCode() == 403) {
+            $response = new Response();
+            $response->setContent($this->twig->render('bundles/TwigBundle/Exception/error404.html.twig'));
+            $event->setResponse($response);
+        } else {
+            $response = new Response();
+            $response->setContent($this->twig->render('bundles/TwigBundle/Exception/error.html.twig'));
+            $event->setResponse($response);
         }
     }
 }
