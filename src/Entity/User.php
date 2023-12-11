@@ -201,7 +201,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getPseudo();
     }
 
@@ -233,5 +234,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    // fonction pour afficher [ADMIN] au pseudo des admin
+    public function getDisplayName(): string
+    {
+        if (in_array('ROLE_ADMIN', $this->roles)) {
+            return '[ADMIN] ' . $this->pseudo;
+        }
+        return $this->pseudo;
     }
 }
