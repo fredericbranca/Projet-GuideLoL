@@ -49,7 +49,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->orderBy('u.pseudo', 'DESC') // Détermine le tri des résultats (plus grand au plus petit)
             ->setMaxResults(1); // Limite le nombre de résultat retourné par la requête à 1
 
-        $lastPseudo = $qb->getQuery()->getSingleScalarResult(); // exécute et retourne le résultat
+        $lastPseudo = $qb->getQuery()->getOneOrNullResult(); // exécute et retourne le résultat
 
         if ($lastPseudo && preg_match('/user(\d{5})/', $lastPseudo, $nb)) { // Forme 'user' suivi de 5 chiffres
             return (int) $nb[1] + 1; // return le nombre recherché + 1
