@@ -73,9 +73,9 @@ class GuideController extends AbstractController
         ItemService $itemService,
         Guide $guide = null
     ): Response {
-
         // Si c'est un nouveau guide, on le créé
-        $isNewGuide = ($guide === null);
+        $isNewGuide = $guide->getId() === null ? true : false;
+
         if ($isNewGuide) {
             $guide = new Guide();
         }
@@ -233,7 +233,7 @@ class GuideController extends AbstractController
 
                 // Récupération des commentaires mis à jour
                 $evaluations = $paginator->paginate(
-                    $evaluationRepository->findBy(['guide' => $guide->getId()], ['created_at' => 'DESC']),
+                    $evaluationRepository->getCommentairesByGuide($guide->getId()),
                     $request->query->getInt('page', 1),
                     25,
                     ['pageParameterName' => 'page']
@@ -255,7 +255,7 @@ class GuideController extends AbstractController
 
         // Evaluation
         $evaluations = $paginator->paginate(
-            $evaluationRepository->findBy(['guide' => $guide->getId()], ['created_at' => 'DESC']),
+            $evaluationRepository->getCommentairesByGuide($guide->getId()),
             $request->query->getInt('page', 1),
             25,
             ['pageParameterName' => 'page']
@@ -365,6 +365,10 @@ class GuideController extends AbstractController
     #[Route('/groupe-sorts-invocateur/edit/{idGuide}', name: "edit_groupe_sorts_invocateur")]
     public function createOrEditGroupeSortsInvocateur(Request $request, int $idGuide = null): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         $index = null;
 
         // Récupérer les données soumises
@@ -406,6 +410,10 @@ class GuideController extends AbstractController
     #[Route('/ensemble-items/edit/{idGuide}', name: "edit_ensemble_items")]
     public function createOrEditEnsembleItems(Request $request, int $index = null, int $idGuide = null): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         $index = null;
 
         // Récupérer les données soumises
@@ -448,8 +456,13 @@ class GuideController extends AbstractController
     #[Route('/groupe-items/create', name: "create_groupe_items")]
     public function createGroupeItems(
         ItemService $itemService,
-        ChampionService $championService
+        ChampionService $championService,
+        Request $request
     ): Response {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         // Liste des items
         $itemsList = $itemService->getItems();
         // URL pour récupérer les images
@@ -487,6 +500,9 @@ class GuideController extends AbstractController
         ChampionService $championService,
         Request $request
     ): Response {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
 
         // Récupérer les données soumises
         $data = json_decode($request->getContent(), true);
@@ -533,6 +549,10 @@ class GuideController extends AbstractController
     #[Route('/groupe-runes/edit/{idGuide}', name: "edit_groupe_runes")]
     public function createOrEditGroupeRunes(Request $request, int $index = null, int $idGuide = null): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
         // Récupérer les données soumises
         $data = json_decode($request->getContent(), true);
         if ($data != null) {

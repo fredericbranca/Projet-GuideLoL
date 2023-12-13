@@ -46,6 +46,18 @@ class EvaluationRepository extends ServiceEntityRepository
         return $moyennesGuides;
     }
 
+    // Requete les commentaires d'un guide
+    public function getCommentairesByGuide($guide): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.guide = :guide')
+            ->setParameter('guide', $guide)
+            ->andWhere('e.commentaire IS NOT NULL')
+            ->orderBy('e.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // Requete pour retourner les 30 dernières évaluations s'il elle a un commentaire
     public function getDerniersCommentaires(): array
     {

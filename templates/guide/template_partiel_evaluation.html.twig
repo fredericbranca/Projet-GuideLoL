@@ -5,9 +5,14 @@
 			<img src="https://storage.googleapis.com/lol_guides/lol_guides_user_avatar/{{ evaluation.user ? evaluation.user.avatar :'Anonyme.webp' }}" alt="Avatar de {{ evaluation.user ? evaluation.user.pseudo :'Anonyme' }}" class="avatar">
 			<div class="commentaire-details">
 				<div class="flex">
-					<div class="pseudo">{{ evaluation.user ? evaluation.user.pseudo :'Anonyme' }}</div>
+					<div class="pseudo">{{ evaluation.user ? evaluation.user.getDisplayName :'Anonyme' }}</div>
 					|
-					<div class="date">{{ evaluation.createdAt|date('d F Y à H:\i') }}</div>
+					<div class="date">{{ evaluation.createdAt|format_datetime(pattern="d MMMM Y", locale='fr') }}</div>
+					{% if app.user and app.user != evaluation.user %}
+						<span id="report-message" class="report" data-id="{{ evaluation.id }}">
+							<i class="fa-solid fa-exclamation" style="color: #ff0000;"></i>
+						</span>
+					{% endif %}
 				</div>
 				<div class="texte">{{ evaluation.commentaire }}</div>
 			</div>

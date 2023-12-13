@@ -14,6 +14,7 @@ use Google\Cloud\Storage\StorageClient;
 use App\Repository\EvaluationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use PhpParser\Builder\Method;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -331,7 +332,7 @@ class ProfileController extends AbstractController
     }
 
     // Route pour la gestion des messages signalé
-    #[Route('/admin/gestion-message-signale/{id}', name: 'admin_gestion_message_signale')]
+    #[Route('/admin/gestion-message-signale/{id}', name: 'admin_gestion_message_signale', methods: 'POST')]
     public function gestionMessageSignale(Request $request, Evaluation $evaluation, EntityManagerInterface $em): Response
     {
         $data = json_decode($request->getContent(), true);

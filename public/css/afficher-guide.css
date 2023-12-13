@@ -175,7 +175,6 @@ body {
 #notation_submit {
   color: #fff;
   box-sizing: border-box;
-  margin: 0 auto;
   padding: 8px;
   min-width: 20%;
   width: 150px;
@@ -186,6 +185,10 @@ body {
   transition: all 0.3s ease-out;
   cursor: pointer;
   margin-top: 10px;
+  max-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .error-message {
@@ -381,6 +384,8 @@ h1 {
   padding: 2px;
   margin-bottom: 13px;
   list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .groupe-items {
@@ -390,6 +395,7 @@ h1 {
   display: inline-block;
   margin-right: 13px;
   vertical-align: top;
+  width: fit-content;
 }
 
 .titre-ensemble,

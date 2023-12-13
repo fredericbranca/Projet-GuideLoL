@@ -109,7 +109,11 @@ async function fetchUpdatedContainer(spanId, championId) {
     let fetchURL = spanId === "menu-competences-container" ? `${mappingFetchURLs[spanId]}/edit/${championId}/${guideId}` : `${mappingFetchURLs[spanId]}/edit/${guideId}`;
     let container = document.querySelector(`${mappingBuilderMenu[spanId]} .new-guide-builder__container`);
     try {
-        let response = await fetch(fetchURL);
+        let response = await fetch(fetchURL, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
         if (!response.ok) {
             console.error(`Échec du chargement depuis l'URL : ${fetchURL}, statut : ${response.status}`);
             return;
@@ -160,12 +164,17 @@ async function fetchContainer(spanId) {
                         method: 'POST',
                         body: JSON.stringify(formData),
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
                         }
                     });
                     continu = false;
                 } else {
-                    response = await fetch(fetchURL);
+                    response = await fetch(fetchURL, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
                     continu = true;
                 }
 
@@ -212,7 +221,11 @@ async function fetchContainerWithBtn(spanId) {
             if (savedForm[ensemble.className]) {
                 html = savedForm[ensemble.className].html;
             } else {
-                let response = await fetch(fetchURL);
+                let response = await fetch(fetchURL, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
                 }
@@ -250,7 +263,11 @@ async function fetchGroupeItems(setContainer) {
             } else {
                 let fetchURL = "/groupe-items/create";
 
-                let response = await fetch(fetchURL);
+                let response = await fetch(fetchURL, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Erreur réseau lors de la tentative de récupération du contenu.');
                 }

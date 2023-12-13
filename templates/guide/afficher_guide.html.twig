@@ -32,7 +32,7 @@
 			par
 			{{ guide.user ? guide.user.getDisplayName : 'Anonyme' }}</div>
 
-		<div id="introduction" style="background-image:url({{ img_url }}/splash/Akali_1.jpg.webp);">
+		<div id="introduction" style="background-image:url({{ img_url }}/splash/{{ guide.champion }}_0.jpg.webp);">
 			<div class="description-guide">
 				<h1>
 					<img src="{{ img_url }}/role/{{ guide.voie }}.webp" alt="Rôle {{ guide.voie }}">
@@ -135,8 +135,8 @@
 									id="Secondaire">
 									{# Tri et affichage des runes secondaires #}
 									<div class="type-arbre">
-										<span class="rune-arbre-titre">{{ secondaire[groupeRunes.ordre].runeArbre }}</span>
-										<img src="{{ img_url }}/{{ runes_data[secondaire[groupeRunes.ordre].runeArbre].icon}}.webp" alt="{{ runes_data[secondaire[groupeRunes.ordre].runeArbre].name }}">
+										<span class="rune-arbre-titre">{{ secondaire[0].runeArbre }}</span>
+										<img src="{{ img_url }}/{{ runes_data[secondaire[0].runeArbre].icon}}.webp" alt="{{ runes_data[secondaire[0].runeArbre].name }}">
 									</div>
 									{% for type in ['Secondary1', 'Secondary2', 'Secondary3'] %}
 										{% for rune in secondaire %}
