@@ -288,7 +288,6 @@ body {
   font-size: 16px;
   width: 100%;
   font-weight: 400;
-  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }

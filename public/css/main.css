@@ -74,9 +74,13 @@ body {
 
 /* Footer */
 footer {
-  height: 100px;
+  padding: 20px 0;
+  min-height: 100px;
   background-color: rgba(30, 35, 46, 0.945);
   color: #afbbce;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer-content {
@@ -84,10 +88,16 @@ footer {
   justify-content: center;
   align-items: center;
   height: 100%;
+  gap: 15px;
 }
 
 .footer-content a {
   text-decoration: none;
+  color: #afbbce;
+}
+
+.footer-content a:hover {
+  text-decoration: underline;
   color: #afbbce;
 }
 
@@ -137,6 +147,10 @@ footer {
 @media screen and (max-width: 768px) {
   .background-image::after {
     height: 70px;
+  }
+
+  .footer-content {
+    flex-direction: column;
   }
 }
 
